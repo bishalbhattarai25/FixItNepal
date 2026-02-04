@@ -1,0 +1,11 @@
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/bin/Debug/net10.0/FixItNepal.Domain.Shared.deps.json
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/bin/Debug/net10.0/FixItNepal.Domain.Shared.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/bin/Debug/net10.0/FixItNepal.Domain.Shared.pdb
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/FixItNepal.Domain.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/FixItNepal.Domain.Shared.AssemblyInfoInputs.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/FixItNepal.Domain.Shared.AssemblyInfo.cs
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/FixItNepal.Domain.Shared.csproj.CoreCompileInputs.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/FixItNepal.Domain.Shared.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/refint/FixItNepal.Domain.Shared.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/FixItNepal.Domain.Shared.pdb
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/obj/Debug/net10.0/ref/FixItNepal.Domain.Shared.dll

@@ -1,0 +1,15 @@
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/bin/Debug/net9.0/FixItNepal.Application.Contracts.deps.json
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/bin/Debug/net9.0/FixItNepal.Application.Contracts.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/bin/Debug/net9.0/FixItNepal.Application.Contracts.pdb
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/bin/Debug/net9.0/FixItNepal.Domain.Shared.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/bin/Debug/net9.0/FixItNepal.Domain.Shared.pdb
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.csproj.AssemblyReference.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.AssemblyInfoInputs.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.AssemblyInfo.cs
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.csproj.CoreCompileInputs.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNep.467C51FD.Up2Date
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/refint/FixItNepal.Application.Contracts.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.pdb
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/ref/FixItNepal.Application.Contracts.dll
