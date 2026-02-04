@@ -1,2 +1,6 @@
 .env
 .DS_Store
+
+# JetBrains Rider / IntelliJ
+.idea/
+*.iml
