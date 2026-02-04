@@ -1,4 +1,6 @@
+using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
+using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,7 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
         
     )
 );
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
