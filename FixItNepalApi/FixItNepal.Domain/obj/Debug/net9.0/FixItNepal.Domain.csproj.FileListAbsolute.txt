@@ -13,3 +13,4 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/obj/Debug/net9.0/refint/FixItNepal.Domain.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/obj/Debug/net9.0/FixItNepal.Domain.pdb
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/obj/Debug/net9.0/ref/FixItNepal.Domain.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/obj/Debug/net9.0/FixItNepal.Domain.sourcelink.json
