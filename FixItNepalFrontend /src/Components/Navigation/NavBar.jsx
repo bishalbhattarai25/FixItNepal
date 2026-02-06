@@ -8,7 +8,7 @@ function NavBar() {
     <div className='text-2xl font-semibold drop-shadow-lg'>FixIt<span className='text-primary'>Nepal</span></div>
     <div className='flex gap-10 items-center'>
         {
-            NavData.map((val, i)=> {
+            NavData.map((val)=> {
                 return <div>{val.title}</div>
             })
         }

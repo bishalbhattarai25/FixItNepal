@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FixItNepal.Host")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1655d2196a28bd3534d85b8c97981330f56c8a09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a997c119e69e338a4450c9b8154b9fb38581ee14")]
 [assembly: System.Reflection.AssemblyProductAttribute("FixItNepal.Host")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FixItNepal.Host")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
