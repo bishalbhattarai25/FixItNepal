@@ -1,11 +1,11 @@
 import React from 'react';
 import{ Login }  from '../Components/Navigation/login';
+import { UserRegister } from '../Components/UserRegister';
 
 function HomePage() {
   return (
     <div>
-      
-      <Login/>
+      <UserRegister/>
 
     </div>
   );
