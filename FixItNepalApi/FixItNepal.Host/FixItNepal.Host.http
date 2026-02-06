@@ -1,0 +1,6 @@
+@FixItNepal.Host_HostAddress = http://localhost:5281
+
+GET {{FixItNepal.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
