@@ -1,8 +1,8 @@
 <Solution>
-  <Project Path="FixItNepal.Api/FixItNepal.Api.csproj" />
   <Project Path="FixItNepal.Application.Contracts/FixItNepal.Application.Contracts.csproj" />
   <Project Path="FixItNepal.Application/FixItNepal.Application.csproj" />
   <Project Path="FixItNepal.Domain.Shared/FixItNepal.Domain.Shared.csproj" />
   <Project Path="FixItNepal.Domain/FixItNepal.Domain.csproj" />
   <Project Path="FixItNepal.EntityFrameworkCore/FixItNepal.EntityFrameworkCore.csproj" />
+  <Project Path="FixItNepal.Host/FixItNepal.Host.csproj" />
 </Solution>
