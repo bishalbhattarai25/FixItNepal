@@ -1,4 +1,5 @@
 using System.Text;
+using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
         }
     )
 );
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApiDbContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApiDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddResponseCompression();

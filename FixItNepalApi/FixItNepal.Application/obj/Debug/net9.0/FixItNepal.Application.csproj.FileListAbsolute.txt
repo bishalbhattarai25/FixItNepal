@@ -12,9 +12,9 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.AssemblyInfoInputs.cache
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.AssemblyInfo.cs
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.csproj.CoreCompileInputs.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.sourcelink.json
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNep.8CBD4E99.Up2Date
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/refint/FixItNepal.Application.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.pdb
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/ref/FixItNepal.Application.dll
-/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application/obj/Debug/net9.0/FixItNepal.Application.sourcelink.json

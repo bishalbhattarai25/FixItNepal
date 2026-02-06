@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FixItNepal.EntityFrameworkCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+471fa00fb340a5f739152f87adc6382b4905d91e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63d46f01911ed627ba525b7dd5cf821612ad0ad6")]
 [assembly: System.Reflection.AssemblyProductAttribute("FixItNepal.EntityFrameworkCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FixItNepal.EntityFrameworkCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
