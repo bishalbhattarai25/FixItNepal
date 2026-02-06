@@ -8,6 +8,7 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.AssemblyInfoInputs.cache
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.AssemblyInfo.cs
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.csproj.CoreCompileInputs.cache
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.sourcelink.json
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNep.467C51FD.Up2Date
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/FixItNepal.Application.Contracts.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Application.Contracts/obj/Debug/net9.0/refint/FixItNepal.Application.Contracts.dll

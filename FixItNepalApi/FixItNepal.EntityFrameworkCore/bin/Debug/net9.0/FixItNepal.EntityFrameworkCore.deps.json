@@ -650,7 +650,8 @@
       },
       "FixItNepal.Domain/1.0.0": {
         "dependencies": {
-          "FixItNepal.Domain.Shared": "1.0.0"
+          "FixItNepal.Domain.Shared": "1.0.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.2"
         },
         "runtime": {
           "FixItNepal.Domain.dll": {
