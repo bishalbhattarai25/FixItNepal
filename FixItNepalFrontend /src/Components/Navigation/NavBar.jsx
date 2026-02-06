@@ -14,8 +14,8 @@ function NavBar() {
         }
     </div>
     <div className='flex gap-1 items-center'>
-        <button className='bg-primary h-[30px] text-white px-5  text-center font-semibold rounded-full'>Login</button>
-        <button className='bg-secondary h-[30px] text-white px-5  text-center font-semibold rounded-full'>Signup</button>
+        <button className='bg-primary h-[30px] text-black px-5  text-center font-semibold rounded-full'>Login</button>
+        <button className='bg-secondary h-[30px] text-blck px-5  text-center font-semibold rounded-full'>Signup</button>
 
     </div>
     </div>
