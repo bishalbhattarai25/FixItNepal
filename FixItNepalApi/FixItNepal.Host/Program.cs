@@ -1,5 +1,6 @@
 using System.Text;
 using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
@@ -98,5 +99,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+await CustomIdentitySeeder.SeedAsync(app.Services);
 
 app.Run();
