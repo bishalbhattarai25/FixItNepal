@@ -1,9 +1,12 @@
 import React from 'react';
+import{ Login }  from '../Components/Navigation/login';
 
 function HomePage() {
   return (
     <div>
-      asdf
+      
+      <Login/>
+
     </div>
   );
 }
