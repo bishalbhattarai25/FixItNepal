@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FixItNepal.Application.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63d46f01911ed627ba525b7dd5cf821612ad0ad6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d4e1466cc679e4ed39a816a1b8c6375b3e50aac")]
 [assembly: System.Reflection.AssemblyProductAttribute("FixItNepal.Application.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FixItNepal.Application.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
