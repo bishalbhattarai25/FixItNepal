@@ -1,7 +1,16 @@
-import React from 'react'
 
 export const UserRegister = () => {
+
+    
+
   return (
+
+
+    
+
+
+
+
    <div className="min-h-screen flex items-center justify-center bg-zinc-100">
       <div className="shadow-2xl rounded-2xl p-8 w-[350px] bg-white">
         
@@ -20,6 +29,7 @@ export const UserRegister = () => {
             <input
               type="text"
               placeholder="Enter your username"
+              name='Fullname'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
@@ -29,6 +39,7 @@ export const UserRegister = () => {
             <input
               type="text"
               placeholder="Enter your username"
+              name='Email'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
@@ -38,6 +49,7 @@ export const UserRegister = () => {
             <input
               type="text"
               placeholder="Enter your username"
+              name='Phone Number'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
@@ -47,6 +59,7 @@ export const UserRegister = () => {
             <input
               type="password"
               placeholder="Enter your password"
+              name='Password'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
@@ -56,6 +69,7 @@ export const UserRegister = () => {
             <input
               type="password"
               placeholder="Enter your password"
+              name='Conform Password'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
