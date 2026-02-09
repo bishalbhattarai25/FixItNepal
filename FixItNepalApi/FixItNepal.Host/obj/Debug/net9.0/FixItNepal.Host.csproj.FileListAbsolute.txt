@@ -6,6 +6,8 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/FixItNepal.Host.runtimeconfig.json
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/FixItNepal.Host.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/FixItNepal.Host.pdb
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/AutoMapper.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Humanizer.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -45,6 +47,7 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Mono.TextTemplating.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/MySqlConnector.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Scrutor.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -55,6 +58,9 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/System.Composition.Runtime.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/System.Composition.TypedParts.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/System.IO.Pipelines.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/System.Text.Encodings.Web.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/System.Text.Json.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.resources.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.resources.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.resources.dll
@@ -120,6 +126,8 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/runtimes/win/lib/net9.0/System.Text.Encodings.Web.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/FixItNepal.Application.Contracts.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/FixItNepal.Application.dll
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/FixItNepal.Domain.dll

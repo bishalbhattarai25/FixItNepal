@@ -1,25 +1,55 @@
-using FixItNepal.Application.Contracts.Mechanics;
+using AutoMapper;
+using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Garages;
+using FixItNepal.Domain.Repository;
+using FixItNepal.Domain.Repository.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 
 namespace FixItNepal.Application.Garages;
 
-public class GarageAppService : IMechanicService
+public class GarageAppService(
+    IRepository<Garage> garageRepository,
+    IMapper mapper,
+    IUnitOfWork unitOfWork,
+    UserManager<AppUser> userManager
+    ) : IGarageService
 {
-    public Task<MechanicDto> GetListAsync()
+    public async Task<ICollection<GarageDto>> GetListAsync()
     {
-        throw new NotImplementedException();
+        var garages = await garageRepository.GetListAsync();
+        return mapper.Map<ICollection<Garage>, ICollection<GarageDto>>(garages.ToList());
     }
 
-    public Task<MechanicDto> GetAsync(Guid id)
+    public async Task<GarageDto> GetAsync(Guid id)
     {
-        throw new NotImplementedException();
+       var garage = await garageRepository.GetAsync(id);
+       return mapper.Map<Garage, GarageDto>(garage);
     }
 
-    public Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input)
+    public async Task<GarageDto> CreateAsync(CreateUpdateGarageDto input)
     {
-        throw new NotImplementedException();
+        var garage = new Garage();
+        garage.SetEmailAddress(input.EmailAddress);
+        garage.SetPhoneNumber(input.PhoneNumber);
+        garage.SetUserName(input.PhoneNumber);
+        
+        var result = await userManager.CreateAsync(garage, input.PassWord);
+
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to create user: {errors}");
+        }
+
+        garage = await garageRepository.InsertAsync(garage);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        return mapper.Map<Garage, GarageDto>(garage);
+
     }
 
-    public Task<MechanicDto> UpdateAsync(CreateUpdateMechanicsDto input)
+    public Task<GarageDto> UpdateAsync(Guid id, CreateUpdateGarageDto input)
     {
         throw new NotImplementedException();
     }

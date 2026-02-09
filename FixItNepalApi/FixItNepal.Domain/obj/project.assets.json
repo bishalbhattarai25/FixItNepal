@@ -808,19 +808,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/ayushkhatri/.nuget/packages/": {}
+    "/Users/bimalabhattarai/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ayushkhatri/Desktop/FixItNepal/FixItNepalApi/FixItNepal.Domain/FixItNepal.Domain.csproj",
+      "projectUniqueName": "/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/FixItNepal.Domain.csproj",
       "projectName": "FixItNepal.Domain",
-      "projectPath": "/Users/ayushkhatri/Desktop/FixItNepal/FixItNepalApi/FixItNepal.Domain/FixItNepal.Domain.csproj",
-      "packagesPath": "/Users/ayushkhatri/.nuget/packages/",
-      "outputPath": "/Users/ayushkhatri/Desktop/FixItNepal/FixItNepalApi/FixItNepal.Domain/obj/",
+      "projectPath": "/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/FixItNepal.Domain.csproj",
+      "packagesPath": "/Users/bimalabhattarai/.nuget/packages/",
+      "outputPath": "/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/ayushkhatri/.nuget/NuGet/NuGet.Config"
+        "/Users/bimalabhattarai/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -832,8 +832,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/Users/ayushkhatri/Desktop/FixItNepal/FixItNepalApi/FixItNepal.Domain.Shared/FixItNepal.Domain.Shared.csproj": {
-              "projectPath": "/Users/ayushkhatri/Desktop/FixItNepal/FixItNepalApi/FixItNepal.Domain.Shared/FixItNepal.Domain.Shared.csproj"
+            "/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/FixItNepal.Domain.Shared.csproj": {
+              "projectPath": "/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Domain.Shared/FixItNepal.Domain.Shared.csproj"
             }
           }
         }
@@ -870,12 +870,22 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[9.0.12, 9.0.12]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[9.0.12, 9.0.12]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

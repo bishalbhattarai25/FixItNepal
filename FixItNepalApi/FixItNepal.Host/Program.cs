@@ -1,8 +1,11 @@
 using System.Text;
+using FixItNepal.Application.Extensions;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs;
+using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
+using FixItNepal.EntityFrameworkCore.Repository;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +16,8 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddApplicationServices();
+
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -28,9 +33,12 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
     )
 );
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApiDbContext>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

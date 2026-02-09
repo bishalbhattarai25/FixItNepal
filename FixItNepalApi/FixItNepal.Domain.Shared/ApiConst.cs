@@ -14,4 +14,6 @@ public class ApiConst
     public const string AppMechanicRoleName = "Mechanic";
     public const string AppCustomerRoleName = "Customer";
     
+    public const int MaxPasswordLength = 20;
+    public const int MaxNameLength = 100;
 }

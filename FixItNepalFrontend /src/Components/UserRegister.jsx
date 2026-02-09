@@ -67,8 +67,6 @@ export const UserRegister = () => {
             Register
           </button>
         </form>
-
-        
       </div>
     </div>
   )
