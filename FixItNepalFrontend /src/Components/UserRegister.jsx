@@ -4,13 +4,6 @@ export const UserRegister = () => {
     
 
   return (
-
-
-    
-
-
-
-
    <div className="min-h-screen flex items-center justify-center bg-zinc-100">
       <div className="shadow-2xl rounded-2xl p-8 w-[350px] bg-white">
         
@@ -37,7 +30,7 @@ export const UserRegister = () => {
           <div>
             <label className="font-semibold">Email:</label>
             <input
-              type="text"
+              type="email"
               placeholder="Enter your username"
               name='Email'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
@@ -48,7 +41,7 @@ export const UserRegister = () => {
             <label className="font-semibold">Phone Number:</label>
             <input
               type="text"
-              placeholder="Enter your username"
+              placeholder="Enter your phoneNumber"
               name='Phone Number'
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
             />

@@ -1,11 +1,12 @@
 import React from 'react';
-import{ Login }  from '../Components/Navigation/login';
+import{ Login }  from '../Components/Login';
 import { UserRegister } from '../Components/UserRegister';
 import TopSection from '../Components/Home/TopSection';
 import SecondSec from '../Components/Home/SecondSec';
 import ThirdSec from '../Components/Home/ThirdSec';
 import FourthSec from '../Components/Home/FourthSec';
 import FifthSec from '../Components/Home/FirthSec';
+import Footer from '../Components/HOC/Footer';
 
 function HomePage() {
   return (
@@ -15,6 +16,7 @@ function HomePage() {
       <ThirdSec />
       <FourthSec />
       <FifthSec />
+      <Footer />
     
     
     </div>
