@@ -1378,7 +1378,8 @@
           "FixItNepal.Application.Contracts": "1.0.0",
           "FixItNepal.Domain": "1.0.0",
           "FixItNepal.Domain.Shared": "1.0.0",
-          "Scrutor": "7.0.0"
+          "Scrutor": "7.0.0",
+          "System.IdentityModel.Tokens.Jwt": "8.0.1"
         },
         "compile": {
           "bin/placeholder/FixItNepal.Application.dll": {}
