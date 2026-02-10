@@ -7,6 +7,15 @@ import { MdOutlineEventAvailable } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { MdPayment } from "react-icons/md";
 import { MdHistory } from "react-icons/md";
+import { BsSpeedometer } from "react-icons/bs";
+import { FaShieldAlt } from "react-icons/fa";
+import { FaMountain } from "react-icons/fa";
+import { FaHeadset } from "react-icons/fa6";
+
+
+
+
+
 
 
 
@@ -112,5 +121,33 @@ export const Features = [
     title: "Service History",
     desc: "Track all your past bookings and service records",
     color: "bg-yellow-100 text-yellow-600",
+  },
+];
+
+
+export const WhyFeatures = [
+  {
+    icon: <BsSpeedometer />,
+    title: "50% Faster",
+    desc: "Response time compared to traditional methods",
+    color: "bg-white/20 text-white",
+  },
+  {
+    icon: <FaShieldAlt />,
+    title: "100% Verified",
+    desc: "All service providers background checked",
+    color: "bg-white/20 text-white",
+  },
+  {
+    icon: <FaMountain />,
+    title: "Nepal Roads",
+    desc: "Designed for local terrain and conditions",
+    color: "bg-white/20 text-white",
+  },
+  {
+    icon: <FaHeadset />,
+    title: "24/7 Ready",
+    desc: "Emergency support available round the clock",
+    color: "bg-white/20 text-white",
   },
 ];
