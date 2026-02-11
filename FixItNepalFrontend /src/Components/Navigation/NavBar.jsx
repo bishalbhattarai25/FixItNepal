@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavData } from './NavData';
+import { NavLink } from 'react-router-dom';
 
 function NavBar() {
   return (
@@ -9,13 +10,24 @@ function NavBar() {
     <div className='flex gap-10 items-center'>
         {
             NavData.map((val)=> {
-                return <div>{val.title}</div>
+                return(<div>
+
+                    <NavLink
+                 to={val.path}
+                 >
+                    {val.title}
+                </NavLink>
+                </div>)
+                    
             })
         }
     </div>
     <div className='flex gap-1 items-center'>
-        <button className='bg-primary h-[30px] text-black px-5  text-center font-semibold rounded-full'>Login</button>
-        <button className='bg-secondary h-[30px] text-blck px-5  text-center font-semibold rounded-full'>Signup</button>
+        <NavLink to={'/login'}>
+                    <button  className='bg-primary h-[30px] text-black px-5  text-center font-semibold rounded-full'>Login</button>
+
+        </NavLink>
+        <button className='bg-secondary h-[30px] text-blck px-5  text-center font-semibold rounded-full'>Register</button>
 
     </div>
     </div>

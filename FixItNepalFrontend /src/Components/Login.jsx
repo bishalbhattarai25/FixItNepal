@@ -7,9 +7,9 @@ export const Login = () => {
         
         {/* Logo / Title */}
         <div className="text-center mb-6">
-          <span className="text-3xl font-extrabold">FIX</span>
+          <span className="text-3xl font-extrabold text-orange-400">FIX</span>
           <span className="text-2xl font-bold">IT</span>
-          <span className="text-3xl font-extrabold"> Nepal</span>
+          <span className="text-3xl font-extrabold text-green-400 "> Nepal</span>
           <p className="text-gray-500 mt-2">Login to your account</p>
         </div>
 
@@ -35,7 +35,7 @@ export const Login = () => {
 
           <button
             type="submit"
-            className="mt-4 bg-black text-white py-2 rounded-xl hover:bg-zinc-800 transition"
+            className="mt-4 bg-red-400 text-white py-2 rounded-xl hover:bg-green-400 transition"
           >
             Login
           </button>

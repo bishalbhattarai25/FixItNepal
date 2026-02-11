@@ -1,7 +1,6 @@
 export const NavData = [
-    {title:"Home" },
-    {title:"About"},
-    {title:"Services"},
-    {title:"Contact"}
-
+    {title:"Home",path: "/" },
+    {title:"About", path: '/about'},
+    {title:"Services", path:"/service"},
+    {title:"Contact", path: "/Contact"},
 ]
