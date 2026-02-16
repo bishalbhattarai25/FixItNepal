@@ -33,7 +33,7 @@ public class GarageAppService(
         garage.SetEmailAddress(input.EmailAddress);
         garage.SetPhoneNumber(input.PhoneNumber);
         garage.SetUserName(input.PhoneNumber);
-        
+        garage.Name = input.Name;
         var result = await userManager.CreateAsync(garage, input.PassWord);
 
         if (!result.Succeeded)
@@ -41,9 +41,6 @@ public class GarageAppService(
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
             throw new Exception($"Failed to create user: {errors}");
         }
-
-        garage = await garageRepository.InsertAsync(garage);
-        await unitOfWork.SaveChangesAsync(CancellationToken.None);
         
         return mapper.Map<Garage, GarageDto>(garage);
 

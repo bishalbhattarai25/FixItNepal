@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Shared.Addresses;
 using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Domain.Addresses;
 
-public class Address
+public class Address:BaseEntity
 {
     [MaxLength(AddressConst.StreetMaxLength)]
     public string? Tole { get; set; }

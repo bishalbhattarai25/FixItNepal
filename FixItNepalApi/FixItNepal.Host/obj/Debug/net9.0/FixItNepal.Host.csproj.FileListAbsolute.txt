@@ -162,3 +162,9 @@
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/obj/Debug/net9.0/FixItNepal.Host.pdb
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/obj/Debug/net9.0/FixItNepal.Host.genruntimeconfig.cache
 /Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/obj/Debug/net9.0/ref/FixItNepal.Host.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/NetTopologySuite.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/NetTopologySuite.Features.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/NetTopologySuite.IO.GeoJSON.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.dll
+/Users/bimalabhattarai/Desktop/SeventhSem/FixItNepalApi/FixItNepal.Host/obj/Debug/net9.0/EFCoreMySqlNetTopologySuite.cs

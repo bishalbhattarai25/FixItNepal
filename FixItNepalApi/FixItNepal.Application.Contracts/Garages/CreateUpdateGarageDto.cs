@@ -6,6 +6,9 @@ namespace FixItNepal.Application.Contracts.Garages;
 public class CreateUpdateGarageDto
 {
     [Required]
+    public string Name { get; set; } = null!;
+    
+    [Required]
     [Phone]
     public string PhoneNumber { get; set; } = null!;
     

@@ -8,7 +8,7 @@ namespace FixItNepal.Host.Authentications;
 public class AuthController(IAuthService authService)
     : ControllerBase
 {
-    
+    [HttpPost]
     [Route("/login")]
     public async Task<LoginDto> LoginAsync(LoginInputDto input)
     {

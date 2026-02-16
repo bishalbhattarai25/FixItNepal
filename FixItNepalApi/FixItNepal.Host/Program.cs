@@ -1,4 +1,5 @@
 using System.Text;
+using FixItNepal.Application.AutomapperProfiles;
 using FixItNepal.Application.Extensions;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs;
@@ -9,9 +10,10 @@ using FixItNepal.EntityFrameworkCore.Repository;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,16 +31,17 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
             mySqlOptions.MigrationsAssembly(
                 "FixItNepal.EntityFrameworkCore"
             );
+            mySqlOptions.UseNetTopologySuite();
         }
     )
 );
-builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApiDbContext>();
+
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>().AddEntityFrameworkStores<ApiDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.AddAutoMapper(typeof(GarageAutomapperProfile).Assembly);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -74,22 +77,26 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Description = "Enter: Bearer {your JWT token}"
     });
-    
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+    //
+    // options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+    // {
+    //     {
+    //         new OpenApiSecurityScheme
+    //         {
+    //             Reference = new OpenApiReference
+    //             {
+    //                 Type = ReferenceType.SecurityScheme,
+    //                 Id = "Bearer"
+    //             },
+    //             Scheme = "bearer",
+    //             Name = "Authorization",
+    //             In = ParameterLocation.Header
+    //         },
+    //         Array.Empty<string>()
+    //     }
+    // });
 });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -103,12 +110,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI( c =>
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "FixItNepal API V1")
+        );
 }
 
 app.UseCors("AllowFrontend");

@@ -892,15 +892,18 @@
           }
         }
       },
-      "Microsoft.OpenApi/1.6.23": {
+      "Microsoft.OpenApi/2.4.1": {
         "type": "package",
+        "dependencies": {
+          "System.Text.Json": "8.0.5"
+        },
         "compile": {
-          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
             "related": ".pdb;.xml"
           }
         }
@@ -1014,6 +1017,29 @@
           }
         }
       },
+      "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite/9.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "[9.0.0, 9.0.999]",
+          "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "MySqlConnector": "2.4.0",
+          "NetTopologySuite": "2.5.0",
+          "Pomelo.EntityFrameworkCore.MySql": "9.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/netstandard2.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.targets": {}
+        }
+      },
       "Scrutor/7.0.0": {
         "type": "package",
         "dependencies": {
@@ -1031,13 +1057,13 @@
           }
         }
       },
-      "Swashbuckle.AspNetCore/9.0.2": {
+      "Swashbuckle.AspNetCore/10.1.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "9.0.0",
-          "Swashbuckle.AspNetCore.Swagger": "9.0.2",
-          "Swashbuckle.AspNetCore.SwaggerGen": "9.0.2",
-          "Swashbuckle.AspNetCore.SwaggerUI": "9.0.2"
+          "Swashbuckle.AspNetCore.Swagger": "10.1.2",
+          "Swashbuckle.AspNetCore.SwaggerGen": "10.1.2",
+          "Swashbuckle.AspNetCore.SwaggerUI": "10.1.2"
         },
         "build": {
           "build/Swashbuckle.AspNetCore.props": {}
@@ -1046,10 +1072,10 @@
           "buildMultiTargeting/Swashbuckle.AspNetCore.props": {}
         }
       },
-      "Swashbuckle.AspNetCore.Swagger/9.0.2": {
+      "Swashbuckle.AspNetCore.Swagger/10.1.2": {
         "type": "package",
         "dependencies": {
-          "Microsoft.OpenApi": "1.6.23"
+          "Microsoft.OpenApi": "2.4.1"
         },
         "compile": {
           "lib/net9.0/Swashbuckle.AspNetCore.Swagger.dll": {
@@ -1065,10 +1091,10 @@
           "Microsoft.AspNetCore.App"
         ]
       },
-      "Swashbuckle.AspNetCore.SwaggerGen/9.0.2": {
+      "Swashbuckle.AspNetCore.SwaggerGen/10.1.2": {
         "type": "package",
         "dependencies": {
-          "Swashbuckle.AspNetCore.Swagger": "9.0.2"
+          "Swashbuckle.AspNetCore.Swagger": "10.1.2"
         },
         "compile": {
           "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
@@ -1081,7 +1107,7 @@
           }
         }
       },
-      "Swashbuckle.AspNetCore.SwaggerUI/9.0.2": {
+      "Swashbuckle.AspNetCore.SwaggerUI/10.1.2": {
         "type": "package",
         "compile": {
           "lib/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
@@ -3498,18 +3524,21 @@
         "microsoft.identitymodel.tokens.nuspec"
       ]
     },
-    "Microsoft.OpenApi/1.6.23": {
-      "sha512": "tZ1I0KXnn98CWuV8cpI247A17jaY+ILS9vvF7yhI0uPPEqF4P1d7BWL5Uwtel10w9NucllHB3nTkfYTAcHAh8g==",
+    "Microsoft.OpenApi/2.4.1": {
+      "sha512": "u7QhXCISMQuab3flasb1hoaiERmUqyWsW7tmQODyILoQ7mJV5IRGM+2KKZYo0QUfC13evEOcHAb6TPWgqEQtrw==",
       "type": "package",
-      "path": "microsoft.openapi/1.6.23",
+      "path": "microsoft.openapi/2.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
+        "lib/net8.0/Microsoft.OpenApi.dll",
+        "lib/net8.0/Microsoft.OpenApi.pdb",
+        "lib/net8.0/Microsoft.OpenApi.xml",
         "lib/netstandard2.0/Microsoft.OpenApi.dll",
         "lib/netstandard2.0/Microsoft.OpenApi.pdb",
         "lib/netstandard2.0/Microsoft.OpenApi.xml",
-        "microsoft.openapi.1.6.23.nupkg.sha512",
+        "microsoft.openapi.2.4.1.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
     },
@@ -3644,6 +3673,22 @@
         "pomelo.entityframeworkcore.mysql.nuspec"
       ]
     },
+    "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite/9.0.0": {
+      "sha512": "BzYOeFU1Ho9gpV0nLHt+llNAL813HLzKLCIjpz8JPk3Ehs4xWjKxTTRd7Kt32sgpMEMRuBib40PHGvAHjG8kXw==",
+      "type": "package",
+      "path": "pomelo.entityframeworkcore.mysql.nettopologysuite/9.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "build/netstandard2.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.targets",
+        "icon.png",
+        "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.dll",
+        "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.xml",
+        "pomelo.entityframeworkcore.mysql.nettopologysuite.9.0.0.nupkg.sha512",
+        "pomelo.entityframeworkcore.mysql.nettopologysuite.nuspec"
+      ]
+    },
     "Scrutor/7.0.0": {
       "sha512": "wHWaroody48jnlLoq/REwUltIFLxplXyHTP+sttrc8P7+jkiVqf38afDidJNv4qgD/6zz2NKOYg06xLZ1bG7wQ==",
       "type": "package",
@@ -3668,27 +3713,30 @@
         "scrutor.nuspec"
       ]
     },
-    "Swashbuckle.AspNetCore/9.0.2": {
-      "sha512": "yVIGr6s1OOm8Cj1KO8ulXaCjShiP6Jftfk7NcVlqw3tb7v/CYYtlw1ee/accDuUXSdiBl2nY64LAQV/ICY2CuQ==",
+    "Swashbuckle.AspNetCore/10.1.2": {
+      "sha512": "txDJi7w/didFl/kIlTaA+FfzaJvZaXXZMejfxhJRK/CZdG8PrJcW1xquUuyLN0zNTpU5K0mm0U19B0/P5xiNOA==",
       "type": "package",
-      "path": "swashbuckle.aspnetcore/9.0.2",
+      "path": "swashbuckle.aspnetcore/10.1.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "build/Swashbuckle.AspNetCore.props",
         "buildMultiTargeting/Swashbuckle.AspNetCore.props",
         "docs/package-readme.md",
-        "swashbuckle.aspnetcore.9.0.2.nupkg.sha512",
+        "swashbuckle.aspnetcore.10.1.2.nupkg.sha512",
         "swashbuckle.aspnetcore.nuspec"
       ]
     },
-    "Swashbuckle.AspNetCore.Swagger/9.0.2": {
-      "sha512": "2AiVPc9HXkfLfFzkUcXBCwyy33HmaMH3zo+Z3qJW1+MCbzHBZxIFPotDXbDq1jMSxi8U8s1oZUleFrcVzzp+CQ==",
+    "Swashbuckle.AspNetCore.Swagger/10.1.2": {
+      "sha512": "CvIeWbEJ+pogj601pptQYzz3poZhS8/mk/vFozRQ74JckT3WWLGX1mFjNwNVdJOERf4Lk/clbFqfRG4WEvDGcw==",
       "type": "package",
-      "path": "swashbuckle.aspnetcore.swagger/9.0.2",
+      "path": "swashbuckle.aspnetcore.swagger/10.1.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "lib/net10.0/Swashbuckle.AspNetCore.Swagger.dll",
+        "lib/net10.0/Swashbuckle.AspNetCore.Swagger.pdb",
+        "lib/net10.0/Swashbuckle.AspNetCore.Swagger.xml",
         "lib/net8.0/Swashbuckle.AspNetCore.Swagger.dll",
         "lib/net8.0/Swashbuckle.AspNetCore.Swagger.pdb",
         "lib/net8.0/Swashbuckle.AspNetCore.Swagger.xml",
@@ -3696,17 +3744,20 @@
         "lib/net9.0/Swashbuckle.AspNetCore.Swagger.pdb",
         "lib/net9.0/Swashbuckle.AspNetCore.Swagger.xml",
         "package-readme.md",
-        "swashbuckle.aspnetcore.swagger.9.0.2.nupkg.sha512",
+        "swashbuckle.aspnetcore.swagger.10.1.2.nupkg.sha512",
         "swashbuckle.aspnetcore.swagger.nuspec"
       ]
     },
-    "Swashbuckle.AspNetCore.SwaggerGen/9.0.2": {
-      "sha512": "Gso+iWAB4+OStZS80mcRVFASBR32aMMnnRl66Po0Bkkf5DGNMuSuAX4gzVTU4iupkKLefDzNgrAfZGUk3lE9Bg==",
+    "Swashbuckle.AspNetCore.SwaggerGen/10.1.2": {
+      "sha512": "/gcOooF1cfmdvYU6wFiPB9On5CMUp2P/jrt2EFEoSG0p0xSALBdWoWy3eNHVmzXUlVHaGAg5PHFC6e8C+tVpWw==",
       "type": "package",
-      "path": "swashbuckle.aspnetcore.swaggergen/9.0.2",
+      "path": "swashbuckle.aspnetcore.swaggergen/10.1.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "lib/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
+        "lib/net10.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
+        "lib/net10.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
         "lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
         "lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
         "lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
@@ -3714,17 +3765,20 @@
         "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
         "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
         "package-readme.md",
-        "swashbuckle.aspnetcore.swaggergen.9.0.2.nupkg.sha512",
+        "swashbuckle.aspnetcore.swaggergen.10.1.2.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggergen.nuspec"
       ]
     },
-    "Swashbuckle.AspNetCore.SwaggerUI/9.0.2": {
-      "sha512": "p9JOYiuMSxIYMSqH04HchqA2lDSH6oDh4U0+eQFbb6AvgNbJcWdPll1UMR90SiJU86/9pqDd7aTsy0r0tk9DBg==",
+    "Swashbuckle.AspNetCore.SwaggerUI/10.1.2": {
+      "sha512": "Zzam+F/g3jpGvSLhqdtOoBe+GEABk+oi9LJxun1wrz52/254sSGWkz1P+U1dDifsXJWVdZusiRuDWLXkJW+7Eg==",
       "type": "package",
-      "path": "swashbuckle.aspnetcore.swaggerui/9.0.2",
+      "path": "swashbuckle.aspnetcore.swaggerui/10.1.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "lib/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll",
+        "lib/net10.0/Swashbuckle.AspNetCore.SwaggerUI.pdb",
+        "lib/net10.0/Swashbuckle.AspNetCore.SwaggerUI.xml",
         "lib/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll",
         "lib/net8.0/Swashbuckle.AspNetCore.SwaggerUI.pdb",
         "lib/net8.0/Swashbuckle.AspNetCore.SwaggerUI.xml",
@@ -3732,7 +3786,7 @@
         "lib/net9.0/Swashbuckle.AspNetCore.SwaggerUI.pdb",
         "lib/net9.0/Swashbuckle.AspNetCore.SwaggerUI.xml",
         "package-readme.md",
-        "swashbuckle.aspnetcore.swaggerui.9.0.2.nupkg.sha512",
+        "swashbuckle.aspnetcore.swaggerui.10.1.2.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
     },
@@ -4226,7 +4280,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 9.0.2",
       "Microsoft.EntityFrameworkCore.Relational >= 9.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.2",
-      "Swashbuckle.AspNetCore >= 9.0.2"
+      "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite >= 9.0.0",
+      "Swashbuckle.AspNetCore >= 10.1.2"
     ]
   },
   "packageFolders": {
@@ -4318,9 +4373,13 @@
             "target": "Package",
             "version": "[9.0.2, )"
           },
+          "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite": {
+            "target": "Package",
+            "version": "[9.0.0, )"
+          },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
-            "version": "[9.0.2, )"
+            "version": "[10.1.2, )"
           }
         },
         "imports": [

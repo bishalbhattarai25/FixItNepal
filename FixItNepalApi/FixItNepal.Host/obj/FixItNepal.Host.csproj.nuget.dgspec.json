@@ -525,9 +525,13 @@
               "target": "Package",
               "version": "[9.0.2, )"
             },
+            "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[10.1.2, )"
             }
           },
           "imports": [

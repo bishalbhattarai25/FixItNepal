@@ -6,6 +6,4 @@ namespace FixItNepal.Domain.Customers;
 
 public class Customer:AppUser
 {
-    [StringLength(ApiConst.MaxNameLength)]
-    public string Name { get; set; } = null!;
 }
