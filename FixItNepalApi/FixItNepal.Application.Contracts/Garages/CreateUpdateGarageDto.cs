@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Domain.Shared;
 
 namespace FixItNepal.Application.Contracts.Garages;
@@ -19,4 +20,6 @@ public class CreateUpdateGarageDto
     [Required]
     [MaxLength(ApiConst.MaxPasswordLength)]
     public string PassWord { get; set; } = null!;
+
+    [Required] public CreateAddressDto Address { get; set; } = null!;
 }

@@ -1,5 +1,7 @@
 using AutoMapper;
+using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Repository;
@@ -30,11 +32,17 @@ public class GarageAppService(
 
     public async Task<GarageDto> CreateAsync(CreateUpdateGarageDto input)
     {
-        var garage = new Garage();
+        var address = mapper.Map<CreateAddressDto, Address>(input.Address);
+        var garage = new Garage()
+        {
+            Name = input.Name,
+            Address = address
+        };
         garage.SetEmailAddress(input.EmailAddress);
         garage.SetPhoneNumber(input.PhoneNumber);
         garage.SetUserName(input.PhoneNumber);
-        garage.Name = input.Name;
+
+        
         var result = await userManager.CreateAsync(garage, input.PassWord);
 
         if (!result.Succeeded)

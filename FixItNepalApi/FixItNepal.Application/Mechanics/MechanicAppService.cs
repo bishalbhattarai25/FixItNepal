@@ -1,5 +1,7 @@
 using AutoMapper;
+using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
@@ -30,13 +32,19 @@ public class MechanicAppService (
 
     public async Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input)
     {
-        var mechanic = new Mechanic();
+                
+        var address = mapper.Map<CreateAddressDto, Address>(input.Address);
+        var mechanic = new Mechanic()
+        {
+            Name = input.Name,
+            Address = address
+        };
         mechanic.SetEmailAddress(input.EmailAddress);
         mechanic.SetPhoneNumber(input.PhoneNumber);
         mechanic.SetUserName(input.PhoneNumber);
-        mechanic.Name = input.Name;
+        
         var result = await userManager.CreateAsync(mechanic, input.PassWord);
-
+        
         if (!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));

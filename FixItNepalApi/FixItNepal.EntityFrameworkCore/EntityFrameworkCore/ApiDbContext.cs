@@ -27,14 +27,28 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
     {
         base.OnModelCreating(builder);
 
+        #region Garage
+        
         builder.Entity<Garage>(b =>
         {
             b.ToTable(ApiConst.DbTablePrefix + nameof(Garages));
+
+            b.HasOne(g => g.Address);
+            
+            b.Navigation(g => g.Address)
+                .AutoInclude();
+
         });
+        
+        #endregion
+        
+        
         builder.Entity<Mechanic>(b =>
         {
             b.ToTable(ApiConst.DbTablePrefix + nameof(Mechanics));
             
+            b.HasOne(g => g.Address);
+
         });
         builder.Entity<Customer>(b =>
         {

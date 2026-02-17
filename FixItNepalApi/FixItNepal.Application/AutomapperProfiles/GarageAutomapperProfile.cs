@@ -9,7 +9,7 @@ public class GarageAutomapperProfile: Profile
     public GarageAutomapperProfile()
     {
         CreateMap<Garage, GarageDto>()
-            .ForAllMembers(opt => opt.Ignore());
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(g => g.Address));
         CreateMap<CreateUpdateGarageDto, Garage>();
     }
 }
