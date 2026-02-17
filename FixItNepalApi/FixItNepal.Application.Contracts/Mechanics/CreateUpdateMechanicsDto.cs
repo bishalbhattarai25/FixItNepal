@@ -6,6 +6,8 @@ namespace FixItNepal.Application.Contracts.Mechanics;
 public class CreateUpdateMechanicsDto
 {
     [Required]
+    public string Name { get; set; } = null!;
+    [Required]
     [Phone]
     public string PhoneNumber { get; set; } = null!;
 

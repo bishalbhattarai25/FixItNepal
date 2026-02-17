@@ -4,6 +4,7 @@ using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
+using FixItNepal.Domain.Shared;
 using Microsoft.AspNetCore.Identity;
 
 namespace FixItNepal.Application.Garages;
@@ -40,6 +41,13 @@ public class GarageAppService(
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
             throw new Exception($"Failed to create user: {errors}");
+        }
+
+        var roleResult = await userManager.AddToRoleAsync(garage, ApiConst.AppGarageRoleName);
+        if (!roleResult.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to create role: {errors}");
         }
         
         return mapper.Map<Garage, GarageDto>(garage);
