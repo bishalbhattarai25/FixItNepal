@@ -1,6 +1,25 @@
 .env
-.DS_Store
-
 # JetBrains Rider / IntelliJ
 .idea/
 *.iml
+# Rider
+*.sln.iml
+*.DotSettings.user
+*.DotSettings
+rider.project.model.nuget.info
+rider.project.restore.info
+
+# .NET build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,25 +1,54 @@
+using AutoMapper;
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Mechanics;
+using FixItNepal.Domain.Repository;
+using FixItNepal.Domain.Repository.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 
 namespace FixItNepal.Application.Mechanics;
 
-public class MechanicAppService : IMechanicService
+public class MechanicAppService (
+    IRepository<Mechanic> mechanicRepository,
+    IUnitOfWork unitOfWork,
+    UserManager<AppUser>  userManager,
+    IMapper mapper
+        ): IMechanicService
 {
-    public Task<MechanicDto> GetListAsync()
+    public async Task<ICollection<MechanicDto>> GetListAsync()
     {
-        throw new NotImplementedException();
+        var mechanics = await mechanicRepository.GetListAsync();
+        return mapper.Map<ICollection<Mechanic>, ICollection<MechanicDto>>(mechanics.ToList());
     }
 
-    public Task<MechanicDto> GetAsync(Guid id)
+    public async Task<MechanicDto> GetAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var mechanic = await mechanicRepository.GetAsync(id);
+        return mapper.Map<Mechanic, MechanicDto>(mechanic);
     }
 
-    public Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input)
+    public async Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input)
     {
-        throw new NotImplementedException();
+        var mechanic = new Mechanic();
+        mechanic.SetEmailAddress(input.EmailAddress);
+        mechanic.SetPhoneNumber(input.PhoneNumber);
+        mechanic.SetUserName(input.PhoneNumber);
+        
+        var result = await userManager.CreateAsync(mechanic, input.PassWord);
+
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to create user: {errors}");
+        }
+
+        mechanic = await mechanicRepository.InsertAsync(mechanic);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        return mapper.Map<Mechanic, MechanicDto>(mechanic);
     }
 
-    public Task<MechanicDto> UpdateAsync(CreateUpdateMechanicsDto input)
+    public Task<MechanicDto> UpdateAsync(Guid id, CreateUpdateMechanicsDto input)
     {
         throw new NotImplementedException();
     }

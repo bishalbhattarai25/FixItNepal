@@ -6,6 +6,8 @@ public class ApiConst
     public const string ApiDescription = "FixItNepal API";
     public const string ApiVersion = "1.0";
     public const string ApiBaseUrl = "https://api.fixitnepal.com";
+    
+    public const string DbTablePrefix = "App";
 
     public const string AppSuperAdminEmail = "fixitnepal@test.com";
     public const string AppSuperAdminPassword = "Test@123";
@@ -14,4 +16,6 @@ public class ApiConst
     public const string AppMechanicRoleName = "Mechanic";
     public const string AppCustomerRoleName = "Customer";
     
+    public const int MaxPasswordLength = 20;
+    public const int MaxNameLength = 100;
 }

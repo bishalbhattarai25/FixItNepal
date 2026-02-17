@@ -1,3 +1,4 @@
+using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Repository;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +11,13 @@ public class GenericRepository<T> (
 {
     private readonly DbSet<T> _dbSet = dbContext.Set<T>();
     
-    public async Task<T?> GetAsync(Guid id)
+    public async Task<T> GetAsync(Guid id)
     {
-        return await _dbSet.FindAsync(id);
+        var entity = await _dbSet.FindAsync(id);
+        if (entity == null)
+            throw new EntityNotFoundException(typeof(T), id);
+
+        return entity;
     }
 
     public async Task<IEnumerable<T>> GetListAsync()
@@ -20,9 +25,10 @@ public class GenericRepository<T> (
         return await _dbSet.ToListAsync();
     }
 
-    public async Task InsertAsync(T entity)
+    public async Task<T> InsertAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
+        return entity;
     }
 
     public void Update(T entity)

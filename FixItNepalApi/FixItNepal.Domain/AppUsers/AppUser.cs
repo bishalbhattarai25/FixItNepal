@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FixItNepal.Domain.AppUsers;
 
-public class AppUser: IdentityUser
+public class AppUser: IdentityUser<Guid>
 {
     public void SetEmailAddress(string email)
     {

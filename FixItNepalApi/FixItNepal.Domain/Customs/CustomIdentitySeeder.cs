@@ -13,7 +13,7 @@ public class CustomIdentitySeeder
         using var scope = serviceProvider.CreateScope();
 
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         var superAdminEmail = ApiConst.AppSuperAdminEmail;
         var superAdminPassword = ApiConst.AppSuperAdminPassword;
@@ -50,7 +50,7 @@ public class CustomIdentitySeeder
         foreach (var roleName in roles)
         {
             if (!await roleManager.RoleExistsAsync(roleName))
-                await roleManager.CreateAsync(new IdentityRole(roleName));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
         }
 
         // Assign SuperAdmin role
