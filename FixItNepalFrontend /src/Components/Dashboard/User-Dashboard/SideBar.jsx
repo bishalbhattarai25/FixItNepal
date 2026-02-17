@@ -11,11 +11,11 @@ import { Maintence } from "./pages/Maintence";
 import { Profile } from "./pages/Profile";
 
 const SideBar = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [select, click] = useState(0)
 
   return (
-  <div className="flex h-screen">
+  <div className="flex h-screen w-screen">
     
     {/* Sidebar */}
     <div className="flex flex-col p-3 gap-4 shadow-2xl rounded-2xl w-64 bg-white">
@@ -46,10 +46,10 @@ const SideBar = () => {
     </div>
 
     {/* Main Content */}
-    <div className="flex-1 p-6 bg-gray-50 w-screen">
+    <div className="flex-1 p-6 bg-gray-50 overflow-x-hidden">
       {select === 0 && <Dashboard />}
-      {select === 1 && <Nearbymacf />}
-      {select === 2 && <Requesthelp />}
+      {select === 1 && <Requesthelp />}
+      {select === 2 && <Nearbymacf />}
       {select === 3 && <Livetrack />}
       {select === 4 && <Servicehistory />}
       {select === 5 && <Wallet />}
