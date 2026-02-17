@@ -4,7 +4,6 @@ export const Layout = () => {
   return (
     <div className="flex">
       <SideBar />
-      
       </div>
     
   );

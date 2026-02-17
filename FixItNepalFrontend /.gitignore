@@ -1,3 +1,7 @@
+# Environment
+.env
+*.local
+
 # Logs
 logs
 *.log
@@ -7,18 +11,38 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node / Vite
 node_modules
 dist
 dist-ssr
-*.local
+.vite
 
-# Editor directories and files
+# .NET / Rider / IntelliJ
+.idea/
+*.iml
+*.sln.iml
+*.DotSettings.user
+*.DotSettings
+rider.project.model.nuget.info
+rider.project.restore.info
+
+# .NET build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+
+# Editor
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# OS
+.DS_Store
+Thumbs.db
