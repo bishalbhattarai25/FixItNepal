@@ -2,6 +2,7 @@ import React from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
 import { Markers } from './MapList'
+import Locate from './Locate';
 
 export const Map = () => {
   return (
@@ -16,6 +17,7 @@ export const Map = () => {
           attribution='&copy; OpenStreetMap contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <Locate />
 
         {Markers.map((loc, index) => (
           <Marker key={index} position={loc.geocode}>
