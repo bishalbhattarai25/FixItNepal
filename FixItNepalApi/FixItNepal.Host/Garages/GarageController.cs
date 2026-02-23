@@ -18,10 +18,10 @@ public class GarageController (
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetAsync(Guid id)
+    public async Task<GarageDto> GetAsync(Guid id)
     {
         var garage = await garageService.GetAsync(id);
-        return Ok(garage);
+        return garage;
     }
     
     [HttpPost]
