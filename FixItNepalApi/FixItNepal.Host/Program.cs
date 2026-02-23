@@ -1,4 +1,5 @@
 using System.Text;
+using CloudinaryDotNet;
 using FixItNepal.Application.AutomapperProfiles;
 using FixItNepal.Application.Extensions;
 using FixItNepal.Domain.AppUsers;
@@ -39,9 +40,20 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>().AddEntityFrameworkStores<ApiDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters
+        .Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+});;
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(GarageAutomapperProfile).Assembly);
+builder.Services.AddSingleton(new Cloudinary(
+    new Account(
+        builder.Configuration["Cloudinary:CloudName"],
+        builder.Configuration["Cloudinary:ApiKey"],
+        builder.Configuration["Cloudinary:ApiSecret"]
+    )
+));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
