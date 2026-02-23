@@ -1,12 +1,15 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.Shared;
+using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Identity;
 
 namespace FixItNepal.Application.Garages;
@@ -18,10 +21,21 @@ public class GarageAppService(
     UserManager<AppUser> userManager
     ) : IGarageService
 {
-    public async Task<ICollection<GarageDto>> GetListAsync()
+    public async Task<PagedResultDto<GarageDto>> GetListAsync(GaragePagedListDto input)
     {
-        var garages = await garageRepository.GetListAsync();
-        return mapper.Map<ICollection<Garage>, ICollection<GarageDto>>(garages.ToList());
+        var filter = input.ApprovalStatus.HasValue
+            ? (Expression<Func<Garage, bool>>)(g => g.ApprovalStatus == input.ApprovalStatus.Value)
+            : null;
+        var skipCount = input.SkipCount ?? 0;
+        var maxCount = input.MaxCount ?? 10;
+        
+        var garages = await garageRepository.GetPagedListAsync(skipCount, maxCount, filter);
+        var garageDtos = mapper.Map<ICollection<Garage>, ICollection<GarageDto>>(garages.Items);
+        return new PagedResultDto<GarageDto>
+        {
+            TotalCount = garages.TotalCount,
+            Items = garageDtos
+        };
     }
 
     public async Task<GarageDto> GetAsync(Guid id)
@@ -65,5 +79,11 @@ public class GarageAppService(
     public Task<GarageDto> UpdateAsync(Guid id, CreateUpdateGarageDto input)
     {
         throw new NotImplementedException();
+    }
+    
+    public async Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus)
+    {
+        var garage = await garageRepository.GetAsync(id);
+        garage.ApprovalStatus = approvalStatus;
     }
 }

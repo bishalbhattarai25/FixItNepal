@@ -1,9 +1,14 @@
+using FixItNepal.Domain.Customs.PagedResult;
+using FixItNepal.Domain.Shared.AppUsers;
+
 namespace FixItNepal.Application.Contracts.Garages;
 
 public interface IGarageService
 {
-    Task<ICollection<GarageDto>> GetListAsync();
+    public Task<PagedResultDto<GarageDto>> GetListAsync(GaragePagedListDto input);
     Task<GarageDto> GetAsync(Guid id);
     Task<GarageDto> CreateAsync(CreateUpdateGarageDto input);
     Task<GarageDto> UpdateAsync( Guid id, CreateUpdateGarageDto input);
+    Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus);
+
 }

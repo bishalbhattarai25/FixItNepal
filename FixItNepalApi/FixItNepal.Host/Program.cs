@@ -44,7 +44,11 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters
         .Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-});;
+});
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(GarageAutomapperProfile).Assembly);
 builder.Services.AddSingleton(new Cloudinary(
