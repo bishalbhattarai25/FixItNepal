@@ -19,8 +19,15 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
         
     }
     
+    //garages
     public DbSet<Garage> Garages { get; set; }
+    public DbSet<GarageMediaFile> GarageMediaFiles { get; set; }
+    
+    //mechanics
     public DbSet<Mechanic> Mechanics { get; set; }
+    public DbSet<MechanicMediaFile> MechanicMediaFiles { get; set; }
+    
+    //customers
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<MediaFile> MediaFiles { get; set; }
@@ -41,9 +48,37 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             
             b.Property(x => x.ApprovalStatus)
                 .HasConversion<string>();
+
+
+            b.HasOne(m => m.Logo)
+                .WithOne()
+                .HasForeignKey<Garage>(m => m.LogoId)
+                .OnDelete(DeleteBehavior.Cascade);
             
             b.Navigation(g => g.Address)
                 .AutoInclude();
+            
+            b.Navigation(g => g.Logo)
+                .AutoInclude();
+            b.Navigation(g => g.GarageMediaFiles)
+                .AutoInclude();
+
+        });
+        
+          
+        builder.Entity<GarageMediaFile>(b =>
+        {
+            b.ToTable(ApiConst.DbTablePrefix + nameof(GarageMediaFiles));
+            
+            b.HasOne(g => g.Garage)
+                .WithMany(g => g.GarageMediaFiles)
+                .HasForeignKey(g => g.GarageId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            b.HasOne(gmf => gmf.MediaFile)
+                .WithMany()
+                .HasForeignKey(gmf => gmf.MediaFileId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         });
         
@@ -57,14 +92,45 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             
             b.HasOne(g => g.Address);
             
+            b.HasOne(m => m.Logo)
+                .WithOne()
+                .HasForeignKey<Mechanic>(m => m.LogoId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             b.Property(x => x.ApprovalStatus)
                 .HasConversion<string>();
             
+            
+            
+            b.Navigation(g => g.Logo)
+                .AutoInclude();
+            
+            b.Navigation(g => g.MechanicMediaFiles)
+                .AutoInclude();
                  
             b.Navigation(g => g.Address)
                 .AutoInclude();
 
         });
+        
+        builder.Entity<MechanicMediaFile>(b =>
+        {
+            b.ToTable(ApiConst.DbTablePrefix + nameof(MechanicMediaFiles));
+            
+            b.HasOne(g => g.Mechanic)
+                .WithMany(g => g.MechanicMediaFiles)
+                .HasForeignKey(g => g.MechanicId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            b.HasOne(gmf => gmf.MediaFile)
+                .WithMany()
+                .HasForeignKey(gmf => gmf.MediaFileId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        });
+        
+        // ****************** Customer ******************** //
+        
         builder.Entity<Customer>(b =>
         {
             b.ToTable(ApiConst.DbTablePrefix + nameof(Customers));
