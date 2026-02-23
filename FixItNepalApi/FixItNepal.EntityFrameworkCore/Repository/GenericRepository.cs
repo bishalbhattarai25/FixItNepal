@@ -53,15 +53,23 @@ public class GenericRepository<T> (
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
     {
-        IQueryable<T> query = _dbSet;
+        IQueryable<T> query = _dbSet.AsNoTracking();
 
         if (filter != null)
+        {
             query = query.Where(filter);
-
-        int totalCount = await query.CountAsync();
+        }
 
         if (orderBy != null)
+        {
             query = orderBy(query);
+        }
+        else
+        {
+            query = query.OrderBy(x => true);
+        }
+        
+        int totalCount = await query.CountAsync();
 
         var items = await query
             .Skip(skipCount)

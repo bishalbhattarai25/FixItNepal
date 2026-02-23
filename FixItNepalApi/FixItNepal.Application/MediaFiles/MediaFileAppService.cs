@@ -4,6 +4,7 @@ using CloudinaryDotNet.Actions;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Repository;
+using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.Shared.MediaFiles;
 
 namespace FixItNepal.Application.MediaFiles;
@@ -11,6 +12,7 @@ namespace FixItNepal.Application.MediaFiles;
 public class MediaFileAppService(
     Cloudinary cloudinary,
     IRepository<MediaFile> mediaFileRepository,
+    IUnitOfWork unitOfWork,
     IMapper mapper)
     : IMediaFileService
 {
@@ -43,7 +45,7 @@ public class MediaFileAppService(
             PublicId = uploadResult.PublicId
         };
         mediaFile = await mediaFileRepository.InsertAsync(mediaFile);
-        
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
         return mapper.Map<MediaFile, MediaFileDto>(mediaFile);
         
     }

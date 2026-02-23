@@ -2,10 +2,12 @@ using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Garages;
+using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.Shared;
@@ -17,6 +19,7 @@ namespace FixItNepal.Application.Garages;
 public class GarageAppService(
     IRepository<Garage> garageRepository,
     IMapper mapper,
+    IRepository<MediaFile>  mediaFileRepository,
     IUnitOfWork unitOfWork,
     UserManager<AppUser> userManager
     ) : IGarageService
@@ -47,11 +50,19 @@ public class GarageAppService(
     public async Task<GarageDto> CreateAsync(CreateUpdateGarageDto input)
     {
         var address = mapper.Map<CreateAddressDto, Address>(input.Address);
+
+        var logo = await mediaFileRepository.GetAsync(input.LogoId);
         var garage = new Garage()
         {
             Name = input.Name,
-            Address = address
+            Address = address,
+            LogoId =  input.LogoId,
         };
+        
+        //document mediafiles
+        var garageMediaFiles = CreateMediaFiles(input.DocumentMediaFiles);
+        garage.GarageMediaFiles = garageMediaFiles;
+        
         garage.SetEmailAddress(input.EmailAddress);
         garage.SetPhoneNumber(input.PhoneNumber);
         garage.SetUserName(input.PhoneNumber);
@@ -85,5 +96,13 @@ public class GarageAppService(
     {
         var garage = await garageRepository.GetAsync(id);
         garage.ApprovalStatus = approvalStatus;
+    }
+
+    private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
+    {
+        return input.Select(x => new GarageMediaFile()
+        {
+            MediaFileId = x.ImageId
+        }).ToList();
     }
 }
