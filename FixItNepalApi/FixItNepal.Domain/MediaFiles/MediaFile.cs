@@ -21,6 +21,12 @@ public class MediaFile:BaseEntity
 
     [StringLength(MediaFileConst.MaxOriginalFileNameLength)]
     public required string OriginalFileName { get; set; }
+    
+    [StringLength(MediaFileConst.MAxUrlLength)]
+    public required string Url { get; set; }
+    
+    [StringLength(MediaFileConst.MaxPublicIdLength)]
+    public required string PublicId { get; set; }
 
     public string MediaFileName => $"{Id:N}{Extension}";
 }

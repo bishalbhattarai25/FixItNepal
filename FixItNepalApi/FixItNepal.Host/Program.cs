@@ -40,7 +40,11 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>().AddEntityFrameworkStores<ApiDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters
+        .Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+});;
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(GarageAutomapperProfile).Assembly);
 builder.Services.AddSingleton(new Cloudinary(

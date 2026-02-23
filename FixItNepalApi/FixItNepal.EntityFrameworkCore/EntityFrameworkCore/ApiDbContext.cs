@@ -3,6 +3,7 @@ using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customers;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
+using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.Addresses;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,7 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
     public DbSet<Mechanic> Mechanics { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<MediaFile> MediaFiles { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -61,6 +63,16 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             
             b.Property(a => a.LocationCoordinatePoint)
                 .HasColumnType(AddressConst.PointTypeInMySQL); 
+        });
+        
+        // --------------MediaFile --------------------- //
+        
+        builder.Entity<MediaFile>(b =>
+        {
+            b.ToTable(ApiConst.DbTablePrefix + nameof(MediaFiles));
+
+            b.Property(x => x.FileType)
+                .HasConversion<string>();
         });
     }
 }

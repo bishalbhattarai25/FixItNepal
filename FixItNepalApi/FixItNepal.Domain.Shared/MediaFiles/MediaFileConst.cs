@@ -2,11 +2,15 @@ namespace FixItNepal.Domain.Shared.MediaFiles;
 
 public class MediaFileConst
 {
-    public const string DigitalOceanStorageProvider = "DigitalOcean";
+    public const string CloudinaryStorageProvider = "Cloudinary";
     public const int MaxFileStorageProviderLength = 50;
     public const int MaxMimeTypeLength = 128;
     public const int MaxExtensionLength = 16;
     public const int MaxOriginalFileNameLength = 256;
+    public const int MAxUrlLength = 400;
+    
+    public const int MaxPublicIdLength = 256;
+    
 
     public const int ImageEncodingQuality = 75;
     
