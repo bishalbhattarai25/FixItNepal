@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FixItNepal.Domain.Shared\FixItNepal.Domain.Shared.csproj" />
+    <ProjectReference Include="..\FixItNepal.Domain\FixItNepal.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

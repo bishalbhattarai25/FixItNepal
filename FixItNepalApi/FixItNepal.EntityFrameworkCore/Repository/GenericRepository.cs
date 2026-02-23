@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Repository;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
@@ -20,8 +21,13 @@ public class GenericRepository<T> (
         return entity;
     }
 
-    public async Task<IEnumerable<T>> GetListAsync()
+    public async Task<IEnumerable<T>> GetListAsync( Expression<Func<T, bool>>? filter = null)
     {
+        if (filter != null)
+        {
+            return await _dbSet.Where(filter).ToListAsync();
+        }
+
         return await _dbSet.ToListAsync();
     }
 
@@ -39,5 +45,29 @@ public class GenericRepository<T> (
     public void Remove(T entity)
     {
         _dbSet.Remove(entity);
+    }
+    
+    public async Task<( ICollection<T> Items, int TotalCount)> GetPagedListAsync(
+        int skipCount = 0,
+        int maxResultCount = 10,
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        int totalCount = await query.CountAsync();
+
+        if (orderBy != null)
+            query = orderBy(query);
+
+        var items = await query
+            .Skip(skipCount)
+            .Take(maxResultCount)
+            .ToListAsync();
+
+        return (items, totalCount);
     }
 }

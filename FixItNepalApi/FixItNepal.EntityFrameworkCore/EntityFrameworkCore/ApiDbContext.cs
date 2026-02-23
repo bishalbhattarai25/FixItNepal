@@ -29,6 +29,8 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
     {
         base.OnModelCreating(builder);
 
+        // ******************* Garage *********************** //
+        
         #region Garage
         
         builder.Entity<Garage>(b =>
@@ -37,6 +39,9 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
 
             b.HasOne(g => g.Address);
             
+            b.Property(x => x.ApprovalStatus)
+                .HasConversion<string>();
+            
             b.Navigation(g => g.Address)
                 .AutoInclude();
 
@@ -44,12 +49,20 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
         
         #endregion
         
+        // ******************* Mechanic *********************** //
         
         builder.Entity<Mechanic>(b =>
         {
             b.ToTable(ApiConst.DbTablePrefix + nameof(Mechanics));
             
             b.HasOne(g => g.Address);
+            
+            b.Property(x => x.ApprovalStatus)
+                .HasConversion<string>();
+            
+                 
+            b.Navigation(g => g.Address)
+                .AutoInclude();
 
         });
         builder.Entity<Customer>(b =>
