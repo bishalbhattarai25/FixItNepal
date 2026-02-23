@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FixItNepal.Host.MediaFiles;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class MediaFileController(
     IMediaFileService mediaFileService
     ):ControllerBase

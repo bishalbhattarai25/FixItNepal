@@ -20,10 +20,10 @@ public class MechanicController(
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetAsync(Guid id)
+    public async Task<MechanicDto> GetAsync(Guid id)
     {
         var mechanic = await mechanicService.GetAsync(id);
-        return Ok(mechanic);
+        return mechanic;
     }
     
     [HttpPost]
