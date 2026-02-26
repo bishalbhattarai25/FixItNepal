@@ -27,8 +27,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="**/*.resx" Condition="Exists('$(MSBuildThisFileDirectory)**/*.resx')" />
-  </ItemGroup>
 </Project>
