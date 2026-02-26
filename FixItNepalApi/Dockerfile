@@ -2,6 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
+# Copy everything else
+COPY . .
+
 # Copy solution file
 COPY FixItNepalApi.slnx ./
 
@@ -15,9 +18,6 @@ COPY FixItNepal.Host/*.csproj FixItNepal.Host/
 
 # Restore dependencies
 RUN dotnet restore FixItNepalApi.slnx
-
-# Copy everything else
-COPY . .
 
 # Publish only Host project
 RUN dotnet publish FixItNepal.Host/FixItNepal.Host.csproj -c Release -o /app/publish
