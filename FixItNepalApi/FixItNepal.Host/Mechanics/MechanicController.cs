@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +14,10 @@ public class MechanicController(
     : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetListAsync([FromQuery] MechanicPagedListDto input)
+    public async Task<PagedResultDto<MechanicDto>> GetListAsync([FromQuery] MechanicPagedListDto input)
     {
         var mechanics = await mechanicService.GetListAsync(input);
-        return Ok(mechanics);
+        return mechanics;
     }
     
     [HttpGet("{id:guid}")]

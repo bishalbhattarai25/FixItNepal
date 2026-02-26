@@ -42,12 +42,13 @@ public class GenericRepository<T> (
          _dbSet.Update(entity);
     }
 
-    public void Remove(T entity)
+    public Task RemoveAsync(T entity)
     {
         _dbSet.Remove(entity);
+        return Task.CompletedTask;
     }
     
-    public async Task<( ICollection<T> Items, int TotalCount)> GetPagedListAsync(
+    public async Task<(int TotalCount, ICollection<T> Items)> GetPagedListAsync(
         int skipCount = 0,
         int maxResultCount = 10,
         Expression<Func<T, bool>>? filter = null,
@@ -64,10 +65,6 @@ public class GenericRepository<T> (
         {
             query = orderBy(query);
         }
-        else
-        {
-            query = query.OrderBy(x => true);
-        }
         
         int totalCount = await query.CountAsync();
 
@@ -76,6 +73,6 @@ public class GenericRepository<T> (
             .Take(maxResultCount)
             .ToListAsync();
 
-        return (items, totalCount);
+        return (totalCount, items);
     }
 }

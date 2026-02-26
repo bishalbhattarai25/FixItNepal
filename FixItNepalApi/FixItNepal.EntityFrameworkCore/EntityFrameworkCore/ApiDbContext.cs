@@ -6,6 +6,7 @@ using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.Addresses;
+using FixItNepal.Domain.Vehicles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<MediaFile> MediaFiles { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -151,6 +153,23 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             b.ToTable(ApiConst.DbTablePrefix + nameof(MediaFiles));
 
             b.Property(x => x.FileType)
+                .HasConversion<string>();
+        });
+        
+        // --------------Vehicle --------------------- //
+        builder.Entity<Vehicle>(b =>
+        {
+            b.ToTable(ApiConst.DbTablePrefix + nameof(Vehicles));
+
+            b.HasOne(x => x.Customer)
+                .WithMany(x => x.Vehicles)
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            b.Property(x => x.VehicleType)
+                .HasConversion<string>();
+            
+            b.Property(x => x.FuelType)
                 .HasConversion<string>();
         });
     }
