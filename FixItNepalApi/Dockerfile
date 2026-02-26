@@ -14,7 +14,7 @@ COPY FixItNepal.EntityFrameworkCore/*.csproj FixItNepal.EntityFrameworkCore/
 COPY FixItNepal.Host/*.csproj FixItNepal.Host/
 
 # Restore dependencies
-RUN dotnet restore
+RUN dotnet restore FixItNepalApi.slnx
 
 # Copy everything else
 COPY . .
