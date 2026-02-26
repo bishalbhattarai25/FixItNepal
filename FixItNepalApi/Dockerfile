@@ -5,17 +5,6 @@ WORKDIR /src
 # Copy everything else
 COPY . .
 
-# Copy solution file
-COPY FixItNepalApi.slnx ./
-
-# Copy all project files
-COPY FixItNepal.Application.Contracts/*.csproj FixItNepal.Application.Contracts/
-COPY FixItNepal.Application/*.csproj FixItNepal.Application/
-COPY FixItNepal.Domain.Shared/*.csproj FixItNepal.Domain.Shared/
-COPY FixItNepal.Domain/*.csproj FixItNepal.Domain/
-COPY FixItNepal.EntityFrameworkCore/*.csproj FixItNepal.EntityFrameworkCore/
-COPY FixItNepal.Host/*.csproj FixItNepal.Host/
-
 # Restore dependencies
 RUN dotnet restore FixItNepalApi.slnx
 
