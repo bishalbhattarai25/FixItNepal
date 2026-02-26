@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,10 @@ public class GarageController (
     ): ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetListAsync([FromQuery] GaragePagedListDto input)
+    public async Task<PagedResultDto<GarageDto>> GetListAsync([FromQuery] GaragePagedListDto input)
     {
         var garages = await garageService.GetListAsync(input);
-        return Ok(garages);
+        return garages;
     }
     
     [HttpGet("{id:guid}")]
