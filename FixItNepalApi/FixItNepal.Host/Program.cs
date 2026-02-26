@@ -143,6 +143,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-await CustomIdentitySeeder.SeedAsync(app.Services);
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
+
+    // Apply migrations
+    dbContext.Database.Migrate();
+
+    // Seed data
+    await CustomIdentitySeeder.SeedAsync(scope.ServiceProvider);
+}
 
 app.Run();
