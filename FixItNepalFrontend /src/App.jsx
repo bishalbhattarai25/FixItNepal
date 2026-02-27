@@ -3,6 +3,9 @@ import NavBar from './Components/Navigation/NavBar';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { Login } from './Components/Login';
 import { Userdashboard } from './Pages/Userdashboard';
+import Layout2 from './Components/Dashboard/Service-Dashboard/layout';
+import Registerpage from './Pages/Registerpage';
+
 
 function App() {
   return (
@@ -12,7 +15,11 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path='/userdashboard' element={<Userdashboard />} />
+        <Route path='/servicecenter' element={<Layout2 />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Registerpage />} />
+
+
         
 
       </Routes>

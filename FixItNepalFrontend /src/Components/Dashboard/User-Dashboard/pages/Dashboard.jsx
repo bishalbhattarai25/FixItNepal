@@ -58,7 +58,9 @@ export const Dashboard = () => {
       View List
     </button>
   </div>
+
   {/* Map Card */}
+
   <div className="relative h-[360px] rounded-2xl bg-gradient-to-br from-zinc-50 to-zinc-100 shadow-sm overflow-hidden">
     <div className="h-full w-full rounded-2xl overflow-hidden">
       <Map />
@@ -91,7 +93,6 @@ export const Dashboard = () => {
     </button>
 
   </div>
-
 
 
 </div>

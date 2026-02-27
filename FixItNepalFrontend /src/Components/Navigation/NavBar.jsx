@@ -24,11 +24,12 @@ function NavBar() {
     </div>
     <div className='flex gap-1 items-center'>
         <NavLink to={'/login'}>
-                    <button  className='bg-primary h-[30px] text-black px-5  text-center font-semibold rounded-full'>Login</button>
+                    <button  className='bg-red-600 h-[30px] text-white px-5  text-center font-semibold rounded-full'>Login</button>
 
+        </NavLink >
+        <NavLink to={'/register'} >
+        <button className='bg-blue-600 h-[30px] text-white px-5  text-center font-semibold rounded-full'>Register</button>
         </NavLink>
-        <button className='bg-secondary h-[30px] text-blck px-5  text-center font-semibold rounded-full'>Register</button>
-
     </div>
     </div>
   );
