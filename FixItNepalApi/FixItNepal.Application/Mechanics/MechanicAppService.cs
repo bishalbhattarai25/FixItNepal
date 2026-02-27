@@ -1,12 +1,17 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Mechanics;
+using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.Shared;
+using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Identity;
 
 namespace FixItNepal.Application.Mechanics;
@@ -14,14 +19,26 @@ namespace FixItNepal.Application.Mechanics;
 public class MechanicAppService (
     IRepository<Mechanic> mechanicRepository,
     IUnitOfWork unitOfWork,
+    IRepository<MediaFile> mediaFileRepository,
     UserManager<AppUser>  userManager,
     IMapper mapper
         ): IMechanicService
 {
-    public async Task<ICollection<MechanicDto>> GetListAsync()
+    public async Task<PagedResultDto<MechanicDto>> GetListAsync(MechanicPagedListDto input)
     {
-        var mechanics = await mechanicRepository.GetListAsync();
-        return mapper.Map<ICollection<Mechanic>, ICollection<MechanicDto>>(mechanics.ToList());
+          var filter = input.ApprovalStatus.HasValue
+            ? (Expression<Func<Mechanic, bool>>)(g => g.ApprovalStatus == input.ApprovalStatus.Value)
+            : null;
+          var skipCount = input.SkipCount ?? 0;
+          var maxCount = input.MaxCount ?? 10;
+        
+        var mechanics = await mechanicRepository.GetPagedListAsync(skipCount, maxCount, filter);
+        var mechanicDtos = mapper.Map<ICollection<Mechanic>, ICollection<MechanicDto>>(mechanics.Items);
+        return new PagedResultDto<MechanicDto>
+        {
+            TotalCount = mechanics.TotalCount,
+            Items = mechanicDtos
+        };
     }
 
     public async Task<MechanicDto> GetAsync(Guid id)
@@ -32,13 +49,19 @@ public class MechanicAppService (
 
     public async Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input)
     {
-                
+        var logo = await mediaFileRepository.GetAsync(input.LogoId);
         var address = mapper.Map<CreateAddressDto, Address>(input.Address);
         var mechanic = new Mechanic()
         {
             Name = input.Name,
-            Address = address
+            Address = address,
+            LogoId =  input.LogoId
         };
+
+        var mechanicMediaFile = CreateMediaFiles(input.DocumentMediaFiles);
+        
+        mechanic.MechanicMediaFiles = mechanicMediaFile;
+        
         mechanic.SetEmailAddress(input.EmailAddress);
         mechanic.SetPhoneNumber(input.PhoneNumber);
         mechanic.SetUserName(input.PhoneNumber);
@@ -64,5 +87,19 @@ public class MechanicAppService (
     public Task<MechanicDto> UpdateAsync(Guid id, CreateUpdateMechanicsDto input)
     {
         throw new NotImplementedException();
+    }
+    
+    public async Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus)
+    {
+        var mechanic = await mechanicRepository.GetAsync(id);
+        mechanic.ApprovalStatus = approvalStatus;
+    }
+    
+    private ICollection<MechanicMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
+    {
+        return input.Select(x => new MechanicMediaFile()
+        {
+            MediaFileId = x.ImageId
+        }).ToList();
     }
 }

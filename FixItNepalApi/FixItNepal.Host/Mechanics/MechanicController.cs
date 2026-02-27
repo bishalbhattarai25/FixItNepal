@@ -1,4 +1,6 @@
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Domain.Customs.PagedResult;
+using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FixItNepal.Host.Mechanics;
@@ -12,17 +14,17 @@ public class MechanicController(
     : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetListAsync()
+    public async Task<PagedResultDto<MechanicDto>> GetListAsync([FromQuery] MechanicPagedListDto input)
     {
-        var mechanics = await mechanicService.GetListAsync();
-        return Ok(mechanics);
+        var mechanics = await mechanicService.GetListAsync(input);
+        return mechanics;
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetAsync(Guid id)
+    public async Task<MechanicDto> GetAsync(Guid id)
     {
         var mechanic = await mechanicService.GetAsync(id);
-        return Ok(mechanic);
+        return mechanic;
     }
     
     [HttpPost]
@@ -30,5 +32,11 @@ public class MechanicController(
     {
         var mechanic = await mechanicService.CreateAsync(input);
         return mechanic;
+    }
+    
+    [HttpPatch("{id:guid}/approval-status")]
+    public async Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus)
+    {
+        await mechanicService.UpdateApprovalStatusAsync(id, approvalStatus);
     }
 }

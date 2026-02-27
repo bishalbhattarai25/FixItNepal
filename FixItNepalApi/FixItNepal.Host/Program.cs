@@ -1,4 +1,5 @@
 using System.Text;
+using CloudinaryDotNet;
 using FixItNepal.Application.AutomapperProfiles;
 using FixItNepal.Application.Extensions;
 using FixItNepal.Domain.AppUsers;
@@ -20,11 +21,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApplicationServices();
 
+var connectionString = Environment.GetEnvironmentVariable("MYSQL_CONNECTION")
+                       ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        connectionString,
         ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("DefaultConnection")
+            connectionString
         ),
         mySqlOptions =>
         {
@@ -39,9 +43,21 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>().AddEntityFrameworkStores<ApiDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters
+        .Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+});
+builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(GarageAutomapperProfile).Assembly);
+builder.Services.AddSingleton(new Cloudinary(
+    new Account(
+        builder.Configuration["Cloudinary:CloudName"],
+        builder.Configuration["Cloudinary:ApiKey"],
+        builder.Configuration["Cloudinary:ApiSecret"]
+    )
+));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -101,7 +117,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000") 
+        policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://fix-it-nepal.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -111,12 +127,12 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction() )
 {
     app.UseSwagger();
-    app.UseSwaggerUI( c =>
+    app.UseSwaggerUI(c =>
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "FixItNepal API V1")
-        );
+    );
 }
 
 app.UseCors("AllowFrontend");
@@ -127,6 +143,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-await CustomIdentitySeeder.SeedAsync(app.Services);
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
+
+    // Apply migrations
+    dbContext.Database.Migrate();
+
+    // Seed data
+    await CustomIdentitySeeder.SeedAsync(scope.ServiceProvider);
+}
 
 app.Run();

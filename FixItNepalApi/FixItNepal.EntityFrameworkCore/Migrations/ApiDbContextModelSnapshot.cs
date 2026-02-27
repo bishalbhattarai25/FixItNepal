@@ -127,6 +127,138 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
                     b.UseTptMappingStrategy();
                 });
 
+            modelBuilder.Entity("FixItNepal.Domain.Garages.GarageMediaFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("GarageId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MediaFileId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GarageId");
+
+                    b.HasIndex("MediaFileId");
+
+                    b.ToTable("AppGarageMediaFiles", (string)null);
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Mechanics.MechanicMediaFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MechanicId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MediaFileId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MechanicId");
+
+                    b.HasIndex("MediaFileId");
+
+                    b.ToTable("AppMechanicMediaFiles", (string)null);
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.MediaFiles.MediaFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<ulong>("SizeInBytes")
+                        .HasColumnType("bigint unsigned");
+
+                    b.Property<string>("StorageProvider")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppMediaFiles", (string)null);
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Vehicles.Vehicle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("FuelType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("VehicleModel")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("VehicleRegistrationNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("VehicleType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("AppVehicles", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -271,12 +403,22 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("ApprovalStatus")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("LogoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("LogoId")
+                        .IsUnique();
 
                     b.ToTable("AppGarages", (string)null);
                 });
@@ -288,6 +430,13 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("ApprovalStatus")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("LogoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -295,7 +444,59 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("LogoId")
+                        .IsUnique();
+
                     b.ToTable("AppMechanics", (string)null);
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Garages.GarageMediaFile", b =>
+                {
+                    b.HasOne("FixItNepal.Domain.Garages.Garage", "Garage")
+                        .WithMany("GarageMediaFiles")
+                        .HasForeignKey("GarageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FixItNepal.Domain.MediaFiles.MediaFile", "MediaFile")
+                        .WithMany()
+                        .HasForeignKey("MediaFileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Garage");
+
+                    b.Navigation("MediaFile");
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Mechanics.MechanicMediaFile", b =>
+                {
+                    b.HasOne("FixItNepal.Domain.Mechanics.Mechanic", "Mechanic")
+                        .WithMany("MechanicMediaFiles")
+                        .HasForeignKey("MechanicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FixItNepal.Domain.MediaFiles.MediaFile", "MediaFile")
+                        .WithMany()
+                        .HasForeignKey("MediaFileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Mechanic");
+
+                    b.Navigation("MediaFile");
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Vehicles.Vehicle", b =>
+                {
+                    b.HasOne("FixItNepal.Domain.Customers.Customer", "Customer")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -372,7 +573,15 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FixItNepal.Domain.MediaFiles.MediaFile", "Logo")
+                        .WithOne()
+                        .HasForeignKey("FixItNepal.Domain.Garages.Garage", "LogoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Logo");
                 });
 
             modelBuilder.Entity("FixItNepal.Domain.Mechanics.Mechanic", b =>
@@ -389,7 +598,30 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FixItNepal.Domain.MediaFiles.MediaFile", "Logo")
+                        .WithOne()
+                        .HasForeignKey("FixItNepal.Domain.Mechanics.Mechanic", "LogoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Logo");
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Customers.Customer", b =>
+                {
+                    b.Navigation("Vehicles");
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Garages.Garage", b =>
+                {
+                    b.Navigation("GarageMediaFiles");
+                });
+
+            modelBuilder.Entity("FixItNepal.Domain.Mechanics.Mechanic", b =>
+                {
+                    b.Navigation("MechanicMediaFiles");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FixItNepal.Domain.Shared\FixItNepal.Domain.Shared.csproj" />
+    <ProjectReference Include="..\FixItNepal.Domain\FixItNepal.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.9" />
   </ItemGroup>
 
   <PropertyGroup>
