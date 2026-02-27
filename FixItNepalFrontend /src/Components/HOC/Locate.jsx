@@ -1,15 +1,14 @@
-import React from 'react'
-import { useEffect } from 'react';
-import { useMap } from 'react-leaflet';
+import React from "react";
+import { useEffect } from "react";
+import { useMap } from "react-leaflet";
 
 const Locate = () => {
-
-    const map = useMap();
+  const map = useMap();
 
   useEffect(() => {
-    // Check if browser supports Geolocation
+
     if (!navigator.geolocation) {
-      console.log("Geolocation is not supported by your browser");
+      console.log("Geolocation is not supported by browser");
       return;
     }
 
@@ -20,13 +19,12 @@ const Locate = () => {
         map.flyTo([latitude, longitude], 14);
       },
       () => {
-        console.log("Unable to retrieve your location");
-      }
+        console.log("Unable to retrieve location");
+      },
     );
   }, [map]);
 
-  return null; // This component doesn't need to render anything itself
+  return null; 
 };
 
-
-export default Locate
+export default Locate;
