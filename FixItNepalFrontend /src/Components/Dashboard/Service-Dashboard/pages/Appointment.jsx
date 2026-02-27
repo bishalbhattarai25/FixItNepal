@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import {
-  Calendar,
-  Clock,
-  CheckCircle,
-  Users,
-  Search,
+
+import {Search,
   Filter,
   Plus,
   RotateCcw,
@@ -12,7 +8,9 @@ import {
   Edit3,
   LayoutGrid,
   List,
-} from "lucide-react";
+Calendar,
+Clock} from "lucide-react";
+
 import { stats } from "../HOC/Appointdata";
 import { appointments } from "../HOC/Appointdata";
 

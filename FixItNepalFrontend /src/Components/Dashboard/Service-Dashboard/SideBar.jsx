@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Sidebar } from "./Datalist2";
-import { Servicedashboard } from "./pages/Servicedashboard";
+import  Servicedashboard  from "./pages/Servicedashboard";
 import { HelpCircle, Bell } from "lucide-react"; // Matching icons from UI
 import Appoint from "./pages/Appointment";
 
