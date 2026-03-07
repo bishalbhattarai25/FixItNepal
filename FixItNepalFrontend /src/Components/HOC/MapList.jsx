@@ -1,6 +1,8 @@
 import L from 'leaflet';
 
 
+
+
 export const MapData = [
     {
         geocode: [27.629102, 83.477831],

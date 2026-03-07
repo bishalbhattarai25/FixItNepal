@@ -11,6 +11,7 @@ import { Admin } from './Pages/Admin';
 import Protectedroute from './Authentication/Protectedroute';
 import { UserRegister } from './Components/UserRegister';
 import { ServiceCenterRegister } from './Components/ServicecenterRegister';
+import { MachineRegister } from './Components/MachineRegister';
 
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
 
         <Route path='/register/user' element={<UserRegister />} />
         <Route path='register/servicecenter' element={<ServiceCenterRegister />} />
-        <Route path='register/machine' element={<Machinepage />} />
+        <Route path='register/machine' element={<MachineRegister />} />
 
 
         

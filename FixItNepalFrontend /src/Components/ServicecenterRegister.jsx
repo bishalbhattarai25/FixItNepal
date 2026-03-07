@@ -122,7 +122,6 @@ export const ServiceCenterRegister = () => {
           <div className="md:col-span-2 bg-blue-50 p-6 rounded-2xl border border-blue-100 flex flex-col gap-4">
              <div className="flex justify-between items-center">
                 <h4 className="font-bold text-blue-800">GPS Coordinates</h4>
-                <button type="button" className="text-[10px] bg-white text-blue-600 px-3 py-1 rounded-full border border-blue-200 font-bold">DETECT LOCATION</button>
              </div>
              <div className="grid grid-cols-2 gap-4">
                 <input name="address.locationCoordinatePoint.latitude" placeholder="Latitude" className="bg-white p-2 rounded-lg border border-blue-100 text-sm" onChange={handleChange} />
