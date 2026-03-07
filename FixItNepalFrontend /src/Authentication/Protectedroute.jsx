@@ -1,18 +1,20 @@
-import React,{useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Outlet} from 'react-router-dom';
 
-const Protectedroute = ({children}) => {
+const Protectedroute = ({allowedRoles}) => {
 
-    const isAuthenticated =false;
-    const navigate = useNavigate();
+    const token =localStorage.getItem("token");
+    const userRole = localStorage.getItem("role")
 
-    useEffect(()=>{
-        if(!isAuthenticated) navigate('/login')
+    if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
-    }, [])
+    if (allowedRoles && !allowedRoles.includes(userRole)) {
 
-  return (
-    children
+    return <Navigate to="/unauthorized" replace />;
+  }
+  return ( <Outlet />
   )
 }
 
