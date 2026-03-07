@@ -17,6 +17,42 @@ export const Login = () => {
     setLoginForm({ ...loginForm, [number]: value });
   };
 
+
+  const handlelogin = async (e)=>{
+
+    e.preventDefault();
+
+    if (!loginForm.phonenumber || !loginForm.password) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    // eslint-disable-next-line no-undef
+    const response = await fetch(`${process.env.APP_API_URL}/login`,{
+      method: "POST",
+      header: {
+        'Content-Type' : 'application/json'
+      },
+      body:JSON.stringify(loginForm)
+    })
+
+    const data = await response.json();
+
+    if (response.ok) {
+        // Store the token (if your backend sends one)
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role)
+        localStorage.setItem("userId", data.userId); 
+        
+        //navigate role base 
+        navigate(data.role === "user" ? "/userdashboard": data.role === "servicecenter" ? "/servicecenter" : data.role === "machine " ?  "/machine" : "admin")
+      } 
+  };
+
+
+    
+  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-100">
       <div className="shadow-2xl rounded-2xl p-8 w-[350px] bg-white">
@@ -58,7 +94,8 @@ export const Login = () => {
 
           <button
             type="submit"
-            className="mt-4 bg-red-400 text-white py-2 rounded-xl hover:bg-green-400 transition"
+            className="mt-4 bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition"
+            onClick={handlelogin}
           >
             Login
           </button>

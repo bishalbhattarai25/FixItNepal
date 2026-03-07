@@ -1,9 +1,9 @@
 export const NavData = [
     {title:"Home",path: "/" },
-    {title:"User", path: '/userdashboard'},
-    {title:"Service", path: '/servicecenter'},
-    {title:"MachinePage", path: '/machine'},
-    {title:"admin", path: '/admin'},
+    {title:"User", path: '/userdashboard', role: "user"},
+    {title:"Service", path: '/servicecenter', role:"servicecenter"}, 
+    {title:"MachinePage", path: '/machine', role:"machanice"},
+    {title:"admin", path: '/admin', role: "admin"},
 
     
 

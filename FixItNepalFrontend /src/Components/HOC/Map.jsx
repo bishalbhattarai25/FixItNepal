@@ -1,9 +1,9 @@
 import React from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import "leaflet/dist/leaflet.css";
-import { Markers } from './MapList'
+import { MapData } from './MapList'
 import Locate from './Locate';
-
+import { userIcon, garageIcon } from './MapList';
 export const Map = () => {
   return (
     <div className="h-full w-full rounded-2xl overflow-hidden z-0">
@@ -19,11 +19,16 @@ export const Map = () => {
         />
         <Locate />
 
-        {Markers.map((loc, index) => (
-          <Marker key={index} position={loc.geocode}>
-            <Popup>{loc.popup}</Popup>
-          </Marker>
-        ))}
+        {MapData.map((loc, index) => (
+  <Marker 
+    key={index} 
+    position={loc.geocode} 
+    // If the text is "MY LOCATION", use blue. Otherwise, use red.
+    icon={loc.popup === "MY LOCATION" ? userIcon : garageIcon}
+  >
+    <Popup>{loc.popup}</Popup>
+  </Marker>
+))}
       </MapContainer>
     </div>
   );
