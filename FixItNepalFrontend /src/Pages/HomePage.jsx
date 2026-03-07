@@ -1,6 +1,4 @@
 import React from 'react';
-import{ Login }  from '../Components/Login';
-import { UserRegister } from '../Components/UserRegister';
 import TopSection from '../Components/Home/TopSection';
 import SecondSec from '../Components/Home/SecondSec';
 import ThirdSec from '../Components/Home/ThirdSec';
