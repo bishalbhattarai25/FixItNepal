@@ -121,11 +121,11 @@ const Servicedashboard = () => {
               <TrendingUp size={16} className="text-green-500" />
             </div>
             <div className="h-24 flex items-end gap-1 mb-4">
-              {[40, 70, 45, 90, 65, 80, 50].map((h, i) => (
+              {/* {[40, 70, 45, 90, 65, 80, 50].map((h, i) => (
                 <div key={i} className="flex-1 bg-red-50 rounded-t-md relative group">
                   <div style={{ height: `${h}%` }} className="bg-red-500 rounded-t-md transition-all group-hover:bg-red-600" />
                 </div>
-              ))}
+              ))} */}
             </div>
             <div className="space-y-3">
                <div className="flex justify-between items-center">
