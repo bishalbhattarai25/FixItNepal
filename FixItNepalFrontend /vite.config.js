@@ -8,8 +8,15 @@ export default defineConfig({
   
   plugins: [
     react(),
-        tailwindcss(),
-
-    
+        tailwindcss(), 
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://fixitnepal.onrender.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
+    }
+  }
 })

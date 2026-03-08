@@ -84,7 +84,7 @@ export const Login = () => {
           <div>
             <label className="font-semibold">Password</label>
             <input
-              name="password"
+            name="password"
               type="password"
               placeholder="Enter your password"
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
