@@ -28,9 +28,9 @@ export const Login = () => {
     }
 
     // eslint-disable-next-line no-undef
-    const response = await fetch(`${process.env.APP_API_URL}/login`,{
+    const response = await fetch(`https://fixitnepal.onrender.com/login`,{
       method: "POST",
-      header: {
+      headers: {
         'Content-Type' : 'application/json'
       },
       body:JSON.stringify(loginForm)
@@ -45,7 +45,7 @@ export const Login = () => {
         localStorage.setItem("userId", data.userId); 
         
         //navigate role base 
-        navigate(data.role === "user" ? "/userdashboard": data.role === "servicecenter" ? "/servicecenter" : data.role === "machine " ?  "/machine" : "admin")
+        navigate(data.role === "Customer" ? "/userdashboard": data.role === "Garage" ? "/servicecenter" : data.role === "Mechanic " ?  "/machine" : "SuperAdmin")
       } 
   };
 
