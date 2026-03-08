@@ -5,13 +5,13 @@ import { Login } from './Components/Login';
 import { Userdashboard } from './Pages/Userdashboard';
 import Layout2 from './Components/Dashboard/Service-Dashboard/layout';
 import Registerpage from './Pages/Registerpage';
-import { Machinepage } from './Pages/Machinepage';
+import { Machinepage } from './Pages/Mechanicpage';
 import { Admin } from './Pages/Admin';
 
 import Protectedroute from './Authentication/Protectedroute';
 import { UserRegister } from './Components/UserRegister';
 import { ServiceCenterRegister } from './Components/ServicecenterRegister';
-import { MachineRegister } from './Components/MachineRegister';
+import { MachineRegister } from './Components/MechanicRegister';
 
 
 function App() {
