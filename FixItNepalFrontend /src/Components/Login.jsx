@@ -12,9 +12,9 @@ export const Login = () => {
   });
 
   const handleChange = (e) => {
-    const { number, value } = e.target;
+    const { name, value } = e.target;
 
-    setLoginForm({ ...loginForm, [number]: value });
+    setLoginForm({ ...loginForm, [name]: value });
   };
 
 
@@ -28,9 +28,9 @@ export const Login = () => {
     }
 
     // eslint-disable-next-line no-undef
-    const response = await fetch(`${process.env.APP_API_URL}/login`,{
+    const response = await fetch(`https://fixitnepal.onrender.com/login`,{
       method: "POST",
-      header: {
+      headers: {
         'Content-Type' : 'application/json'
       },
       body:JSON.stringify(loginForm)
@@ -45,7 +45,7 @@ export const Login = () => {
         localStorage.setItem("userId", data.userId); 
         
         //navigate role base 
-        navigate(data.role === "user" ? "/userdashboard": data.role === "servicecenter" ? "/servicecenter" : data.role === "machine " ?  "/machine" : "admin")
+        navigate(data.role === "Customer" ? "/userdashboard": data.role === "Garage" ? "/servicecenter" : data.role === "Mechanic " ?  "/machine" : "SuperAdmin")
       } 
   };
 
@@ -73,7 +73,7 @@ export const Login = () => {
             <label className="font-semibold">Phone Number</label>
             <input
              name="phonenumber"
-              type="number"
+              type="text"
               placeholder="Enter your username"
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
               onChange={handleChange}
@@ -84,6 +84,7 @@ export const Login = () => {
           <div>
             <label className="font-semibold">Password</label>
             <input
+              name="password"
               type="password"
               placeholder="Enter your password"
               className="w-full mt-1 p-2 rounded-xl bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-black"
