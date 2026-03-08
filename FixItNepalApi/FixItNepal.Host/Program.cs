@@ -117,7 +117,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://fix-it-nepal.vercel.app")
+        policy.WithOrigins("http://localhost:3000", "https://localhost:3000","http://localhost:5173","https://localhost:5173", "https://fix-it-nepal.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
