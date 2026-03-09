@@ -49,4 +49,14 @@ public class MediaFileAppService(
         return mapper.Map<MediaFile, MediaFileDto>(mediaFile);
         
     }
+    
+    public async Task<MediaFileDto> GetMediaFileAsync(Guid id)
+    {
+        var mediaFile = await mediaFileRepository.GetAsync(id);
+
+        if (mediaFile == null)
+            throw new Exception("Media file not found");
+
+        return mapper.Map<MediaFile, MediaFileDto>(mediaFile);
+    }
 }

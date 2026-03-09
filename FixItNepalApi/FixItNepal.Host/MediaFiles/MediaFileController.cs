@@ -7,7 +7,7 @@ namespace FixItNepal.Host.MediaFiles;
 [Route("api/[controller]")]
 public class MediaFileController(
     IMediaFileService mediaFileService
-    ):ControllerBase
+) : ControllerBase
 {
     [HttpPost]
     public async Task<MediaFileDto> CreateMediaFile(CreateMediaFileDto input)
@@ -15,4 +15,12 @@ public class MediaFileController(
         var mediaFile = await mediaFileService.CreateMediaFile(input);
         return mediaFile;
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<MediaFileDto> GetMediaFileAsync(Guid id)
+    {
+        var mediaFile = await mediaFileService.GetMediaFileAsync(id);
+        return mediaFile;
+    }
+
 }
