@@ -32,17 +32,17 @@ function App() {
         </Route>
 
         {/* service route */}
-        <Route element={<Protectedroute allowedRoles={['servicecenter']} />}>
+        <Route element={<Protectedroute allowedRoles={['Garage']} />}>
         <Route path='/servicecenter' element={<Layout2 />} />
         </Route>
 
-        {/* machine route */}
-        <Route element={<Protectedroute allowedRoles={['machine']} />}>
-        <Route path='/machine' element={<Machinepage />} />
+        {/* mechanic route */}
+        <Route element={<Protectedroute allowedRoles={['Mechanic']} />}>
+        <Route path='/mechanic' element={<Machinepage />} />
         </Route>
 
         {/* admin route  */}
-        <Route element={<Protectedroute allowedRoles={['admin']} />}>
+        <Route element={<Protectedroute allowedRoles={['Admin']} />}>
         <Route path='/admin' element={<Admin />} />
         </Route>
 
@@ -50,7 +50,7 @@ function App() {
 
         <Route path='/register/user' element={<UserRegister />} />
         <Route path='register/servicecenter' element={<ServiceCenterRegister />} />
-        <Route path='register/machine' element={<MachineRegister />} />
+        <Route path='register/mechanic' element={<MachineRegister />} />
 
 
         
