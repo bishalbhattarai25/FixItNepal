@@ -27,7 +27,7 @@ const initialValues = {
   },
 };
 
-export const MachineRegister = () => {
+export const ServiceCenterRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -47,8 +47,8 @@ export const MachineRegister = () => {
           address: {
             ...values.address,
             locationCoordinatePoint: {
-              latitude: values.address.locationCoordinatePoint.latitude,
-              longitude: values.address.locationCoordinatePoint.longitude,
+              latitude: parseFloat(values.address.locationCoordinatePoint.latitude),
+              longitude: parseFloat(values.address.locationCoordinatePoint.longitude),
             },
           },
           documentMediaFiles: [{ imageId: values.documentId }],
@@ -403,20 +403,7 @@ export const MachineRegister = () => {
         </p>
       </form>
 
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        .animate-spin {
-          animation: spin 1s linear infinite;
-        }
-      `}</style>
+      
     </div>
   );
 };

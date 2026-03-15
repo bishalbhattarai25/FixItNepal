@@ -5,7 +5,7 @@ import { Login } from './Components/Login';
 import { Userdashboard } from './Pages/Userdashboard';
 import Layout2 from './Components/Dashboard/Service-Dashboard/layout';
 import Registerpage from './Pages/Registerpage';
-import { Machinepage } from './Pages/Mechanicpage';
+import { Mechanicpage } from './Pages/Mechanicpage';
 import { Admin } from './Pages/Admin';
 
 import Protectedroute from './Authentication/Protectedroute';
@@ -38,7 +38,7 @@ function App() {
 
         {/* mechanic route */}
         <Route element={<Protectedroute allowedRoles={['Mechanic']} />}>
-        <Route path='/mechanic' element={<Machinepage />} />
+        <Route path='/mechanic' element={<Mechanicpage />} />
         </Route>
 
         {/* admin route  */}

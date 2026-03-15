@@ -59,7 +59,7 @@ export const Login = () => {
         navigate(
           data.role === "Customer" ? "/userdashboard" : 
           data.role === "Garage" ? "/servicecenter" : 
-          data.role === "Mechanic" ? "/machine" : 
+          data.role === "Mechanic" ? "/mechanic" : 
           "/superadmin"
         );
       } else {
