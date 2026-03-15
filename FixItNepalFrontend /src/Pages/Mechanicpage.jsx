@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const Machinepage = () => {
+export const Mechanicpage = () => {
   return (
-    <div>Machinepage</div>
+    <div>
+      <h1>hello world </h1> 
+
+
+
+      <h3 className='text-3xl'>hello world </h3>
+    </div>
   )
 }

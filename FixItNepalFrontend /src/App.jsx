@@ -5,7 +5,7 @@ import { Login } from './Components/Login';
 import { Userdashboard } from './Pages/Userdashboard';
 import Layout2 from './Components/Dashboard/Service-Dashboard/layout';
 import Registerpage from './Pages/Registerpage';
-import { Machinepage } from './Pages/Mechanicpage';
+import { Mechanicpage } from './Pages/Mechanicpage';
 import { Admin } from './Pages/Admin';
 
 import Protectedroute from './Authentication/Protectedroute';
@@ -32,17 +32,17 @@ function App() {
         </Route>
 
         {/* service route */}
-        <Route element={<Protectedroute allowedRoles={['servicecenter']} />}>
+        <Route element={<Protectedroute allowedRoles={['Garage']} />}>
         <Route path='/servicecenter' element={<Layout2 />} />
         </Route>
 
-        {/* machine route */}
-        <Route element={<Protectedroute allowedRoles={['machine']} />}>
-        <Route path='/machine' element={<Machinepage />} />
+        {/* mechanic route */}
+        <Route element={<Protectedroute allowedRoles={['Mechanic']} />}>
+        <Route path='/mechanic' element={<Mechanicpage />} />
         </Route>
 
         {/* admin route  */}
-        <Route element={<Protectedroute allowedRoles={['admin']} />}>
+        <Route element={<Protectedroute allowedRoles={['Admin']} />}>
         <Route path='/admin' element={<Admin />} />
         </Route>
 
@@ -50,7 +50,7 @@ function App() {
 
         <Route path='/register/user' element={<UserRegister />} />
         <Route path='register/servicecenter' element={<ServiceCenterRegister />} />
-        <Route path='register/machine' element={<MachineRegister />} />
+        <Route path='register/mechanic' element={<MachineRegister />} />
 
 
         

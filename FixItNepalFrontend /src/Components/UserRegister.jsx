@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import instance from "../Server/Axios";
 
 export const UserRegister = () => {
   const navigate = useNavigate();
@@ -20,26 +21,13 @@ export const UserRegister = () => {
     setLoading(true);
 
     try {
-      // Priority for environment variable with fallback
-      // eslint-disable-next-line no-undef
-      // const apiUrl = process.env.APP_API_URL || "https://fixitnepal.onrender.com";
+      const response = await instance.post('/api/customer',{...formData})
       
-      const response = await fetch(`https://fixitnepal.onrender.com/api/customer`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          role: "User" // Automatically assigning role for user registration
-        }),
-      });
-
-      const data = await response.json();
-
       if (response.ok) {
         alert("Registration Successful!");
         navigate("/login");
       } else {
-        alert(data.message || "Registration failed. Please try again.");
+        alert(response.message || "Registration failed. Please try again.");
       }
     } catch (err) {
       console.error("Register Error:", err);
