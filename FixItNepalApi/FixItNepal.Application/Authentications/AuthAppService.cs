@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using FixItNepal.Application.Contracts.Authentications;
 using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Customs.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,11 +28,11 @@ public class AuthAppService(
             .FirstOrDefaultAsync(u => u.PhoneNumber == input.PhoneNumber);
 
         if (user == null)
-            throw new Exception("Invalid phone number or password");
+            throw new BusinessException("InvalidPhone","Invalid phone number");
 
         var validPassword = await userManager.CheckPasswordAsync(user, input.Password);
         if (!validPassword)
-            throw new Exception("Invalid phone number or password");
+            throw new BusinessException("InvalidPassword","Invalid password");
 
         var roles = await userManager.GetRolesAsync(user);
 

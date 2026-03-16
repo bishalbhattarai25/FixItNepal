@@ -2,6 +2,7 @@ using AutoMapper;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using FixItNepal.Application.Contracts.MediaFiles;
+using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
@@ -53,10 +54,6 @@ public class MediaFileAppService(
     public async Task<MediaFileDto> GetMediaFileAsync(Guid id)
     {
         var mediaFile = await mediaFileRepository.GetAsync(id);
-
-        if (mediaFile == null)
-            throw new Exception("Media file not found");
-
         return mapper.Map<MediaFile, MediaFileDto>(mediaFile);
     }
 }

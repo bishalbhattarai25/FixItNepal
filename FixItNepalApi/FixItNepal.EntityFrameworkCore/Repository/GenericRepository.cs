@@ -15,9 +15,15 @@ public class GenericRepository<T> (
     public async Task<T> GetAsync(Guid id)
     {
         var entity = await _dbSet.FindAsync(id);
-        if (entity == null)
-            throw new EntityNotFoundException(typeof(T), id);
 
+        if (entity == null)
+        {
+            var entityName = typeof(T).Name;
+            throw new BusinessException(
+                $"{entityName}:NotFound",
+                $"'{entityName}' was not found."
+            );
+        }
         return entity;
     }
 

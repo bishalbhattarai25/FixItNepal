@@ -5,6 +5,7 @@ using FixItNepal.Application.Contracts.Mechanics;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.MediaFiles;
@@ -13,6 +14,7 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FixItNepal.Application.Mechanics;
 
@@ -49,6 +51,12 @@ public class MechanicAppService (
 
     public async Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input)
     {
+        var phoneNumberExists = await userManager.Users.AnyAsync(x => x.PhoneNumber == input.PhoneNumber) ;
+        if (phoneNumberExists)
+        {
+            throw new BusinessException("PhoneAlreadyExists", "Phone number already registered");
+        }
+        
         var logo = await mediaFileRepository.GetAsync(input.LogoId);
         var address = mapper.Map<CreateAddressDto, Address>(input.Address);
         var mechanic = new Mechanic()

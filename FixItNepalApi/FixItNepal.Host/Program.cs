@@ -9,6 +9,7 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using FixItNepal.EntityFrameworkCore.Repository;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
+using FixItNepal.Host.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -142,6 +143,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction() )
 app.UseHttpsRedirection();
 
 app.UseCors("FrontendPolicy");
+
+app.UseMiddleware<GlobalExceptionHandler>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -5,6 +5,7 @@ using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
+using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.MediaFiles;
@@ -13,6 +14,7 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FixItNepal.Application.Garages;
 
@@ -49,6 +51,12 @@ public class GarageAppService(
 
     public async Task<GarageDto> CreateAsync(CreateUpdateGarageDto input)
     {
+        var phoneNumberExists = await userManager.Users.AnyAsync(x => x.PhoneNumber == input.PhoneNumber) ;
+        if (phoneNumberExists)
+        {
+            throw new BusinessException("PhoneAlreadyExists", "Phone number already registered");
+        }
+        
         var address = mapper.Map<CreateAddressDto, Address>(input.Address);
 
         var logo = await mediaFileRepository.GetAsync(input.LogoId);

@@ -2,10 +2,12 @@ using AutoMapper;
 using FixItNepal.Application.Contracts.Customers;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customers;
+using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Shared;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FixItNepal.Application.Customers;
 
@@ -40,6 +42,12 @@ public class CustomerAppService(
 
         var customer = new Customer();
         
+        var phoneNumberExists = await userManager.Users.AnyAsync(x => x.PhoneNumber == input.PhoneNumber) ;
+        if (phoneNumberExists)
+        {
+            throw new BusinessException("PhoneAlreadyExists", "Phone number already registered");
+        }
+        
         customer.SetPhoneNumber(input.PhoneNumber);
         customer.SetUserName(input.PhoneNumber);
         
@@ -47,7 +55,7 @@ public class CustomerAppService(
         if (!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new Exception($"Failed to create user: {errors}");
+            throw new BusinessException("UserCreationFailed",$"Failed to create user: {errors}");
         }
         
         var roleResult = await userManager.AddToRoleAsync(customer, ApiConst.AppCustomerRoleName);
@@ -55,7 +63,7 @@ public class CustomerAppService(
         if (!roleResult.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new Exception($"Failed to create role: {errors}");
+            throw new BusinessException("RoleCreationFailed",$"Failed to create role: {errors}");
         }
         
         return mapper.Map<Customer, CustomerDto>(customer);
