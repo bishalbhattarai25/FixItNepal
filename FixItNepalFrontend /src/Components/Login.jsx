@@ -4,6 +4,7 @@ import { GoShieldCheck } from "react-icons/go";
 import { FaPhoneAlt } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaCheck } from "react-icons/fa";
+import  AuthLoader from "../Loader/LoginLoader";
 
 
 
@@ -20,6 +21,7 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [mainLoader, setMainLoader] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +37,7 @@ export const Login = () => {
     }
 
     setIsLoading(true);
+    setMainLoader(true);
 
     try {
       const response = await fetch(`https://fixitnepal.onrender.com/login`, {
@@ -69,10 +72,16 @@ export const Login = () => {
       alert("Network error. Please try again.",error);
     } finally {
       setIsLoading(false);
+      setMainLoader(false);
     }
   };
+  
 
   return (
+    mainLoader ? (
+      <AuthLoader />
+    ) : (
+    
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex items-center justify-center p-4 relative overflow-hidden">
       
       {/* Animated Background Circles */}
@@ -231,32 +240,9 @@ export const Login = () => {
         </div>
       </div>
 
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
+      
     </div>
+    )
+            
   );
 };

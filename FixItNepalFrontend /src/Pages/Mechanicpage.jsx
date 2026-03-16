@@ -1,13 +1,13 @@
 import React from 'react'
+import { Layout } from '../Components/Dashboard/Mechanic-Dashboard/Layout'
 
 export const Mechanicpage = () => {
   return (
     <div>
-      <h1>hello world </h1> 
+      <Layout />
 
 
 
-      <h3 className='text-3xl'>hello world </h3>
     </div>
   )
 }
