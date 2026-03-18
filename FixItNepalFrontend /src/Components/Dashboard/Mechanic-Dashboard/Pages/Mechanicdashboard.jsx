@@ -115,11 +115,11 @@ const Mechanicdashboard = () => {
         {/* Bottom Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-slate-800 mb-4">Order history</h3>
+            <h3 className="font-bold text-slate-800 mb-4">Service history</h3>
             <table className="w-full text-left text-sm">
-              <thead>
+              <thead> 
                 <tr className="text-slate-400 border-b border-slate-50">
-                  <th className="pb-3 font-medium">Online store</th>
+                  <th className="pb-3 font-medium">Service Code </th>
                   <th className="pb-3 font-medium">Customer</th>
                   <th className="pb-3 font-medium">Repair date</th>
                   <th className="pb-3 font-medium">Amount</th>

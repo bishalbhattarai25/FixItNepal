@@ -55,12 +55,12 @@ export const TableRow = [
 export const NotificationItem = [
   {
     name: "David Paul",
-    action: "requested for a refrigerator repair",
+    action: "requested for a repair",
     time: "10 mins ago",
   },
   {
     name: "Immanuel",
-    action: "ordered a microwave oven recently",
+    action: "requested for a repair",
     time: "14 mins ago",
   },
 ];

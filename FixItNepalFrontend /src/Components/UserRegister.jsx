@@ -21,17 +21,18 @@ export const UserRegister = () => {
     setLoading(true);
 
     try {
-      const response = await instance.post('/api/customer',{...formData})
+      const response = await instance.post('/api/customer',formData)
       
-      if (response.ok) {
+      console.log(response);
         alert("Registration Successful!");
         navigate("/login");
-      } else {
-        alert(response.message || "Registration failed. Please try again.");
-      }
+
+       
+    
     } catch (err) {
       console.error("Register Error:", err);
-      alert("Network error. Please check your connection.");
+      const errorMessage = err.response?.data?.message || "Registration failed. Please try again.";
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }
