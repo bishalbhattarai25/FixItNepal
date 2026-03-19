@@ -16,6 +16,7 @@ public class CustomIdentitySeeder
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         var superAdminEmail = ApiConst.AppSuperAdminEmail;
+        var superAdminPhone = ApiConst.AppSuperAdminPhone;
         var superAdminPassword = ApiConst.AppSuperAdminPassword;
         
         var user = await userManager.FindByEmailAsync(superAdminEmail);
@@ -25,6 +26,7 @@ public class CustomIdentitySeeder
             {
                 UserName = superAdminEmail,
                 Email = superAdminEmail,
+                PhoneNumber = superAdminPhone,
                 EmailConfirmed = true
             };
 

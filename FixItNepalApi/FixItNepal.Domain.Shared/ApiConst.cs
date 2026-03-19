@@ -10,6 +10,7 @@ public class ApiConst
     public const string DbTablePrefix = "App";
 
     public const string AppSuperAdminEmail = "fixitnepal@test.com";
+    public const string AppSuperAdminPhone = "9800000001";
     public const string AppSuperAdminPassword = "Test@123";
     public const string AppSuperAdminRoleName = "SuperAdmin";
     public const string AppGarageRoleName = "Garage";

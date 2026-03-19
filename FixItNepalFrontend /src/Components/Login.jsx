@@ -62,8 +62,9 @@ export const Login = () => {
         navigate(
           data.role === "Customer" ? "/userdashboard" : 
           data.role === "Garage" ? "/servicecenter" : 
-          data.role === "Mechanic" ? "/mechanic" : 
-          "/superadmin"
+          data.role === "Mechanic" ? "/mechanic" :
+          data.role === "SuperAdmin" ? "/superadmin" :
+          alert("Unspecified Role")
         );
       } else {
         alert(data.message || "Login failed");
