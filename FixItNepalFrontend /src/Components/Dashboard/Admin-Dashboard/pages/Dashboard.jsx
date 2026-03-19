@@ -12,31 +12,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto">
         {/* Top Navbar */}
-        <header className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-0 z-10">
-          <div className="relative w-96">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-              <div className="h-5 w-5 text-gray-400" ><CiSearch /></div>
-            </span>
-            <input
-              className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
-              placeholder="Search..."
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="w-5 h-5 text-gray-500 cursor-pointer" ><CiSettings /></div>
-
-            <div className="w-5 h-5 text-gray-500 cursor-pointer" ><FaBell /></div>
-            <div className="flex items-center gap-3 border-l pl-4">
-              <div className="text-right">
-                <p className="text-sm font-bold">Shelly</p>
-                <p className="text-xs text-gray-500">Pharmacist</p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">
-                S
-              </div>
-            </div>
-          </div>
-        </header>
+ 
 
         {/* Dashboard Content */}
         <div className="p-8">

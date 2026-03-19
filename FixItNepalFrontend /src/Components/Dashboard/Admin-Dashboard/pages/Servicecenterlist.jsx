@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaRegStar, FaMapPin, FaHashtag, FaPhoneAlt, FaGlobe } from "react-icons/fa";
-import { FaMapPin as FaMapPin6 } from "react-icons/fa6"; // Match your import
+import { FaMapPin as FaMapPin6 } from "react-icons/fa6"; 
 import { IoIosMail } from "react-icons/io";
 import { Centerlist } from '../HOC/Servicecenterlist';
 

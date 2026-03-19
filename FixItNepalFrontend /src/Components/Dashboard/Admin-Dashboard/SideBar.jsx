@@ -3,6 +3,7 @@ import { Sidebar } from "./Datalist3";
 import Dashboard from "./pages/Dashboard";
 import ServiceTable from "./pages/Servicecenterlist";
 import { HelpCircle, Bell } from "lucide-react"; // Matching icons from UI
+import PendingVerification from "./pages/PendingVerification";
 // import Appoint from "./pages/Appointment";
 
 
@@ -101,6 +102,8 @@ const SideBar4 = () => {
           <div className="max-w-[1400px] mx-auto">
             {activeIndex === 0 && <Dashboard />}
             {activeIndex === 1 && <ServiceTable />}
+            {activeIndex === 2 && <ServiceTable />}
+            {activeIndex == 3 && <PendingVerification/>}
           </div>
         </main>
       </div>
