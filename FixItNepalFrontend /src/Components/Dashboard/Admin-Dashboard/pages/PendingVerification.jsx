@@ -4,7 +4,6 @@ import { FaRegStar, FaMapPin, FaHashtag, FaPhoneAlt, FaGlobe } from "react-icons
 import { FaMapPin as FaMapPin6 } from "react-icons/fa6"; 
 import { IoIosMail } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import instance from '../../../../Server/Axios';
 
 const PendingVerification = () => {
