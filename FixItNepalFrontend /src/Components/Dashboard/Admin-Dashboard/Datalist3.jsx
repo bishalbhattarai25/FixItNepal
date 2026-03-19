@@ -13,7 +13,7 @@ export const Sidebar = [
     path: "/centerlist"
   },
   {
-    title: "Map",
+    title: "Mechanice List",
     logo: <FaHand />,
     path: "/requesthelp"
   },

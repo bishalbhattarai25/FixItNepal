@@ -15,8 +15,7 @@ const ViewRecord = () => {
   const navigate = useNavigate();
   const [record, setRecord] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isVerifying, setIsVerifying] = useState(false);
-
+const [isProcessing, setIsProcessing] = useState(false);
   useEffect(() => {
     instance
       .get(`/api/mechanic/${id}`)
@@ -25,16 +24,18 @@ const ViewRecord = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const handleVerify = async () => {
-    setIsVerifying(true);
+  const handleStatusUpdate = async (statusValue) => {
+    setIsProcessing(true);
     try {
-      // Replace with my actual status update endpoint
-      // await instance.patch(`/api/mechanic/${id}/status`, { status: 'Verified' });
-      setRecord((prev) => ({ ...prev, status: "Verified" }));
+      
+      await instance.patch(`/api/mechanic/${id}/approval-status?approvalStatus=${statusValue}`)
+
+      setRecord((prev) => ({ ...prev, status: statusValue }));
+alert(`Mechanic ${statusValue} successfully!`);
     } catch (err) {
       console.error("Verification failed", err);
     } finally {
-      setIsVerifying(false);
+      setIsProcessing(false);
     }
   };
 
@@ -59,21 +60,34 @@ const ViewRecord = () => {
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to List
         </button>
 
-        <button
-          onClick={handleVerify}
-          disabled={record.status === "Verified"}
-          className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all ${
-            record.status === "Verified"
-              ? "bg-green-100 text-green-700 cursor-default"
-              : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200"
-          }`}
-        >
-          {isVerifying
-            ? "Processing..."
-            : record.status === "Verified"
-              ? "Verified"
-              : "Verify Mechanic"}
-        </button>
+        <div className="flex gap-4">
+          {/* Only show buttons if not already processed */}
+          {record.status !== "Approved" && record.status !== "Rejected" && (
+            <>
+              <button
+                onClick={() => handleStatusUpdate("Rejected")}
+                disabled={isProcessing}
+                className="px-6 py-2.5 rounded-xl border border-red-100 text-red-500 font-bold text-xs uppercase hover:bg-red-50 transition-all disabled:opacity-50"
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => handleStatusUpdate("Approved")}
+                disabled={isProcessing}
+                className="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50"
+              >
+                {isProcessing ? "Updating..." : "Approve Mechanic"}
+              </button>
+            </>
+          )}
+
+          {/* Success State */}
+          {record.status === "Approved" && (
+            <div className="flex items-center gap-2 px-6 py-2.5 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-xs border border-emerald-100 uppercase tracking-widest">
+              <CheckCircle size={16} /> Verified & Active
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="bg-white border border-gray-100 shadow-xl shadow-gray-100/50 rounded-2xl overflow-hidden">
