@@ -165,7 +165,7 @@ const PendingVerification = () => {
                   {/* Action Column */}
                   <td className="px-6 py-4 text-right">
                     <button
-                      onClick={() => navigate(`/record/${item.id}`)}
+                      onClick={() => navigate(`/superadmin/record/${activeType}/${item.id}`)}
                       className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-[11px] font-bold uppercase rounded-xl hover:bg-blue-600 active:scale-95 transition-all shadow-md shadow-gray-200 hover:shadow-blue-200"
                     >
                       Review <FaChevronRight size={10} />

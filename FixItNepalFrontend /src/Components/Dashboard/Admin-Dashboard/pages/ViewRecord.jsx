@@ -11,14 +11,17 @@ import {
 import instance from "../../../../Server/Axios";
 
 const ViewRecord = () => {
-  const { id } = useParams();
+  const {type, id } = useParams();
   const navigate = useNavigate();
   const [record, setRecord] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   useEffect(() => {
+
+    const url = type === "mechanic" ? `/api/mechanic/${id}` : `/api/garage/${id}` ;
+
     instance
-      .get(`/api/mechanic/${id}`)
+      .get(url)
       .then((res) => setRecord(res.data))
       .catch((err) => console.error("Error fetching record:", err))
       .finally(() => setLoading(false));
@@ -27,12 +30,16 @@ const ViewRecord = () => {
   const handleStatusUpdate = async (statusValue) => {
     setIsProcessing(true);
     try {
+
+      const pathchurl = type === "mechanic" ? `/api/mechanic/${id}/approval-status` : `/api/garage/${id}/approval-status`
+
+
       await instance.patch(
-        `/api/mechanic/${id}/approval-status?approvalStatus=${statusValue}`,
+        `${pathchurl}?approvalStatus=${statusValue}`,
       );
 
       setRecord((prev) => ({ ...prev, status: statusValue }));
-      alert(`Mechanic ${statusValue} successfully!`);
+      alert(`${type === "mechanic"? 'Mechanic' : 'Garage'} ${statusValue} successfully!`);
     } catch (err) {
       console.error("Verification failed", err);
     } finally {
