@@ -15,7 +15,7 @@ const ViewRecord = () => {
   const navigate = useNavigate();
   const [record, setRecord] = useState(null);
   const [loading, setLoading] = useState(true);
-const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   useEffect(() => {
     instance
       .get(`/api/mechanic/${id}`)
@@ -27,11 +27,12 @@ const [isProcessing, setIsProcessing] = useState(false);
   const handleStatusUpdate = async (statusValue) => {
     setIsProcessing(true);
     try {
-      
-      await instance.patch(`/api/mechanic/${id}/approval-status?approvalStatus=${statusValue}`)
+      await instance.patch(
+        `/api/mechanic/${id}/approval-status?approvalStatus=${statusValue}`,
+      );
 
       setRecord((prev) => ({ ...prev, status: statusValue }));
-alert(`Mechanic ${statusValue} successfully!`);
+      alert(`Mechanic ${statusValue} successfully!`);
     } catch (err) {
       console.error("Verification failed", err);
     } finally {
@@ -62,24 +63,25 @@ alert(`Mechanic ${statusValue} successfully!`);
 
         <div className="flex gap-4">
           {/* Only show buttons if not already processed */}
-          {record.approvalStatus !== "Approved" && record.approvalStatus !== "Rejected" && (
-            <>
-              <button
-                onClick={() => handleStatusUpdate("Rejected")}
-                disabled={isProcessing}
-                className="px-6 py-2.5 rounded-xl border border-red-100 text-red-500 font-bold text-xs uppercase hover:bg-red-50 transition-all disabled:opacity-50"
-              >
-                Reject
-              </button>
-              <button
-                onClick={() => handleStatusUpdate("Approved")}
-                disabled={isProcessing}
-                className="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50"
-              >
-                {isProcessing ? "Updating..." : "Approve Mechanic"}
-              </button>
-            </>
-          )}
+          {record.approvalStatus !== "Approved" &&
+            record.approvalStatus !== "Rejected" && (
+              <>
+                <button
+                  onClick={() => handleStatusUpdate("Rejected")}
+                  disabled={isProcessing}
+                  className="px-6 py-2.5 rounded-xl border border-red-100 text-red-500 font-bold text-xs uppercase hover:bg-red-50 transition-all disabled:opacity-50"
+                >
+                  Reject
+                </button>
+                <button
+                  onClick={() => handleStatusUpdate("Approved")}
+                  disabled={isProcessing}
+                  className="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg shadow-blue-100 hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50"
+                >
+                  {isProcessing ? "Updating..." : "Approve Mechanic"}
+                </button>
+              </>
+            )}
 
           {/* Success State */}
           {record.status === "Approved" && (
