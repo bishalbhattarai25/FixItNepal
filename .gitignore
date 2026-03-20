@@ -8,7 +8,6 @@
 *.DotSettings
 rider.project.model.nuget.info
 rider.project.restore.info
-FixItNepalApi/FixItNepal.Host/appsettings.json
 
 # .NET build folders
 bin/
