@@ -7,13 +7,15 @@ using FixItNepal.Domain.Customs.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FixItNepal.Application.Authentications;
 
 public class AuthAppService(
     UserManager<AppUser> userManager,
-    IConfiguration configuration
+    IConfiguration configuration,
+    ILogger<AuthAppService> logger
     ) : IAuthService
 {
     public Task<RegisterDto> RegisterAsync(RegisterInputDto input)
@@ -73,4 +75,49 @@ public class AuthAppService(
         };
     }
 
+    public async Task SendOtpAsync(string phoneNumber)
+    {
+        var user = await userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        if (user == null)
+        {
+            throw new BusinessException("InvalidPhone", "Invalid phone number");
+        }
+
+        if (user.PhoneNumberConfirmed)
+        {
+            throw new BusinessException("PhoneNumberVerified", "Phone number already verified");
+        }
+        
+        var token = await userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
+        logger.LogInformation("Otp Sent Successfully");
+    }
+
+    public async Task VerifyOtpAsync(VerifyOtp input)
+    {
+        var user = await userManager.Users
+            .FirstOrDefaultAsync(x => x.PhoneNumber == input.PhoneNumber);
+
+        if (user == null)
+        {
+            throw new BusinessException("InvalidPhone", "Invalid phone number");
+        }
+        
+        if (user.PhoneNumberConfirmed)
+        {
+            throw new BusinessException("PhoneNumberVerified", "Phone number already verified");
+        }
+
+        var result = await userManager.ChangePhoneNumberAsync(
+            user,
+            input.PhoneNumber,
+            input.Otp
+        );
+
+        if (!result.Succeeded)
+        {
+            throw new BusinessException("InvalidOtp", "Invalid otp");
+        }
+        user.PhoneNumberConfirmed = true;
+        await userManager.UpdateAsync(user);
+    }
 }

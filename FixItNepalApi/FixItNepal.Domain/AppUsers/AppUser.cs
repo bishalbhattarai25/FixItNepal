@@ -21,6 +21,11 @@ public class AppUser: IdentityUser<Guid>
         PhoneNumber = phoneNumber;
     }
 
+    public void SetPhoneNumberConfirmed(bool confirmed)
+    {
+        PhoneNumberConfirmed = confirmed;
+    }
+
     public bool IsCustomer()
     {
         return this is Customer;
