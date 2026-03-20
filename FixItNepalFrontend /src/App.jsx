@@ -45,9 +45,10 @@ function App() {
         {/* admin route  */}
         <Route element={<Protectedroute allowedRoles={['SuperAdmin']} />}>
         <Route path='/superadmin' element={<Admin />} />
+       <Route path="/superadmin/record/:type/:id" element={<ViewRecord />} />
+
         </Route>
 
-       <Route path="/record/:id" element={<ViewRecord />} />
 
         {/* register */}
 
