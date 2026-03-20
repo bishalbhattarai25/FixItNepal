@@ -6,5 +6,8 @@ namespace FixItNepal.Application.Contracts.Authentications
     {
         Task<RegisterDto> RegisterAsync(RegisterInputDto input);
         Task<LoginDto> LoginAsync(LoginInputDto input);
+        Task SendOtpAsync(string phoneNumber);
+        Task VerifyOtpAsync(VerifyOtp input);
+
     }
 }

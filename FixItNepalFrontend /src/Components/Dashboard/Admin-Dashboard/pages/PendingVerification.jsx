@@ -62,7 +62,7 @@ const PendingVerification = () => {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold text-gray-900 leading-none mb-1 group-hover:text-blue-600 transition-colors">
-                          {item.userName}
+                          {item.name}
                         </span>
                         <span className="text-[10px] text-gray-400 font-mono tracking-tighter">REF: {item.id.slice(0, 8)}</span>
                       </div>
@@ -103,7 +103,7 @@ const PendingVerification = () => {
                     <div className="flex justify-center">
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-amber-50 text-amber-600 border border-amber-200/50 shadow-sm">
                         <span className="w-1 h-1 bg-amber-500 rounded-full mr-1.5 animate-pulse"></span>
-                        Review Pending
+                        {item.approvalStatus}
                       </span>
                     </div>
                   </td>

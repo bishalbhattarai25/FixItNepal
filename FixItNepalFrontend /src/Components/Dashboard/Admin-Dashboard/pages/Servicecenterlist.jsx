@@ -51,7 +51,7 @@ const ServiceTable = () => {
                         />
                       ) : (
                         <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
-                          {item.userName?.substring(0, 2).toUpperCase()}
+                          {item.name?.substring(0, 2).toUpperCase()}
                         </div>
                       )}
                       <div className="flex flex-col">

@@ -27,7 +27,8 @@ public class CustomIdentitySeeder
                 UserName = superAdminEmail,
                 Email = superAdminEmail,
                 PhoneNumber = superAdminPhone,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
             };
 
             var result = await userManager.CreateAsync(user, superAdminPassword);

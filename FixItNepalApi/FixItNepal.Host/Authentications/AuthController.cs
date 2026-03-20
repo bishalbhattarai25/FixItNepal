@@ -15,4 +15,18 @@ public class AuthController(IAuthService authService)
         var result = await authService.LoginAsync(input);
         return result;
     }
+    
+    [HttpPost("/send-otp")]
+    public async Task<IActionResult> SendOtpAsync(string phoneNumber)
+    {
+        await authService.SendOtpAsync(phoneNumber);
+        return Ok("Otp sent Successfully");
+    }
+
+    [HttpPost("/verify-otp")]
+    public async Task<IActionResult> VerifyOtpAsync(VerifyOtp input)
+    {
+        await authService.VerifyOtpAsync(input);
+        return Ok("Otp verified Successfully");
+    }
 }

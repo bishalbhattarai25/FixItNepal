@@ -7,6 +7,11 @@ export const Sidebar = [
     logo: <IoMdHome />,
     path:"/dashboard"
   },
+     {
+    title: "Pending Verification",
+    logo: <MdPendingActions />,
+    path: "/requesthelp"
+  },
   {
     title: "Center List",
     logo: <FaHand />,
@@ -15,11 +20,6 @@ export const Sidebar = [
   {
     title: "Mechanice List",
     logo: <FaHand />,
-    path: "/requesthelp"
-  },
-   {
-    title: "Pending Verification",
-    logo: <MdPendingActions />,
     path: "/requesthelp"
   }
 //   {
