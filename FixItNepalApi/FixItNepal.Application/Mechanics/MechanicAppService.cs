@@ -101,6 +101,8 @@ public class MechanicAppService (
     {
         var mechanic = await mechanicRepository.GetAsync(id);
         mechanic.ApprovalStatus = approvalStatus;
+        mechanicRepository.Update(mechanic);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
     }
     
     private ICollection<MechanicMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)

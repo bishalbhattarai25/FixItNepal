@@ -104,6 +104,8 @@ public class GarageAppService(
     {
         var garage = await garageRepository.GetAsync(id);
         garage.ApprovalStatus = approvalStatus;
+         garageRepository.Update(garage);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
     }
 
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
