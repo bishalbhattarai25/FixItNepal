@@ -62,7 +62,7 @@ alert(`Mechanic ${statusValue} successfully!`);
 
         <div className="flex gap-4">
           {/* Only show buttons if not already processed */}
-          {record.status !== "Approved" && record.status !== "Rejected" && (
+          {record.approvalStatus !== "Approved" && record.approvalStatus !== "Rejected" && (
             <>
               <button
                 onClick={() => handleStatusUpdate("Rejected")}
