@@ -4,12 +4,12 @@ import { IoIosMail } from "react-icons/io";
 import instance from '../../../../Server/Axios';
 import FetchLoader from '../../../../Loader/FetchLoader';
 
-const ServiceTable = () => {
+const MechanicList = () => {
   const [datavalue, setDatavalue] = useState([]);
   const [isloading, setLoading] = useState(true);
 
   useEffect(() => {
-    instance.get("/api/garage",{
+    instance.get("/api/mechanic",{
       params:{
         ApproalStatus : 'Approved'
       }
@@ -117,4 +117,4 @@ const ServiceTable = () => {
   );
 };
 
-export default ServiceTable;
+export default MechanicList;

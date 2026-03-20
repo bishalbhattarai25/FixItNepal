@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import ServiceTable from "./pages/Servicecenterlist";
 import { HelpCircle, Bell } from "lucide-react"; // Matching icons from UI
 import PendingVerification from "./pages/PendingVerification";
+import MechanicList from "./pages/MechanicList";
 // import Appoint from "./pages/Appointment";
 
 
@@ -103,7 +104,7 @@ const SideBar4 = () => {
             {activeIndex === 0 && <Dashboard />}
             {activeIndex == 1 && <PendingVerification/>}
             {activeIndex === 2 && <ServiceTable />}
-            {activeIndex === 3 && <ServiceTable />}
+            {activeIndex === 3 && <MechanicList />}
           </div>
         </main>
       </div>

@@ -18,9 +18,9 @@ export const Sidebar = [
     path: "/centerlist"
   },
   {
-    title: "Mechanice List",
+    title: "Mechanic List",
     logo: <FaHand />,
-    path: "/requesthelp"
+    path: "/mechaniclist"
   }
 //   {
 //     title: "Nearby Mechanics",
