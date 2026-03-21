@@ -4,9 +4,13 @@ using FixItNepal.Application.AutomapperProfiles;
 using FixItNepal.Application.Extensions;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs;
+using FixItNepal.Domain.Garages;
+using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
+using FixItNepal.EntityFrameworkCore.Garages;
+using FixItNepal.EntityFrameworkCore.Mechanics;
 using FixItNepal.EntityFrameworkCore.Repository;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
 using FixItNepal.Host.Middlewares;
@@ -44,8 +48,13 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
         options.Tokens.ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider
     ).AddEntityFrameworkStores<ApiDbContext>();
+
+//repository 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IMechanicRepository, MechanicRepository>();
+builder.Services.AddScoped<IGarageRepository, GarageRepository>();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters

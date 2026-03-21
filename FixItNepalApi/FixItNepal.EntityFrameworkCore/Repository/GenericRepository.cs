@@ -10,7 +10,7 @@ public class GenericRepository<T> (
     ApiDbContext dbContext
     ): IRepository<T> where T : class
 {
-    private readonly DbSet<T> _dbSet = dbContext.Set<T>();
+    protected readonly DbSet<T> _dbSet = dbContext.Set<T>();
     
     public async Task<T> GetAsync(Guid id)
     {

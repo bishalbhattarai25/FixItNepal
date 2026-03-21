@@ -11,10 +11,10 @@ public class ServiceRequestController(
     :ControllerBase
 {
     [HttpPost]
-    public async Task<RequestDto> CreateRequestAsync(CreateRequestDto input)
+    public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
     {
-        var request = await  serviceRequestService.CreateRequestAsync(input);
-        return request;
+        var serviceRequest = await  serviceRequestService.CreateRequestAsync(input);
+        return serviceRequest;
     }
 
     [HttpPost("{id:guid}/assign")]

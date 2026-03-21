@@ -4,6 +4,8 @@
     <ProjectReference Include="..\FixItNepal.Domain\FixItNepal.Domain.csproj" />
     <ProjectReference Include="..\FixItNepal.Domain.Shared\FixItNepal.Domain.Shared.csproj" />
     <ProjectReference Include="..\FixItNepal.Application.Contracts\FixItNepal.Application.Contracts.csproj" />
+    <ProjectReference Include="..\FixItNepal.EntityFrameworkCore\FixItNepal.EntityFrameworkCore.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>

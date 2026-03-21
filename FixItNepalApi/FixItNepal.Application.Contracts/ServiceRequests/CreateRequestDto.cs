@@ -7,4 +7,5 @@ public class CreateRequestDto:BaseRequestDto
 {
     [Required]
     public CreateAddressDto Address { get; set; } = null!;
+    public double RadiusInKm { get; set; } 
 }
