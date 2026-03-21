@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { MapPin, AlertTriangle, Zap, Car, Fuel, Send } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { MapPin, AlertTriangle, Zap, Car, Fuel, Send, Clock } from "lucide-react";
+import { useFormik } from "formik";
+import instance from "../../../../Server/Axios";
+
 export const Requesthelp = () => {
-  const [problemType, setProblemType] = useState("Breakdown");
-  const [emergencyMode, setEmergencyMode] = useState(false);
+const[loader, setLoader] = useState(true)
 
   const problemTypes = [
     { name: "Breakdown", icon: AlertTriangle },
@@ -10,6 +12,70 @@ export const Requesthelp = () => {
     { name: "Accident", icon: Car },
     { name: "Out of Fuel", icon: Fuel },
   ];
+
+  const initialValues = {
+    requestType: "Emergency",
+    problemType: "",
+    scheduledDate: new Date().toISOString(),
+    problemDescription: "",
+    locationCoordinates: {
+      latitude: 0,
+      longitude: 0,
+    },
+    radiusInKm: 50,
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: async (values) => {
+      try {
+        const payload = {
+          requestType: values.requestType,
+          problemType: values.problemType,
+          scheduledDate: values.scheduledDate,
+          locationCoordinates: {
+            latitude: parseFloat(values.locationCoordinates.latitude),
+            longitude: parseFloat(values.locationCoordinates.longitude),
+          },
+          radiusInKm: values.radiusInKm,
+        };
+
+        await instance.post("/api/servicerequest", payload);
+        alert("Energancy request is send");
+      } catch (err) {
+        alert(err.response?.data?.title || "Fail is send");
+      } finally {
+        setLoader(false)
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by browser");
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        formik.setFieldValue(
+          "locationCoordinates.latitude",
+          position.coords.latitude,
+        );
+        formik.setFieldValue(
+          "locationCoordinates.longitude",
+          position.coords.longitude,
+        );
+      },
+      () => {
+        console.log("Unable to retrieve location");
+      },
+    );
+  }, []);
+
+  if(!loader){
+    return(<></>)
+  }
+
   return (
     <div className="flex gap-6  bg-gray-50 font-sans">
       {/* Left Section: Form */}
@@ -18,100 +84,118 @@ export const Requesthelp = () => {
         <p className="text-gray-600 mb-6">
           Submit your emergency request and get instant assistance
         </p>
+        <form onSubmit={formik.handleSubmit}>
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+            Emergency Request Form
+          </h3>
 
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Emergency Request Form
-        </h3>
-
-        {/* Location */}
-        <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-            Your Location
-          </label>
-          <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-            <div className="flex items-center gap-2 text-gray-700">
-              <MapPin className="w-5 h-5 text-red-500" />
-              <span className="font-medium">
-                Thamel, Kathmandu (Auto-detected)
-              </span>
-            </div>
-            <button className="text-red-500 font-semibold text-sm hover:text-red-600">
-              Change
-            </button>
-          </div>
-        </div>
-
-        {/* Problem Type */}
-        <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-            Problem Type
-          </label>
-          <div className="grid grid-cols-2 gap-3">
-            {problemTypes.map((type) => {
-              const Icon = type.icon;
-              const isSelected = problemType === type.name;
-              return (
-                <button
-                  key={type.name}
-                  onClick={() => setProblemType(type.name)}
-                  className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all ${
-                    isSelected
-                      ? "border-red-400 bg-red-50 text-red-700"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
-                >
-                  <Icon
-                    className={`w-5 h-5 ${isSelected ? "text-red-600" : "text-gray-500"}`}
-                  />
-                  <span className="font-medium text-gray-900">{type.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Notes */}
-        <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-            Additional Notes (Optional)
-          </label>
-          <textarea
-            rows="3"
-            placeholder="Describe your situation..."
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-red-400 outline-none"
-          />
-        </div>
-
-        {/* Emergency Mode Toggle */}
-        <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg mb-6 border border-red-100">
-          <div className="flex items-center gap-3">
-            <AlertTriangle className="w-6 h-6 text-red-600" />
-            <div>
-              <p className="font-semibold text-gray-900">Emergency Mode</p>
-              <p className="text-sm text-red-700">
-                Priority response, higher charges apply
-              </p>
+          {/* Location */}
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Your Location
+            </label>
+            <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+              <div className="flex items-center gap-2 text-gray-700">
+                <MapPin className="w-5 h-5 text-red-500" />
+                <span className="font-medium">
+                  {formik.values.locationCoordinates.latitude !== 0
+                    ? `${formik.values.locationCoordinates.latitude.toFixed(4)}, ${formik.values.locationCoordinates.longitude.toFixed(4)}`
+                    : "Detecting location..."}
+                </span>
+              </div>
+              <button className="text-red-500 font-semibold text-sm hover:text-red-600">
+                located
+              </button>
             </div>
           </div>
-          <button
-            onClick={() => setEmergencyMode(!emergencyMode)}
-            className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors ${
-              emergencyMode ? "bg-red-500" : "bg-gray-300"
-            }`}
-          >
-            <div
-              className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
-                emergencyMode ? "translate-x-6" : "translate-x-0"
-              }`}
+
+          
+
+          {/* Problem Type */}
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Problem Type
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {problemTypes.map((type) => {
+                const Icon = type.icon;
+                const isSelected = formik.values.problemType === type.name;
+                return (
+                  <button
+                    key={type.name}
+                    onClick={() =>
+                      formik.setFieldValue("problemType", type.name)
+                    }
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all ${
+                      isSelected
+                        ? "border-red-400 bg-red-50 text-red-700"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-5 h-5 ${isSelected ? "text-red-600" : "text-gray-500"}`}
+                    />
+                    <span className="font-medium text-gray-900">
+                      {type.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Automatic Time Input */}
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Request Time
+            </label>
+            <div className="relative">
+              <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                readOnly
+                value={new Date(formik.values.scheduledDate).toLocaleString()}
+                className="w-full pl-10 p-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-600 outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Additional Notes (Optional)
+            </label>
+            <textarea
+              rows="3"
+              value={formik.values.problemDescription}
+              onChange={formik.handleChange}
+              placeholder="Describe your situation..."
+              className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-200 focus:border-red-400 outline-none"
             />
-          </button>
-        </div>
+          </div>
 
-        {/* Submit Button */}
-        <button className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
-          <Send className="w-5 h-5" />
-          SEND REQUEST
-        </button>
+          {/* Static Emergency Mode Info (Not a Toggle) */}
+          <div className="flex items-center justify-between p-4 bg-red-600 rounded-xl mb-6 shadow-md shadow-red-100">
+            <div className="flex items-center gap-3 text-white">
+              <AlertTriangle className="w-6 h-6 animate-pulse" />
+              <div>
+                <p className="font-bold">Emergency Mode Active</p>
+                <p className="text-[11px] opacity-90 uppercase tracking-wider">
+                  Priority Dispatching Enabled
+                </p>
+              </div>
+            </div>
+            <div className="bg-white/20 px-3 py-1 rounded-full text-[10px] font-bold text-white border border-white/30 uppercase">
+              Locked
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button type="submit" className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+            <Send className="w-5 h-5" />
+            SEND REQUEST
+          </button>
+        </form>
       </div>
 
       {/* Right Section: Info Cards */}

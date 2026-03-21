@@ -5,7 +5,7 @@ import instance from "../Server/Axios";
 export const UserRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  // const role = "user";
   // 1. State strictly matching your requested fields
   const [formData, setFormData] = useState({
     phoneNumber: "",
@@ -87,6 +87,7 @@ export const UserRegister = () => {
           <button
             type="submit"
             disabled={loading}
+            // onClick={()=>navigate(`/register/${role}/${formData.passWord}`)}
             className="mt-2 bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all active:scale-[0.98] disabled:opacity-70 flex justify-center items-center"
           >
             {loading ? (
