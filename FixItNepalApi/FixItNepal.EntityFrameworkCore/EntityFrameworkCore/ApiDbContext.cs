@@ -4,6 +4,7 @@ using FixItNepal.Domain.Customers;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.MediaFiles;
+using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.Addresses;
 using FixItNepal.Domain.Vehicles;
@@ -33,6 +34,9 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
     public DbSet<Address> Addresses { get; set; }
     public DbSet<MediaFile> MediaFiles { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
+    
+    //service-requests
+    public DbSet<ServiceRequest>  ServiceRequests { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -102,8 +106,6 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             b.Property(x => x.ApprovalStatus)
                 .HasConversion<string>();
             
-            
-            
             b.Navigation(g => g.Logo)
                 .AutoInclude();
             
@@ -171,6 +173,25 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             
             b.Property(x => x.FuelType)
                 .HasConversion<string>();
+        });
+        
+        builder.Entity<ServiceRequest>(b =>
+        {
+            b.ToTable(ApiConst.DbTablePrefix + nameof(ServiceRequests));
+
+            b.HasOne(b => b.Address);
+            
+            b.Property(x => x.ProblemType)
+                .HasConversion<string>();
+            
+            b.Property(x => x.RequestType)
+                .HasConversion<string>();
+            
+            b.Property(x => x.Status)
+                .HasConversion<string>();
+            
+            b.Navigation(b => b.Address)
+                .AutoInclude();
         });
     }
 }
