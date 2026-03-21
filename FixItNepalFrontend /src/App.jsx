@@ -13,6 +13,7 @@ import { UserRegister } from './Components/UserRegister';
 import { ServiceCenterRegister } from './Components/ServicecenterRegister';
 import { MachineRegister } from './Components/MechanicRegister';
 import ViewRecord from './Components/Dashboard/Admin-Dashboard/pages/ViewRecord';
+import ViewDetail from './Components/Dashboard/Admin-Dashboard/pages/ViewDetail';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route element={<Protectedroute allowedRoles={['SuperAdmin']} />}>
         <Route path='/superadmin' element={<Admin />} />
        <Route path="/superadmin/record/:type/:id" element={<ViewRecord />} />
+       <Route path='superadmin/:type/:id' element={<ViewDetail/>} />
 
         </Route>
 
