@@ -39,7 +39,7 @@ public class ServiceRequestAppService(
         return mapper.Map<ServiceRequest, RequestDto>(serviceRequest);
     }
 
-    public async Task<RequestDto> AcceptRequestAsync(Guid id, Guid serviceProviderId)
+    public async Task<RequestDto> AssignRequestAsync(Guid id, Guid serviceProviderId)
     {
         var request =  await serviceRequestRepository.GetAsync(id);
         if (request.Status != ServiceRequestStatus.Pending)
