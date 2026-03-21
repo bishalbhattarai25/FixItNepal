@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, AlertTriangle, Zap, Car, Fuel, Send, Clock } from "lucide-react";
 import { useFormik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
 import instance from "../../../../Server/Axios";
+import EmergencyLoader from "../../../../Loader/EmRequest";
+
 
 export const Requesthelp = () => {
-const[loader, setLoader] = useState(true)
+const [isSubmitting, setIsSubmitting] = useState(false);
+const[located, setLocated] = useState(false)
 
   const problemTypes = [
     { name: "Breakdown", icon: AlertTriangle },
@@ -28,6 +32,7 @@ const[loader, setLoader] = useState(true)
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
+      setIsSubmitting(true);
       try {
         const payload = {
           requestType: values.requestType,
@@ -41,12 +46,25 @@ const[loader, setLoader] = useState(true)
         };
 
         await instance.post("/api/servicerequest", payload);
-        alert("Energancy request is send");
+
+        toast.success("Emergency Signal Sent! Help is on the way.", {
+          duration: 3000,
+          position: 'top-center',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            fontWeight: 'bold',
+          },
+        });
+
+
+        formik.resetForm();
       } catch (err) {
-        alert(err.response?.data?.title || "Fail is send");
+        toast.error(err.response?.data?.title || "Fail is send");
       } finally {
-        setLoader(false)
-      }
+setIsSubmitting(false); 
+
+     }
     },
   });
 
@@ -70,14 +88,15 @@ const[loader, setLoader] = useState(true)
         console.log("Unable to retrieve location");
       },
     );
-  }, []);
+  }, [located]);
 
-  if(!loader){
-    return(<></>)
-  }
+  
 
   return (
     <div className="flex gap-6  bg-gray-50 font-sans">
+      <Toaster />
+
+      {isSubmitting && <EmergencyLoader /> }
       {/* Left Section: Form */}
       <div className="flex-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <h2 className="text-2xl font-bold text-gray-900 mb-1">Request Help</h2>
@@ -103,7 +122,7 @@ const[loader, setLoader] = useState(true)
                     : "Detecting location..."}
                 </span>
               </div>
-              <button className="text-red-500 font-semibold text-sm hover:text-red-600">
+              <button onClick={()=>setLocated(true)} type="button" className="text-red-500 font-semibold text-sm hover:text-red-600">
                 located
               </button>
             </div>
@@ -122,6 +141,7 @@ const[loader, setLoader] = useState(true)
                 const isSelected = formik.values.problemType === type.name;
                 return (
                   <button
+                  type="button"
                     key={type.name}
                     onClick={() =>
                       formik.setFieldValue("problemType", type.name)
@@ -163,9 +183,10 @@ const[loader, setLoader] = useState(true)
           {/* Notes */}
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Additional Notes (Optional)
+              Additional Notes 
             </label>
             <textarea
+            name="problemDescription"
               rows="3"
               value={formik.values.problemDescription}
               onChange={formik.handleChange}
