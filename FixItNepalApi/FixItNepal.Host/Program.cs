@@ -1,9 +1,12 @@
 using System.Text;
 using CloudinaryDotNet;
 using FixItNepal.Application.AutomapperProfiles;
+using FixItNepal.Application.Contracts.Customs.Email;
+using FixItNepal.Application.Customs.Email;
 using FixItNepal.Application.Extensions;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs;
+using FixItNepal.Domain.Customs.Emailer;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
@@ -70,6 +73,11 @@ builder.Services.AddSingleton(new Cloudinary(
         builder.Configuration["Cloudinary:ApiSecret"]
     )
 ));
+
+
+//email sender
+builder.Services.AddTransient<IEmailerService, EmailSender>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
