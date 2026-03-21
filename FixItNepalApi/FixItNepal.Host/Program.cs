@@ -41,7 +41,9 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
     )
 );
 
-builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>().AddEntityFrameworkStores<ApiDbContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
+        options.Tokens.ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider
+    ).AddEntityFrameworkStores<ApiDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers().AddJsonOptions(options =>
