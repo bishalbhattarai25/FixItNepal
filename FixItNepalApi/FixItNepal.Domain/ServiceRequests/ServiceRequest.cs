@@ -20,7 +20,11 @@ public class ServiceRequest:BaseEntity
     
     public Guid ServiceProviderId { get; set; }
     
-    public required Address Address { get; set; } = null!;
+    
+    [Column(TypeName = AddressConst.PointTypeInMySQL)]
+    public Point? LocationCoordinatePoint { get; set; }
+    
+    // public required Address Address { get; set; } = null!;
 
     public ServiceRequestStatus Status { get; set; } = ServiceRequestStatus.Pending;
     

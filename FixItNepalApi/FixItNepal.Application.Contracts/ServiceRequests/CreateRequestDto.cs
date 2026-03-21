@@ -6,6 +6,6 @@ namespace FixItNepal.Application.Contracts.ServiceRequests;
 public class CreateRequestDto:BaseRequestDto
 {
     [Required]
-    public CreateAddressDto Address { get; set; } = null!;
+    public LocationCoordinationDto LocationCoordinates { get; set; } = null!;
     public double RadiusInKm { get; set; } 
 }

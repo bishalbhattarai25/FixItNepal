@@ -25,14 +25,14 @@ public class ServiceRequestAppService(
 {
     public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
     {
-        var address = mapper.Map<CreateAddressDto, Address>(input.Address);
+        var locationCoordinates = mapper.Map<LocationCoordinationDto, Point>(input.LocationCoordinates);
         var serviceRequest = new ServiceRequest()
         {
             ProblemType = input.ProblemType,
             RequestType = input.RequestType,
             ProblemDescription = input.ProblemDescription,
             ScheduledDate = input.ScheduledDate,
-            Address = address,
+            LocationCoordinatePoint = locationCoordinates,
         };
 
         if (input.RequestType == RequestType.Scheduled && input.ScheduledDate == null)
@@ -47,7 +47,7 @@ public class ServiceRequestAppService(
 
         //user location into point to calculate the nearby garages and mechanics
         
-        var userLocation = new Point(address.LocationCoordinatePoint!.X, address.LocationCoordinatePoint.Y);
+        var userLocation = new Point(input.LocationCoordinates.Longitude, input.LocationCoordinates.Latitude);
         var radiusInMeters = input.RadiusInKm * 1000;
         
         var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );

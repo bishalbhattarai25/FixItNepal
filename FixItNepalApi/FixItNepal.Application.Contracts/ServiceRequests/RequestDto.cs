@@ -12,5 +12,5 @@ public class RequestDto:BaseRequestDto
     public Guid Id { get; set; }
     public ServiceRequestStatus Status { get; set; } 
     public DateTime CreationTime { get; set; }
-    public AddressDto Address { get; set; } = null!;
+    public LocationCoordinationDto LocationCoordinates { get; set; } = null!;
 }

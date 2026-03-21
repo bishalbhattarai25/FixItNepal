@@ -179,7 +179,7 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
         {
             b.ToTable(ApiConst.DbTablePrefix + nameof(ServiceRequests));
 
-            b.HasOne(b => b.Address);
+            // b.HasOne(b => b.Address);
             
             b.Property(x => x.ProblemType)
                 .HasConversion<string>();
@@ -190,8 +190,11 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             b.Property(x => x.Status)
                 .HasConversion<string>();
             
-            b.Navigation(b => b.Address)
-                .AutoInclude();
+            b.Property(a => a.LocationCoordinatePoint)
+                .HasColumnType(AddressConst.PointTypeInMySQL); 
+            
+            // b.Navigation(b => b.Address)
+            //     .AutoInclude();
         });
     }
 }
