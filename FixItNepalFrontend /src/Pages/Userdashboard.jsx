@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from '../Components/Dashboard/User-Dashboard/layout'
+import { Layout } from '../Components/Dashboard/User-Dashboard/Layout'
 
 export const Userdashboard = () => {
   return (
