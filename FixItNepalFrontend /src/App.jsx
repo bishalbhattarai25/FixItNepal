@@ -16,7 +16,12 @@ import ViewRecord from "./Components/Dashboard/Admin-Dashboard/pages/ViewRecord"
 import ViewDetail from "./Components/Dashboard/Admin-Dashboard/pages/ViewDetail";
 import {Dashboard } from "./Components/Dashboard/User-Dashboard/pages/Dashboard";
 import {Requesthelp } from "./Components/Dashboard/User-Dashboard/pages/Requesthelp";
-import Nearbymacf from "./Components/Dashboard/User-Dashboard/pages/Nearbymacf"
+import Nearbymacf from "./Components/Dashboard/User-Dashboard/pages/Nearbymacf";
+import Livetrack from "./Components/Dashboard/User-Dashboard/pages/Livetrack";
+import Servicehistory from "./Components/Dashboard/User-Dashboard/pages/Servicehistory";
+import Wallet from './Components/Dashboard/User-Dashboard/pages/wallet';
+import {Maintence} from './Components/Dashboard/User-Dashboard/pages/Maintence';
+import Profile from './Components/Dashboard/User-Dashboard/pages/Profile';
 
 function App() {
   return (
@@ -36,11 +41,11 @@ function App() {
             {/* Default: /userdashboard */}
             <Route path="requesthelp" element={<Requesthelp />} />
             <Route path="nearbymechanics" element={<Nearbymacf />} />
-            {/* <Route path="livetarcking" element={<Livetrack />} />
+            <Route path="livetarcking" element={<Livetrack />} />
             <Route path="servoceHistory" element={<Servicehistory />} />
             <Route path="payments" element={<Wallet />} />
             <Route path="maintence" element={<Maintence />} />
-            <Route path="profile" element={<Profile />} /> */}
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Route>
 
