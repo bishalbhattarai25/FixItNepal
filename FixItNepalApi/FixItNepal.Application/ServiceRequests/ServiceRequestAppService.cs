@@ -66,22 +66,48 @@ public class ServiceRequestAppService(
 
         return serviceRequestDto;
     }
-
+    
     public async Task<RequestDto> AssignRequestAsync(Guid id, Guid serviceProviderId)
     {
         var request =  await serviceRequestRepository.GetAsync(id);
-        if (request.Status != ServiceRequestStatus.Pending)
+        if (request.Status != ServiceRequestStatus.Pending &&  request.Status != ServiceRequestStatus.Rejected )
         {
-            throw new BusinessException("RequestStatusNotPending", "Request status should be pending.");
+            throw new BusinessException("RequestAlreadyProcessed", "Request already handled");
         }
         
-        request.Status = ServiceRequestStatus.Accepted;
+        request.Status = ServiceRequestStatus.Pending;
         request.ServiceProviderId = serviceProviderId;
 
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         return mapper.Map<ServiceRequest, RequestDto>(request);
     }
+    public async Task<RequestDto> AcceptRequestAsync(Guid id, Guid serviceProviderId)
+    {
+        var request =  await serviceRequestRepository.GetAsync(id);
+        if (request.ServiceProviderId != serviceProviderId)
+        {
+            throw new BusinessException("UnAuthorized", "This is not your request");
+        }
+        
+        request.Status = ServiceRequestStatus.Accepted;
 
+        serviceRequestRepository.Update(request);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        return mapper.Map<ServiceRequest, RequestDto>(request);
+    }
+    
+    public async Task RejectRequestAsync(Guid id, Guid serviceProviderId)
+    {
+        var request =  await serviceRequestRepository.GetAsync(id);
+        if (request.ServiceProviderId != serviceProviderId)
+        {
+            throw new BusinessException("UnAuthorized", "This is not your request");
+        }
+        request.Status = ServiceRequestStatus.Rejected;
+
+        serviceRequestRepository.Update(request);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+    }
 
 }

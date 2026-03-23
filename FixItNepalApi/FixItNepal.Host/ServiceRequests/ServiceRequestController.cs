@@ -17,10 +17,24 @@ public class ServiceRequestController(
         return serviceRequest;
     }
 
-    [HttpPost("{id:guid}/assign")]
-    public async Task<RequestDto> AcceptRequestAsync(Guid id, Guid serviceProviderId)
+    [HttpPut("{id:guid}/assign")]
+    public async Task<RequestDto> AssignRequestAsync(Guid id, Guid serviceProviderId)
     {
         var request = await  serviceRequestService.AssignRequestAsync(id, serviceProviderId);
         return request;
     }
+    
+    [HttpPut("{id:guid}/accept")]
+    public async Task<RequestDto> AcceptRequestAsync(Guid id, Guid serviceProviderId)
+    {
+        var request = await serviceRequestService.AcceptRequestAsync(id, serviceProviderId);
+        return request;
+    }
+
+    [HttpPatch("{id:guid}/reject")]
+    public async Task RejectRequestAsync(Guid id, Guid serviceProviderId)
+    {
+         await serviceRequestService.RejectRequestAsync(id, serviceProviderId);
+    }
+    
 }
