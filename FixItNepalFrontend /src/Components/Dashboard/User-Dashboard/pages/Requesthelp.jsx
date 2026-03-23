@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { MapPin, AlertTriangle, Zap, Car, Fuel, Send, Clock } from "lucide-react";
+import {
+  MapPin,
+  AlertTriangle,
+  Zap,
+  Car,
+  Fuel,
+  Send,
+  Clock,
+} from "lucide-react";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import instance from "../../../../Server/Axios";
 import EmergencyLoader from "../../../../Loader/EmRequest";
-
+import { useNavigate } from "react-router-dom";
 
 export const Requesthelp = () => {
-const [isSubmitting, setIsSubmitting] = useState(false);
-const[located, setLocated] = useState(false)
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [located, setLocated] = useState(false);
 
   const problemTypes = [
     { name: "Breakdown", icon: AlertTriangle },
@@ -45,26 +54,28 @@ const[located, setLocated] = useState(false)
           radiusInKm: values.radiusInKm,
         };
 
-        await instance.post("/api/servicerequest", payload);
+       const response = await instance.post("/api/servicerequest", payload);
 
         toast.success("Emergency Signal Sent! Help is on the way.", {
           duration: 3000,
-          position: 'top-center',
+          position: "top-center",
           style: {
-            background: '#10B981',
-            color: '#fff',
-            fontWeight: 'bold',
+            background: "#10B981",
+            color: "#fff",
+            fontWeight: "bold",
           },
         });
 
+        navigate("/userdashboard/nearbymechanics", { 
+          state: { activeRequest: response.data } 
+        });
 
         formik.resetForm();
       } catch (err) {
         toast.error(err.response?.data?.title || "Fail is send");
       } finally {
-setIsSubmitting(false); 
-
-     }
+        setIsSubmitting(false);
+      }
     },
   });
 
@@ -90,13 +101,11 @@ setIsSubmitting(false);
     );
   }, [located]);
 
-  
-
   return (
     <div className="flex gap-6  bg-gray-50 font-sans">
       <Toaster />
 
-      {isSubmitting && <EmergencyLoader /> }
+      {isSubmitting && <EmergencyLoader />}
       {/* Left Section: Form */}
       <div className="flex-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <h2 className="text-2xl font-bold text-gray-900 mb-1">Request Help</h2>
@@ -122,13 +131,15 @@ setIsSubmitting(false);
                     : "Detecting location..."}
                 </span>
               </div>
-              <button onClick={()=>setLocated(true)} type="button" className="text-red-500 font-semibold text-sm hover:text-red-600">
+              <button
+                onClick={() => setLocated(true)}
+                type="button"
+                className="text-red-500 font-semibold text-sm hover:text-red-600"
+              >
                 located
               </button>
             </div>
           </div>
-
-          
 
           {/* Problem Type */}
           <div className="mb-5">
@@ -141,7 +152,7 @@ setIsSubmitting(false);
                 const isSelected = formik.values.problemType === type.name;
                 return (
                   <button
-                  type="button"
+                    type="button"
                     key={type.name}
                     onClick={() =>
                       formik.setFieldValue("problemType", type.name)
@@ -183,10 +194,10 @@ setIsSubmitting(false);
           {/* Notes */}
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Additional Notes 
+              Additional Notes
             </label>
             <textarea
-            name="problemDescription"
+              name="problemDescription"
               rows="3"
               value={formik.values.problemDescription}
               onChange={formik.handleChange}
@@ -212,7 +223,10 @@ setIsSubmitting(false);
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+          >
             <Send className="w-5 h-5" />
             SEND REQUEST
           </button>
