@@ -1,6 +1,7 @@
 using FixItNepal.Domain.Customs.Helper;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
+using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using FixItNepal.EntityFrameworkCore.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -37,4 +38,6 @@ public class MechanicRepository:GenericRepository<Mechanic>,IMechanicRepository
         
         return nearbyMechanics;
     }
+    
+    
 }

@@ -1,3 +1,4 @@
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
 
@@ -10,5 +11,7 @@ public interface IGarageService
     Task<GarageDto> CreateAsync(CreateUpdateGarageDto input);
     Task<GarageDto> UpdateAsync( Guid id, CreateUpdateGarageDto input);
     Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus);
+    Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id);
+
 
 }

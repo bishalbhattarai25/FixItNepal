@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,11 @@ public class MechanicController(
     {
         var mechanic = await mechanicService.CreateAsync(input);
         return mechanic;
+    }
+    [HttpGet("{id:guid}/todays-request")]
+    public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)
+    {
+        return await mechanicService.GetServiceRequestOfTodayAsync(id);
     }
     
     [HttpPatch("{id:guid}/approval-status")]

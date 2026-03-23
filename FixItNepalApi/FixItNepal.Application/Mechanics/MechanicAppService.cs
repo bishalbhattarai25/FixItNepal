@@ -3,6 +3,7 @@ using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Mechanics;
 using FixItNepal.Application.Contracts.MediaFiles;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs.Exceptions;
@@ -11,6 +12,7 @@ using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
+using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +25,8 @@ public class MechanicAppService (
     IUnitOfWork unitOfWork,
     IRepository<MediaFile> mediaFileRepository,
     UserManager<AppUser>  userManager,
-    IMapper mapper
+    IMapper mapper,
+    IServiceRequestRepository serviceRequestRepository
         ): IMechanicService
 {
     public async Task<PagedResultDto<MechanicDto>> GetListAsync(MechanicPagedListDto input)
@@ -103,6 +106,12 @@ public class MechanicAppService (
         mechanic.ApprovalStatus = approvalStatus;
         mechanicRepository.Update(mechanic);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)
+    {
+        var todayRequest = await serviceRequestRepository.GetTodayServiceRequestsAsync(id);
+        return mapper.Map<IEnumerable<ServiceRequest>, IEnumerable<RequestDto>>(todayRequest); 
     }
     
     private ICollection<MechanicMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
