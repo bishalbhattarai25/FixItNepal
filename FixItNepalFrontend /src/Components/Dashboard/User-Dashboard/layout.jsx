@@ -1,8 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-// Ensure this matches your SideBar.js export style (Default vs Named)
-import SideBar from './SideBar'; 
-
+import SideBar from './SideBar';
 export const Layout = () => {
   return (
     <div className="flex h-screen w-full bg-[#f8fafc] text-slate-900 antialiased overflow-hidden">
