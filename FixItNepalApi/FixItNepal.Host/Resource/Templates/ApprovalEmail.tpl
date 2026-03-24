@@ -52,14 +52,20 @@
 </head>
 <body>
 <div class="container">
-    <h2>Approval Notification</h2>
-    <p>Dear <span class="highlight">{{Name}}</span>,</p>
-    <p>We are pleased to inform you that your registration as a <span class="highlight">{{Role}}</span> has been <strong>{{Status}}</strong>.</p>
-    <p>You can now access your dashboard and start offering services through our platform.</p>
-    <p><a href="{{DashboardUrl}}" class="button">Go to Dashboard</a></p>
-    <p>Thank you for being a part of <span class="highlight">FixItNepal</span>!</p>
+    <p>Dear <span class="highlight">{{ name }}</span>,</p>
+    
+    <p>
+    We are pleased to inform you that your registration as a 
+    <span class="highlight">{{ role }}</span> 
+    has been <strong>{{ status }}</strong>.
+    </p>
+    
+    <p>
+    <a href="{{ dashboard_url }}" class="button">Go to Dashboard</a>
+    </p>
+    
     <div class="footer">
-        &copy; {{Year}} FixItNepal. All rights reserved.
+        &copy; {{ year }} FixItNepal. All rights reserved.
     </div>
 </div>
 </body>

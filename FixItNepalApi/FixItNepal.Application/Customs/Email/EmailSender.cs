@@ -1,6 +1,7 @@
 using FixItNepal.Application.Contracts.Customs.Email;
 using FixItNepal.Domain.Customs.Emailer;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -27,7 +28,7 @@ public class EmailSender:IEmailerService
             var message = new MimeMessage();
 
             message.From.Add(new MailboxAddress(_smtpSettings.FromName, _smtpSettings.FromEmail));
-            message.To.Add(new MailboxAddress(email, email));
+            message.To.Add(new MailboxAddress("", email));
             message.Subject = subject;
             message.Body = new TextPart("html")
             {
@@ -36,8 +37,8 @@ public class EmailSender:IEmailerService
 
             using (var client = new SmtpClient())
             {
-                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                await client.ConnectAsync(_smtpSettings.Host);
+                // client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                await client.ConnectAsync(_smtpSettings.Host, _smtpSettings.Port,     _smtpSettings.EnableSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto);
                 await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);

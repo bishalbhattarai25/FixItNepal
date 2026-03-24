@@ -1,6 +1,8 @@
 using System.Text;
 using CloudinaryDotNet;
+using FixItNepal.Application.AppUsers;
 using FixItNepal.Application.AutomapperProfiles;
+using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Customs.Email;
 using FixItNepal.Application.Customs.Email;
 using FixItNepal.Application.Extensions;
@@ -27,6 +29,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
@@ -81,6 +84,14 @@ builder.Services.AddSingleton(new Cloudinary(
 //email sender
 builder.Services.AddTransient<IEmailerService, EmailSender>();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
+var templateRoot = Path.Combine(env.ContentRootPath, "Resource", "Templates");
+
+builder.Services.AddScoped<IAppUserEmailer>(sp =>
+{
+    var emailSender = sp.GetRequiredService<IEmailerService>();
+    return new AppUserAccountEmailer(templateRoot, emailSender);
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
