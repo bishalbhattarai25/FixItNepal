@@ -1,3 +1,4 @@
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
 
@@ -10,5 +11,7 @@ public interface IMechanicService
     Task<MechanicDto> CreateAsync(CreateUpdateMechanicsDto input);
     Task<MechanicDto> UpdateAsync(Guid id, CreateUpdateMechanicsDto input);
     Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus);
+    Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id);
+
 
 }

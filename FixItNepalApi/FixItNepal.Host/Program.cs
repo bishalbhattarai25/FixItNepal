@@ -11,11 +11,13 @@ using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
+using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using FixItNepal.EntityFrameworkCore.Garages;
 using FixItNepal.EntityFrameworkCore.Mechanics;
 using FixItNepal.EntityFrameworkCore.Repository;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
+using FixItNepal.EntityFrameworkCore.ServiceRequests;
 using FixItNepal.Host.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -57,6 +59,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IMechanicRepository, MechanicRepository>();
 builder.Services.AddScoped<IGarageRepository, GarageRepository>();
+builder.Services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

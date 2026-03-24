@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,13 @@ public class GarageController (
         var garage = await garageService.CreateAsync(input);
         return garage;
     }
+
+    [HttpGet("{id:guid}/todays-request")]
+    public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)
+    {
+        return await garageService.GetServiceRequestOfTodayAsync(id);
+    }
+    
     
     [HttpPatch("{id:guid}/approval-status")]
     public async Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus)

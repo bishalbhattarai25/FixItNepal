@@ -16,36 +16,36 @@ export const Sidebar = [
   {
     title: "Request Help",
     logo: <FaHand />,
-    path: "/requesthelp"
+    path: "/userdashboard/requesthelp"
   },
   {
     title: "Nearby Mechanics",
     logo: <GiAutoRepair />,
-    path: "/nearbymechanics"
+    path: "/userdashboard/nearbymechanics"
   },
   {
     title: "Live Tracking",
     logo: <FaLocationCrosshairs />,
-    path:"/livetarcking"
+    path:"/userdashboard/livetarcking"
   },
   {
     title: "Service History",
     logo: <FaHistory />,
-    path:"/servoceHistory"
+    path:"/userdashboard/servoceHistory"
   },
   {
     title: "Wallet/Payments",
     logo: <FaWallet />,
-    path: "/payments"
+    path: "/userdashboard/payments"
   },
   {
     title: "Maintence Alert",
     logo: <HiMiniBellAlert />,
-    path: "/maintence"
+    path: "/userdashboard/maintence"
   },
   {
     title: "Profile/Setting",
     logo: <IoPersonSharp />,
-    path:"/profile"
+    path:"/userdashboard/profile"
   },
 ];

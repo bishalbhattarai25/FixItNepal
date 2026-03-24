@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaHashtag, FaPhoneAlt, FaExternalLinkAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import instance from '../../../../Server/Axios';
 import FetchLoader from '../../../../Loader/FetchLoader';
 
 const ServiceTable = () => {
+  const navigate = useNavigate();
   const [datavalue, setDatavalue] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const[type, setActiveType] =useState("centerlist")
 
   useEffect(() => {
     instance.get("/api/garage",{
@@ -97,7 +100,9 @@ const ServiceTable = () => {
 
                   {/* Action Column */}
                   <td className="px-6 py-4 text-right">
-                    <button className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm active:scale-95">
+                    <button
+                    onClick={()=>{navigate(`/superadmin/${type}/${item.id}`)}}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm active:scale-95">
                       View Record <FaExternalLinkAlt size={10} />
                     </button>
                   </td>

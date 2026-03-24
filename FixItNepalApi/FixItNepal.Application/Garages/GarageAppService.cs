@@ -3,6 +3,7 @@ using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs.Exceptions;
@@ -11,6 +12,7 @@ using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.MediaFiles;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
+using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +25,8 @@ public class GarageAppService(
     IMapper mapper,
     IRepository<MediaFile>  mediaFileRepository,
     IUnitOfWork unitOfWork,
-    UserManager<AppUser> userManager
+    UserManager<AppUser> userManager,
+    IServiceRequestRepository serviceRequestRepository
     ) : IGarageService
 {
     public async Task<PagedResultDto<GarageDto>> GetListAsync(GaragePagedListDto input)
@@ -106,6 +109,12 @@ public class GarageAppService(
         garage.ApprovalStatus = approvalStatus;
          garageRepository.Update(garage);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)
+    {
+        var todayRequest = await serviceRequestRepository.GetTodayServiceRequestsAsync(id);
+        return mapper.Map<IEnumerable<ServiceRequest>, IEnumerable<RequestDto>>(todayRequest); 
     }
 
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)

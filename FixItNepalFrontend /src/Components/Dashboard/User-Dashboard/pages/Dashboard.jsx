@@ -16,6 +16,7 @@ import { FaLocationDot } from "react-icons/fa6";
 
 
 export const Dashboard = () => {
+
   return (
     <div className="max-w-7xl mx-auto px-6 w-fit">
       <h1 className='text-3xl font-bold '>Dashboard</h1>
@@ -102,7 +103,9 @@ export const Dashboard = () => {
 
     <div>
       <h3 className="font-bold text-xl mb-5">Quick Actions</h3>
-      <button className="w-full flex gap-3 font-bold  bg-red-400 hover:bg-red-600 text-white py-4 rounded-xl font-semibold shadow px-3">
+      <button 
+
+      className="w-full flex gap-3 font-bold  bg-red-400 hover:bg-red-600 text-white py-4 rounded-xl font-semibold shadow px-3">
         <FaExclamationCircle  className='text-2xl'/>REQUEST EMERGENCY HELP
       </button>
     </div>

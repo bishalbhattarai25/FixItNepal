@@ -3,7 +3,8 @@ namespace FixItNepal.Domain.Shared.ServiceRequests;
 public enum ServiceRequestStatus
 {
     Pending,      
-    Accepted,    
+    Accepted,   
+    Rejected,
     InProgress,    
     Completed,
     Cancelled

@@ -25,14 +25,14 @@ public class ServiceRequestAppService(
 {
     public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
     {
-        var address = mapper.Map<CreateAddressDto, Address>(input.Address);
+        var locationCoordinates = mapper.Map<LocationCoordinationDto, Point>(input.LocationCoordinates);
         var serviceRequest = new ServiceRequest()
         {
             ProblemType = input.ProblemType,
             RequestType = input.RequestType,
             ProblemDescription = input.ProblemDescription,
             ScheduledDate = input.ScheduledDate,
-            Address = address,
+            LocationCoordinatePoint = locationCoordinates,
         };
 
         if (input.RequestType == RequestType.Scheduled && input.ScheduledDate == null)
@@ -47,7 +47,7 @@ public class ServiceRequestAppService(
 
         //user location into point to calculate the nearby garages and mechanics
         
-        var userLocation = new Point(address.LocationCoordinatePoint!.X, address.LocationCoordinatePoint.Y);
+        var userLocation = new Point(input.LocationCoordinates.Longitude, input.LocationCoordinates.Latitude);
         var radiusInMeters = input.RadiusInKm * 1000;
         
         var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
@@ -66,22 +66,37 @@ public class ServiceRequestAppService(
 
         return serviceRequestDto;
     }
-
+    
     public async Task<RequestDto> AssignRequestAsync(Guid id, Guid serviceProviderId)
     {
         var request =  await serviceRequestRepository.GetAsync(id);
-        if (request.Status != ServiceRequestStatus.Pending)
+        if (request.Status != ServiceRequestStatus.Pending &&  request.Status != ServiceRequestStatus.Rejected )
         {
-            throw new BusinessException("RequestStatusNotPending", "Request status should be pending.");
+            throw new BusinessException("RequestAlreadyProcessed", "Request already handled");
         }
         
-        request.Status = ServiceRequestStatus.Accepted;
+        request.Status = ServiceRequestStatus.Pending;
         request.ServiceProviderId = serviceProviderId;
 
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         return mapper.Map<ServiceRequest, RequestDto>(request);
     }
+    
+    public async Task<RequestDto> UpdateRequestAsync(Guid id, UpdateRequestStatusDto input)
+    {
+        
+        var request =  await serviceRequestRepository.GetAsync(id);
+        if (request.ServiceProviderId != input.ServiceProviderId)
+        {
+            throw new BusinessException("UnAuthorized", "This is not your request");
+        }
+        
+        request.Status = input.Status;
 
+        serviceRequestRepository.Update(request);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        return mapper.Map<ServiceRequest, RequestDto>(request);
+    }
 
 }
