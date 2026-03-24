@@ -82,32 +82,21 @@ public class ServiceRequestAppService(
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         return mapper.Map<ServiceRequest, RequestDto>(request);
     }
-    public async Task<RequestDto> AcceptRequestAsync(Guid id, Guid serviceProviderId)
+    
+    public async Task<RequestDto> UpdateRequestAsync(Guid id, UpdateRequestStatusDto input)
     {
+        
         var request =  await serviceRequestRepository.GetAsync(id);
-        if (request.ServiceProviderId != serviceProviderId)
+        if (request.ServiceProviderId != input.ServiceProviderId)
         {
             throw new BusinessException("UnAuthorized", "This is not your request");
         }
         
-        request.Status = ServiceRequestStatus.Accepted;
+        request.Status = input.Status;
 
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         return mapper.Map<ServiceRequest, RequestDto>(request);
-    }
-    
-    public async Task RejectRequestAsync(Guid id, Guid serviceProviderId)
-    {
-        var request =  await serviceRequestRepository.GetAsync(id);
-        if (request.ServiceProviderId != serviceProviderId)
-        {
-            throw new BusinessException("UnAuthorized", "This is not your request");
-        }
-        request.Status = ServiceRequestStatus.Rejected;
-
-        serviceRequestRepository.Update(request);
-        await unitOfWork.SaveChangesAsync(CancellationToken.None);
     }
 
 }

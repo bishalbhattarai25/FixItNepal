@@ -24,17 +24,11 @@ public class ServiceRequestController(
         return request;
     }
     
-    [HttpPut("{id:guid}/accept")]
-    public async Task<RequestDto> AcceptRequestAsync(Guid id, Guid serviceProviderId)
+    [HttpPut("{id:guid}/update-status")]
+    public async Task<RequestDto> AcceptRequestAsync(Guid id, UpdateRequestStatusDto input)
     {
-        var request = await serviceRequestService.AcceptRequestAsync(id, serviceProviderId);
+        var request = await serviceRequestService.UpdateRequestAsync(id, input);
         return request;
-    }
-
-    [HttpPatch("{id:guid}/reject")]
-    public async Task RejectRequestAsync(Guid id, Guid serviceProviderId)
-    {
-         await serviceRequestService.RejectRequestAsync(id, serviceProviderId);
     }
     
 }

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FixItNepal.Domain.Addresses;
+using FixItNepal.Domain.Customers;
 using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Shared.Addresses;
 using FixItNepal.Domain.Shared.ServiceRequests;
@@ -10,6 +11,8 @@ namespace FixItNepal.Domain.ServiceRequests;
 
 public class ServiceRequest:BaseEntity
 {
+    public Guid CustomerId { get; set; }
+    public Customer Customer { get; set; } = null!;
     public ProblemType ProblemType { get; set; }
     public RequestType RequestType { get; set; }
     
