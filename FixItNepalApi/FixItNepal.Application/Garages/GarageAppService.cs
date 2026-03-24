@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
+using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Application.Contracts.ServiceRequests;
@@ -26,7 +27,8 @@ public class GarageAppService(
     IRepository<MediaFile>  mediaFileRepository,
     IUnitOfWork unitOfWork,
     UserManager<AppUser> userManager,
-    IServiceRequestRepository serviceRequestRepository
+    IServiceRequestRepository serviceRequestRepository,
+    IAppUserEmailer emailer
     ) : IGarageService
 {
     public async Task<PagedResultDto<GarageDto>> GetListAsync(GaragePagedListDto input)
@@ -109,6 +111,8 @@ public class GarageAppService(
         garage.ApprovalStatus = approvalStatus;
          garageRepository.Update(garage);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        await emailer.SendApprovalEmailAsync(garage.Email, garage.Name, ApiConst.AppGarageRoleName, garage.ApprovalStatus.ToString());
     }
 
     public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)
