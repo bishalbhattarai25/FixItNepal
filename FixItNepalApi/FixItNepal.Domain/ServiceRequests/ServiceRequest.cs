@@ -11,8 +11,8 @@ namespace FixItNepal.Domain.ServiceRequests;
 
 public class ServiceRequest:BaseEntity
 {
-    public Guid CustomerId { get; set; }
-    public Customer Customer { get; set; } = null!;
+    // public Guid CustomerId { get; set; }
+    // public Customer Customer { get; set; } = null!;
     public ProblemType ProblemType { get; set; }
     public RequestType RequestType { get; set; }
     

@@ -1,0 +1,60 @@
+@page "/LiveStatus"
+@{
+    ViewData["Title"] = "Live Request Status Test";
+}
+
+<h2>Live Request Status Test</h2>
+
+<label for="requestIdInput">Enter Request ID (GUID):</label>
+<input type="text" id="requestIdInput" style="width:350px;" placeholder="e.g. d9f8a7c6-1234-4567-8901-abcdef123456" />
+<button id="connectBtn">Connect</button>
+
+<div id="statusLog" style="border:1px solid #ccc; padding:10px; margin-top:10px; height:200px; overflow:auto;">
+    <em>No connection yet...</em>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    let connection = null;
+    const logDiv = document.getElementById("statusLog");
+
+    function log(message) {
+        const p = document.createElement("p");
+        p.textContent = message;
+        logDiv.appendChild(p);
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    document.getElementById("connectBtn").addEventListener("click", async () => {
+        const requestId = document.getElementById("requestIdInput").value.trim();
+        if (!requestId) {
+            alert("Please enter a valid Request ID.");
+            return;
+        }
+
+        if (connection) {
+            await connection.stop();
+            connection = null;
+            log("🔌 Disconnected previous connection.");
+        }
+
+        // Connect to your SignalR hub
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl(`/liveStatusHub?requestId=${requestId}`)
+            .withAutomaticReconnect()
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        // Listen for request status changes
+        connection.on("RequestStatusChange", (dto) => {
+            log(`📦 Request ${dto.requestId} → Status: ${dto.requestStatus} [${dto.liveUpdateType}]`);
+        });
+
+        try {
+            await connection.start();
+            log("✅ Connected to SignalR hub for Request ID: " + requestId);
+        } catch (err) {
+            log("❌ Connection error: " + err);
+        }
+    });
+</script>

@@ -10,6 +10,7 @@ using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
+using FixItNepal.Domain.Shared.LiveStatus;
 using FixItNepal.Domain.Shared.ServiceRequests;
 using NetTopologySuite.Geometries;
 
@@ -20,7 +21,9 @@ public class ServiceRequestAppService(
     IRepository<ServiceRequest> serviceRequestRepository,
     IUnitOfWork unitOfWork,
     IMechanicRepository mechanicRepository,
-    IGarageRepository garageRepository
+    IGarageRepository garageRepository,
+    IRequestNotifier requestNotifier,
+    IServiceProviderNotifier serviceProviderNotifier
     ):IServiceRequestService
 {
     public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
@@ -80,6 +83,8 @@ public class ServiceRequestAppService(
 
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        await serviceProviderNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestStatusUpdated);
         return mapper.Map<ServiceRequest, RequestDto>(request);
     }
     
@@ -96,7 +101,12 @@ public class ServiceRequestAppService(
 
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        //updating
+        await requestNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestAssigned);
+        
         return mapper.Map<ServiceRequest, RequestDto>(request);
+        
     }
 
 }

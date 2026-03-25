@@ -4,8 +4,11 @@ using FixItNepal.Application.AppUsers;
 using FixItNepal.Application.AutomapperProfiles;
 using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Customs.Email;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Application.Customs.Email;
 using FixItNepal.Application.Extensions;
+using FixItNepal.Application.ServiceRequests;
+using FixItNepal.Application.ServiceRequests.Hub;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Customs.Emailer;
@@ -57,6 +60,18 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
         options.Tokens.ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider
     ).AddEntityFrameworkStores<ApiDbContext>();
 
+//signalr
+
+builder.Services.AddSignalR()
+    .AddJsonProtocol(options =>
+    {
+        options.PayloadSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter()
+        );
+    });
+builder.Services.AddScoped<IRequestNotifier, LiveRequestNotifier>();
+builder.Services.AddScoped<IServiceProviderNotifier, LiveServiceProviderNotifier>();
+
 //repository 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -80,6 +95,8 @@ builder.Services.AddSingleton(new Cloudinary(
     )
 ));
 
+//razor 
+builder.Services.AddRazorPages();
 
 //email sender
 builder.Services.AddTransient<IEmailerService, EmailSender>();
@@ -157,7 +174,8 @@ builder.Services.AddCors(options =>
                 origin.StartsWith("https://fix-it-nepal")
             )
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -181,6 +199,9 @@ app.UseMiddleware<GlobalExceptionHandler>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapRazorPages();
+app.MapHub<LiveRequestHub>("/liveStatusHub");
+app.MapHub<LiveServiceProviderHub>("/liveServiceProviderHub");
 
 using (var scope = app.Services.CreateScope())
 {
