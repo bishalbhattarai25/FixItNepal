@@ -13,16 +13,12 @@ export const Sidebar = [
     logo: <IoMdHome />,
     path:"/dashboard"
   },
+  
   {
-    title: "Map",
-    logo: <FaHand />,
-    path: "/requesthelp"
+    title: "Emergancy request",
+    logo: <GiAutoRepair />,
+    path: "/energancyrequest"
   }
-//   {
-//     title: "Nearby Mechanics",
-//     logo: <GiAutoRepair />,
-//     path: "/nearbymechanics"
-//   },
 //   {
 //     title: "Live Tracking",
 //     logo: <FaLocationCrosshairs />,
