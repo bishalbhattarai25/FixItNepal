@@ -33,6 +33,24 @@ const Servicedashboard = () => {
     fetchRequests();
   }, []);
 
+
+  const updateStatus = async ( status) => {
+  try {
+        const garageId = localStorage.getItem("userId");
+    const response = await instance.patch(`/api/garage/${garageId}/approval-status`, null, {
+      // 'params' sends the data as ?approvalStatus=Value
+      params: {
+        approvalStatus: status
+      }
+    });
+
+    console.log('Update Successful:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating status:', error.response?.data || error.message);
+  }
+};
+
   return (
     <div className="space-y-6">
       {/* 1. Stats Row */}
@@ -115,10 +133,15 @@ const Servicedashboard = () => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button className="flex-1 bg-red-600 text-white py-3 rounded-xl font-black text-xs hover:bg-red-700 transition-colors shadow-lg shadow-red-100">
+                <button 
+                disabled ={loading}
+                onClick={()=> updateStatus('Approved')}
+                className="flex-1 bg-red-600 text-white py-3 rounded-xl font-black text-xs hover:bg-red-700 transition-colors shadow-lg shadow-red-100">
                   Accept
                 </button>
-                <button className="px-4 bg-white text-gray-400 py-3 rounded-xl font-black text-xs border border-gray-200 hover:bg-gray-100 transition-colors">
+                <button
+                disabled={loading}
+                onClick={()=>updateStatus('Rejected')} className="px-4 bg-white text-gray-400 py-3 rounded-xl font-black text-xs border border-gray-200 hover:bg-gray-100 transition-colors">
                   ✕
                 </button>
               </div>
