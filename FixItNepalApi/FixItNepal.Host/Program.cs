@@ -56,9 +56,12 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
     )
 );
 
-builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
+builder.Services.AddIdentityCore<AppUser>(options =>
         options.Tokens.ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider
-    ).AddEntityFrameworkStores<ApiDbContext>();
+    )
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<ApiDbContext>()
+    .AddDefaultTokenProviders();
 
 //signalr
 
@@ -127,6 +130,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+    
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    };
+});
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -137,31 +155,21 @@ builder.Services.AddSwaggerGen(options =>
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
+        Name         = "Authorization",
+        Type         = SecuritySchemeType.Http,
+        Scheme       = "Bearer",
         BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter: Bearer {your JWT token}"
+        In           = ParameterLocation.Header,
+        Description  = "Enter: Bearer {your JWT token}"
     });
-    //
-    // options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
-    // {
-    //     {
-    //         new OpenApiSecurityScheme
-    //         {
-    //             Reference = new OpenApiReference
-    //             {
-    //                 Type = ReferenceType.SecurityScheme,
-    //                 Id = "Bearer"
-    //             },
-    //             Scheme = "bearer",
-    //             Name = "Authorization",
-    //             In = ParameterLocation.Header
-    //         },
-    //         Array.Empty<string>()
-    //     }
-    // });
+    
+    options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecuritySchemeReference("Bearer", doc),
+            []
+        }
+    });
 });
 
 builder.Services.AddCors(options =>

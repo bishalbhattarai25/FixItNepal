@@ -33,4 +33,8 @@
     <ProjectReference Include="..\FixItNepal.EntityFrameworkCore\FixItNepal.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Appointments\" />
+  </ItemGroup>
+
 </Project>
