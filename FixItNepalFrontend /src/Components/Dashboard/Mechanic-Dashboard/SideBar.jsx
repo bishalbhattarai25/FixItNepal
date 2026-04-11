@@ -3,8 +3,6 @@ import { Sidebar } from "./Datalist3";
 import  Mechanicdashboard  from "./Pages/Mechanicdashboard";
 import MapSection from "./Pages/MapSection";
 import { HelpCircle, Bell } from "lucide-react"; // Matching icons from UI
-// import Appoint from "./pages/Appointment";
-
 
 const SideBar3 = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -101,6 +99,7 @@ const SideBar3 = () => {
           <div className="max-w-[1400px] mx-auto">
             {activeIndex === 0 && <Mechanicdashboard />}
             {activeIndex === 1 && <MapSection />}
+            
           </div>
         </main>
       </div>
