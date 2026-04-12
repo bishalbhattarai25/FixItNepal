@@ -1,11 +1,14 @@
 using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Customs.Email;
 using FixItNepal.Application.Customs.Email;
+using FixItNepal.Domain.Shared.BackgroundJobs;
+using Hangfire;
 using Microsoft.AspNetCore.Hosting;
 using Scriban;
 
 namespace FixItNepal.Application.AppUsers;
 
+[Queue(BackgroundJobPriority.High)]
 public class AppUserAccountEmailer:IAppUserEmailer
 {
     private readonly string _templateRoot;
@@ -31,13 +34,14 @@ public class AppUserAccountEmailer:IAppUserEmailer
     }
     public async Task SendApprovalEmailAsync(string email, string name, string role, string status)
     {
+        
         var html = await RenderTemplateAsync("ApprovalEmail.tpl", new
         {
             name,
             role,
             status,
-            dashboard_url = "https://yourfrontend.com/dashboard",
-            year = System.DateTime.UtcNow.Year
+            dashboard_url = "https://fix-it-nepal.vercel.app/dashboard",
+            year = DateTime.UtcNow.Year
         });
         
         await _emailSender.SendEmailAsync(

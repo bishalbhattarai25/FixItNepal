@@ -17,6 +17,7 @@ using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
+using FixItNepal.Domain.Shared.BackgroundJobs;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
 using FixItNepal.EntityFrameworkCore.Garages;
 using FixItNepal.EntityFrameworkCore.Mechanics;
@@ -24,6 +25,8 @@ using FixItNepal.EntityFrameworkCore.Repository;
 using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.ServiceRequests;
 using FixItNepal.Host.Middlewares;
+using Hangfire;
+using Hangfire.MySql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -97,6 +100,27 @@ builder.Services.AddSingleton(new Cloudinary(
         builder.Configuration["Cloudinary:ApiSecret"]
     )
 ));
+
+
+
+//hangfire for the backgorund job
+
+builder.Services.AddHangfireServer(options =>
+    options.Queues = new []{BackgroundJobPriority.High, BackgroundJobPriority.Normal, BackgroundJobPriority.Low}
+    );
+
+builder.Services.AddHangfire(options =>
+    options.UseStorage(
+        new MySqlStorage(Environment.GetEnvironmentVariable("MYSQL_CONNECTION")
+                         ?? builder.Configuration.GetConnectionString("DefaultConnection"),
+            new MySqlStorageOptions
+            {
+                TablesPrefix = "Hangfire",
+                TransactionIsolationLevel = System.Transactions.IsolationLevel.ReadCommitted
+            }
+        )
+    ));
+
 
 //razor 
 builder.Services.AddRazorPages();
@@ -210,6 +234,7 @@ app.MapControllers();
 app.MapRazorPages();
 app.MapHub<LiveRequestHub>("/liveStatusHub");
 app.MapHub<LiveServiceProviderHub>("/liveServiceProviderHub");
+app.UseHangfireDashboard("/hangfire");
 
 using (var scope = app.Services.CreateScope())
 {

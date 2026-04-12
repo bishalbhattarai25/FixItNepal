@@ -16,6 +16,7 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -111,8 +112,11 @@ public class GarageAppService(
         garage.ApprovalStatus = approvalStatus;
          garageRepository.Update(garage);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
-        
-        await emailer.SendApprovalEmailAsync(garage.Email, garage.Name, ApiConst.AppGarageRoleName, garage.ApprovalStatus.ToString());
+
+        BackgroundJob.Enqueue<IAppUserEmailer>(x =>
+            x.SendApprovalEmailAsync(garage.Email!, garage.Name, ApiConst.AppGarageRoleName,
+                garage.ApprovalStatus.ToString())
+        );
     }
 
     public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)
