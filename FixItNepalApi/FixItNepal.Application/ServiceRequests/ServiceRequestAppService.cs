@@ -103,7 +103,7 @@ public class ServiceRequestAppService(
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         
         //updating
-        await requestNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestAssigned);
+        await requestNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestStatusUpdated);
         
         return mapper.Map<ServiceRequest, RequestDto>(request);
         

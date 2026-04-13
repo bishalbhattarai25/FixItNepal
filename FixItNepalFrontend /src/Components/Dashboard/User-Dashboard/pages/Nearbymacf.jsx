@@ -1,14 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MapPin, Zap } from "lucide-react";
 import { Map } from "../../../HOC/Map";
 import instance from "../../../../Server/Axios";
+import { useNavigate } from "react-router-dom";
+import { useRequestHub } from "../../../../LiveHubs/UseRequestHub";
 
 const Nearbymecf = () => {
   const location = useLocation();
   const apiResponse = location.state?.activeRequest;
 
   const requestInfo = apiResponse?.request;
+
+  //for live updates
+
+  const [status, setStatus] = useState(requestInfo?.status);
+const [accepted, setAccepted] = useState(false);
+
+  var requestId = requestInfo?.id;
+
+useRequestHub(requestId, {
+  onStatusChange: (data) => {
+    console.log("📡 Live Update:", data);
+
+    setStatus(data.requestStatus);
+
+    if (data.liveUpdateType === "Accepted" || data.liveUpdateType === 1) {
+      setAccepted(true);
+
+      // // optional delay before redirect
+      // setTimeout(() => {
+      //   navigate(`/tracking/${requestId}`);
+      // }, 1500);
+    }
+  }
+});
+
+
   const garages = apiResponse?.nearbyGarages || [];
   const mechanics = apiResponse?.nearbyMechanics || [];
 
@@ -44,8 +72,7 @@ const Nearbymecf = () => {
                 {requestInfo.problemType} EMERGENCY
               </h2>
               <p className="text-sm opacity-90">
-                Status: <span className="font-bold">{requestInfo.status}</span>{" "}
-                • ID: {requestInfo.id.slice(0, 8)}
+                    Status: <span className="font-bold">{status}</span>
               </p>
             </div>
             <div className="text-right">
@@ -55,6 +82,7 @@ const Nearbymecf = () => {
           </div>
         </div>
       )}
+
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 space-y-6">
