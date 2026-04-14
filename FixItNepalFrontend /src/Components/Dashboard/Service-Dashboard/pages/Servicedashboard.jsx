@@ -5,20 +5,40 @@ import { Map } from "../../../HOC/Map";
 import instance from "../../../../Server/Axios";
 
 const Servicedashboard = () => {
-  const [requests, setRequests] = useState([]);
-  const [selectedReq, setSelectedReq] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [isTracking, setIsTracking] = useState(false);         
-  
-  const serviceProviderId = localStorage.getItem("userId");   
+const [requests, setRequests] = useState([]);
+const [selectedReq, setSelectedReq] = useState(null);
+const [loading, setLoading] = useState(false);
+const [isTracking, setIsTracking] = useState(false);
+const [newAlert, setNewAlert] = useState(false); // 👈 for blink effect
 
-  // Connect to provider hub — receives new request notifications
-  const connectionRef = useServiceProviderHub(serviceProviderId, {   
-    onStatusChange: (data) => {
-      console.log("Request status changed:", data);
-      fetchRequests();   // refresh the list when a status comes in
-    },
-  });
+const serviceProviderId = localStorage.getItem("userId");
+
+const connectionRef = useServiceProviderHub(serviceProviderId, {
+  onStatusChange: async (data) => {
+    console.log("FULL HUB DATA:", data);
+
+    if (data.liveUpdateType === 1) {
+      // RequestAssigned — fetch full request and add to inbox
+      const res = await instance.get(`/api/garage/${serviceProviderId}/todays-request`);
+      const newReq = res.data.find(r => r.id === data.requestId);
+
+      if (newReq?.requestType === "Emergency" && newReq?.status === "Pending") {
+        setRequests(prev => {
+          if (prev.find(r => r.id === newReq.id)) return prev;
+          return [{ ...newReq, isNew: true }, ...prev];
+        });
+        setNewAlert(true);
+        setTimeout(() => setNewAlert(false), 3000);
+      }
+
+    } else if (data.liveUpdateType === 2) {
+      // RequestStatusUpdated — remove from inbox
+      setRequests(prev => prev.filter(r => r.id !== data.requestId));
+      setSelectedReq(prev => prev?.id === data.requestId ? null : prev);
+    }
+    // liveUpdateType === 0 (RequestCreated) — ignored, we only show assigned
+  }
+});
 
   // Sends GPS location every 4s when isTracking is true
   useLocationSender(                                           
