@@ -26,6 +26,20 @@ public class GenericRepository<T> (
         }
         return entity;
     }
+    public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
+    {
+        var entity = await _dbSet.FirstOrDefaultAsync(filter);
+
+        if (entity == null)
+        {
+            var entityName = typeof(T).Name;
+            throw new BusinessException(
+                $"{entityName}:NotFound",
+                $"'{entityName}' was not found."
+            );
+        }
+        return entity;
+    }
 
     public async Task<IEnumerable<T>> GetListAsync( Expression<Func<T, bool>>? filter = null)
     {

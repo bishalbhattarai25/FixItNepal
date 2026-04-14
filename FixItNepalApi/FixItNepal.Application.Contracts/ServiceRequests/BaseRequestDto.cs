@@ -6,6 +6,7 @@ namespace FixItNepal.Application.Contracts.ServiceRequests;
 
 public class BaseRequestDto
 {
+    public Guid CustomerId { get; set; }
     public RequestType RequestType { get; set; }
     public ProblemType ProblemType { get; set; }
     public DateTime? ScheduledDate { get; set; }

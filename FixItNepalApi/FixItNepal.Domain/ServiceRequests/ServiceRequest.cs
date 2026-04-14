@@ -11,8 +11,9 @@ namespace FixItNepal.Domain.ServiceRequests;
 
 public class ServiceRequest:BaseEntity
 {
-    // public Guid CustomerId { get; set; }
-    // public Customer Customer { get; set; } = null!;
+    public Guid CustomerId { get; set; }
+    public Customer Customer { get; set; } = null!;
+    
     public ProblemType ProblemType { get; set; }
     public RequestType RequestType { get; set; }
     
@@ -21,7 +22,10 @@ public class ServiceRequest:BaseEntity
     [StringLength(ServiceRequestConst.MaxProblemDescriptionLength)]
     public string? ProblemDescription { get; set; } = null;
     
-    public Guid ServiceProviderId { get; set; }
+    public Guid? ServiceProviderId { get; set; }
+    
+    [Column(TypeName = AddressConst.PointTypeInMySQL)]
+    public Point? LastKnownLocationOfServiceProvider { get; set; }
     
     
     [Column(TypeName = AddressConst.PointTypeInMySQL)]

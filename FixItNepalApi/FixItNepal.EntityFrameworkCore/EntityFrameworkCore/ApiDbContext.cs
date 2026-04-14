@@ -193,6 +193,11 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             b.Property(a => a.LocationCoordinatePoint)
                 .HasColumnType(AddressConst.PointTypeInMySQL); 
             
+            b.HasOne(x => x.Customer)
+                .WithMany(x => x.ServiceRequests)
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             // b.Navigation(b => b.Address)
             //     .AutoInclude();
         });

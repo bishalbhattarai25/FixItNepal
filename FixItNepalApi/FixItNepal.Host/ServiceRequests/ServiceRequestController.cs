@@ -1,3 +1,5 @@
+using FixItNepal.Application.Contracts.Addresses;
+using FixItNepal.Application.Contracts.LiveStatus;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,5 +32,21 @@ public class ServiceRequestController(
         var request = await serviceRequestService.UpdateRequestAsync(id, input);
         return request;
     }
+
+    [HttpPost("get-nearby-service-providers")]
+    public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(LocationCoordinationDto input,
+        double radiusInKm)
+    {
+        var nearbyServiceProvider = await serviceRequestService.GetNearbyServiceProviderAsync(input, radiusInKm);
+        return nearbyServiceProvider;
+    }
+
+    [HttpPut("{id:guid}/get-last-service-provider-location")]
+    public async Task<LiveServiceProviderUpdateDto> GetLatestServiceProviderLocationAsync(Guid id)
+    {
+        var lastLocation = await  serviceRequestService.GetLatestServiceProviderLocationAsync(id);
+        return lastLocation;
+    }
+
     
 }

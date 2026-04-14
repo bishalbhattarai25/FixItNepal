@@ -5,6 +5,8 @@ namespace FixItNepal.Domain.Repository;
 public interface IRepository<T>  where T : class
 {
     Task<T> GetAsync(Guid id);
+    Task<T> GetAsync(Expression<Func<T, bool>> filter);
+
     Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>>? filter = null);
     Task<T> InsertAsync (T entity);
     public void Update(T entity);

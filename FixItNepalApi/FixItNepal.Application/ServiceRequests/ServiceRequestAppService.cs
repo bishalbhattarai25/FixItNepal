@@ -1,6 +1,7 @@
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Application.Contracts.LiveStatus;
 using FixItNepal.Application.Contracts.Mechanics;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
@@ -31,6 +32,7 @@ public class ServiceRequestAppService(
         var locationCoordinates = mapper.Map<LocationCoordinationDto, Point>(input.LocationCoordinates);
         var serviceRequest = new ServiceRequest()
         {
+            CustomerId = input.CustomerId,
             ProblemType = input.ProblemType,
             RequestType = input.RequestType,
             ProblemDescription = input.ProblemDescription,
@@ -84,7 +86,7 @@ public class ServiceRequestAppService(
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         
-        await serviceProviderNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestStatusUpdated);
+        await serviceProviderNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestAssigned);
         return mapper.Map<ServiceRequest, RequestDto>(request);
     }
     
@@ -98,15 +100,49 @@ public class ServiceRequestAppService(
         }
         
         request.Status = input.Status;
-
+        
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         
         //updating
         await requestNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestStatusUpdated);
-        
+        await serviceProviderNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestStatusUpdated);
+
         return mapper.Map<ServiceRequest, RequestDto>(request);
         
     }
 
+    public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(LocationCoordinationDto input, double radiusInKm )
+    {
+        var userLocation = new Point(input.Longitude, input.Latitude);
+        var radiusInMeters = radiusInKm * 1000;
+        
+        var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
+        var mechanics = await mechanicRepository.GetNearbyMechanicsAsync(userLocation, radiusInMeters);
+        
+        var nearbyGarages = mapper.Map<ICollection<Garage>, ICollection<GarageDto>>(garages);
+        var nearbyMechanics = mapper.Map<ICollection<Mechanic>, ICollection<MechanicDto>>(mechanics);
+        
+        var nearbyServicesDto = new NearbyServiceProviderDto()
+        {
+            NearbyGarages = nearbyGarages,
+            NearbyMechanics =  nearbyMechanics
+            
+        };
+        return nearbyServicesDto;
+    }
+
+    public async Task<LiveServiceProviderUpdateDto> GetLatestServiceProviderLocationAsync(Guid id)
+    {
+        var request = await serviceRequestRepository.GetAsync(id);
+        var lastLocationDto = new LiveServiceProviderUpdateDto()
+        {
+            RequestId = id,
+            ServiceProviderId = request.ServiceProviderId,
+            Longitude = request.LastKnownLocationOfServiceProvider!.X,
+            Latitude = request.LastKnownLocationOfServiceProvider.Y,
+            Timestamp = DateTimeOffset.UtcNow   
+        };
+        return lastLocationDto;
+    }
 }
