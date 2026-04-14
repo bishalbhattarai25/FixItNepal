@@ -3,6 +3,8 @@ import { MapPin, Star, AlertCircle, Clock, Check, X } from 'lucide-react';
 import { stats } from "../HOC/dashboard";
 import { Map } from "../../../HOC/Map";
 import instance from "../../../../Server/Axios";
+import { useServiceProviderHub } from "../../../../LiveHubs/useServiceProviderHub";
+import { useLocationSender } from "../../../../LiveHubs/UseLocationSender";
 
 const Servicedashboard = () => {
 const [requests, setRequests] = useState([]);
@@ -17,28 +19,40 @@ const connectionRef = useServiceProviderHub(serviceProviderId, {
   onStatusChange: async (data) => {
     console.log("FULL HUB DATA:", data);
 
-    if (data.liveUpdateType === 1) {
-      // RequestAssigned — fetch full request and add to inbox
-      const res = await instance.get(`/api/garage/${serviceProviderId}/todays-request`);
-      const newReq = res.data.find(r => r.id === data.requestId);
+    if (data.liveUpdateType === "RequestAssigned") {
+      await fetchRequests(); // 👈 THIS LINE HERE
+    }
 
-      if (newReq?.requestType === "Emergency" && newReq?.status === "Pending") {
-        setRequests(prev => {
-          if (prev.find(r => r.id === newReq.id)) return prev;
-          return [{ ...newReq, isNew: true }, ...prev];
-        });
-        setNewAlert(true);
-        setTimeout(() => setNewAlert(false), 3000);
-      }
-
-    } else if (data.liveUpdateType === 2) {
-      // RequestStatusUpdated — remove from inbox
+    else if (data.liveUpdateType === "RequestStatusUpdated") {
       setRequests(prev => prev.filter(r => r.id !== data.requestId));
       setSelectedReq(prev => prev?.id === data.requestId ? null : prev);
     }
-    // liveUpdateType === 0 (RequestCreated) — ignored, we only show assigned
   }
 });
+// const connectionRef = useServiceProviderHub(serviceProviderId, {
+//   onStatusChange: async (data) => {
+//     console.log("FULL HUB DATA:", data);
+
+//     if (data.liveUpdateType === "RequestAssigned") {
+//       const res = await instance.get(`/api/garage/${serviceProviderId}/todays-request`);
+//       const newReq = res.data.find(r => r.id === data.requestId);
+
+//       if (newReq?.requestType === "Emergency" && newReq?.status === "Pending") {
+//         setRequests(prev => {
+//           if (prev.find(r => r.id === newReq.id)) return prev;
+//           return [{ ...newReq, isNew: true }, ...prev];
+//         });
+//         setNewAlert(true);
+//         setTimeout(() => setNewAlert(false), 3000);
+//       }
+
+//     } else if (data.liveUpdateType === "RequestStatusUpdated") {
+//       setRequests(prev => prev.filter(r => r.id !== data.requestId));
+//       setSelectedReq(prev => prev?.id === data.requestId ? null : prev);
+//     }
+//   }
+// });
+
 
   // Sends GPS location every 4s when isTracking is true
   useLocationSender(                                           
@@ -152,7 +166,7 @@ const connectionRef = useServiceProviderHub(serviceProviderId, {
               <div className="flex gap-2">
                 <button 
                   disabled={loading}
-                  onClick={() => handleUpdate(selectedReq.id, 'Approved')}
+                  onClick={() => handleUpdate(selectedReq.id, 'Accepted')}
                   className="flex-1 bg-green-600 text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2"
                 >
                   <Check size={14} /> Accept
