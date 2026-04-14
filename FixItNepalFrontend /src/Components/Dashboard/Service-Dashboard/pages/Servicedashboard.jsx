@@ -8,6 +8,25 @@ const Servicedashboard = () => {
   const [requests, setRequests] = useState([]);
   const [selectedReq, setSelectedReq] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isTracking, setIsTracking] = useState(false);         
+  
+  const serviceProviderId = localStorage.getItem("userId");   
+
+  // Connect to provider hub — receives new request notifications
+  const connectionRef = useServiceProviderHub(serviceProviderId, {   
+    onStatusChange: (data) => {
+      console.log("Request status changed:", data);
+      fetchRequests();   // refresh the list when a status comes in
+    },
+  });
+
+  // Sends GPS location every 4s when isTracking is true
+  useLocationSender(                                           
+    connectionRef,
+    selectedReq?.id,
+    serviceProviderId,
+    isTracking
+  );
 
   
   const fetchRequests = async () => {
@@ -25,22 +44,27 @@ const Servicedashboard = () => {
 
   useEffect(() => { fetchRequests(); }, []);
 
-  
-  const handleUpdate = async (id, status) => {
-    setLoading(true);
-    try {
-      await instance.patch(`/api/garage/${id}/approval-status`, null, {
-        params: { approvalStatus: status }
-      });
-      // Refresh list after update
-      fetchRequests();
-      setSelectedReq(null);
-    } catch (err) {
-      console.error("Update error", err);
-    } finally {
-      setLoading(false);
+ const handleUpdate = async (id, status) => {
+  setLoading(true);
+  try {
+    await instance.patch(`/api/garage/${id}/approval-status`, null, {
+      params: { approvalStatus: status }
+    });
+
+    if (status === "Accepted") {
+      setIsTracking(true);   // ADD — start sending location when accepted
+    } else {
+      setIsTracking(false);  // ADD — stop if rejected
     }
-  };
+
+    fetchRequests();
+    setSelectedReq(null);
+  } catch (err) {
+    console.error("Update error", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="space-y-6 p-4">
