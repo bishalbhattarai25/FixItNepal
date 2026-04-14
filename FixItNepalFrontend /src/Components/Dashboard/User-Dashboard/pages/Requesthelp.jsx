@@ -26,7 +26,9 @@ export const Requesthelp = () => {
     { name: "Out of Fuel", icon: Fuel },
   ];
 
+  var customerId = localStorage.getItem("userId")
   const initialValues = {
+    customerId:customerId,
     requestType: "Emergency",
     problemType: "",
     scheduledDate: new Date().toISOString(),
@@ -44,6 +46,7 @@ export const Requesthelp = () => {
       setIsSubmitting(true);
       try {
         const payload = {
+          customerId:values.customerId,
           requestType: values.requestType,
           problemType: values.problemType,
           scheduledDate: values.scheduledDate,

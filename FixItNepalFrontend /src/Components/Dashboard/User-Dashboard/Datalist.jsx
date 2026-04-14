@@ -26,7 +26,7 @@ export const Sidebar = [
   {
     title: "Live Tracking",
     logo: <FaLocationCrosshairs />,
-    path:"/userdashboard/livetarcking"
+    path:"/userdashboard/livetracking"
   },
   {
     title: "Service History",

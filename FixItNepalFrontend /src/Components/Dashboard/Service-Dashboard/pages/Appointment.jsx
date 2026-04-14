@@ -17,10 +17,6 @@ import { appointments } from "../HOC/Appointdata";
 const Appointment = () => {
   const [viewMode, setViewMode] = useState("card"); // 'card' or 'list'
 
-  
-
-  
-
   return (
     <div className="animate-in fade-in duration-500">
       {/* Header & View Toggle */}

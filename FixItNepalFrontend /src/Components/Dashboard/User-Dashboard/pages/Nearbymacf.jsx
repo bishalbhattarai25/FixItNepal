@@ -13,6 +13,7 @@ const Nearbymecf = () => {
   const requestInfo = apiResponse?.request;
 
   //for live updates
+  const navigate = useNavigate();
 
   const [status, setStatus] = useState(requestInfo?.status);
 const [accepted, setAccepted] = useState(false);
@@ -21,45 +22,48 @@ const [accepted, setAccepted] = useState(false);
 
 useRequestHub(requestId, {
   onStatusChange: (data) => {
-    console.log("📡 Live Update:", data);
+    console.log(" Live Update:", data);
 
     setStatus(data.requestStatus);
 
-    if (data.liveUpdateType === "Accepted" || data.liveUpdateType === 1) {
+    if (data.requestStatus === "Accepted" || data.liveUpdateType === 1) {
       setAccepted(true);
-
-      // // optional delay before redirect
-      // setTimeout(() => {
-      //   navigate(`/tracking/${requestId}`);
-      // }, 1500);
+      
+      // optional delay before redirect
+      setTimeout(() => {
+       navigate("/userdashboard/livetracking", {
+      state: {
+    requestId: requestId,
+  },
+});
+      }, 1500);
     }
   }
 });
 
-
   const garages = apiResponse?.nearbyGarages || [];
   const mechanics = apiResponse?.nearbyMechanics || [];
 
-  // 1. The Assignment Logic 
   const handleHireNow = async (providerId, providerType) => {
-    if (!requestInfo?.id) return alert("No active request found.");
+  if (!requestInfo?.id) return alert("No active request found.");
 
-    try {
-      // API call: /api/servicerequest/{id}/assign
-      const response = await instance.put(`/api/servicerequest/${requestInfo.id}/assign`, {
-        providerId,
-        providerType, // 'Garage' or 'Mechanic'
-      });
-
-      if (response.status === 200) {
-        alert("Mechanic/Garage assigned successfully!");
-        // Redirect or update UI state here
+  try {
+    const response = await instance.put(
+      `/api/servicerequest/${requestInfo.id}/assign`,
+      {
+        serviceProviderId: providerId,      
+        serviceProviderType: providerType,   
       }
-    } catch (error) {
-      console.error("Assignment failed:", error);
-      alert("Failed to hire. Please try again.");
+    );
+
+    if (response.status === 200) {
+      alert("Mechanic/Garage assigned successfully!");
     }
-  };
+  } catch (error) {
+    console.error("Assignment failed:", error);
+    alert("Failed to hire. Please try again.");
+  }
+};
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen font-sans">

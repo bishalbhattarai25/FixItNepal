@@ -12,6 +12,14 @@ public class ServiceRequestController(
     )
     :ControllerBase
 {
+    
+    [HttpGet("{id:guid}")]
+    public async Task<ServiceRequestDto> GetAsync(Guid id)
+    {
+        var serviceRequest = await serviceRequestService.GetAsync(id);
+        return serviceRequest;
+    }
+    
     [HttpPost]
     public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
     {

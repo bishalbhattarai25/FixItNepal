@@ -22,6 +22,7 @@ import Servicehistory from "./Components/Dashboard/User-Dashboard/pages/Serviceh
 import Wallet from './Components/Dashboard/User-Dashboard/pages/wallet';
 import {Maintence} from './Components/Dashboard/User-Dashboard/pages/Maintence';
 import Profile from './Components/Dashboard/User-Dashboard/pages/Profile';
+import ServiceLivetrack from "./Components/Dashboard/Service-Dashboard/pages/ServiceLiveTrack";
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
             {/* Default: /userdashboard */}
             <Route path="requesthelp" element={<Requesthelp />} />
             <Route path="nearbymechanics" element={<Nearbymacf />} />
-            <Route path="livetarcking" element={<Livetrack />} />
+            <Route path="livetracking" element={<Livetrack />} />
             <Route path="servoceHistory" element={<Servicehistory />} />
             <Route path="payments" element={<Wallet />} />
             <Route path="maintence" element={<Maintence />} />
@@ -50,10 +51,15 @@ function App() {
         </Route>
 
         {/* service route */}
-        <Route element={<Protectedroute allowedRoles={["Garage"]} />}>
-          <Route path="/servicecenter" element={<Layout2 />} />
-        </Route>
+       <Route element={<Protectedroute allowedRoles={["Garage"]} />}>
+  <Route path="/servicecenter" element={<Layout2 />} />
 
+  {/* ✅ LIVE TRACKING PAGE FOR SERVICE PROVIDER */}
+  <Route
+    path="/servicecenter/livetracking"
+    element={<ServiceLivetrack />}
+  />
+</Route>
         {/* mechanic route */}
         <Route element={<Protectedroute allowedRoles={["Mechanic"]} />}>
           <Route path="/mechanic" element={<Mechanicpage />} />

@@ -5,6 +5,7 @@ namespace FixItNepal.Application.Contracts.ServiceRequests;
 
 public interface IServiceRequestService
 {
+    Task<ServiceRequestDto> GetAsync(Guid id);
     Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input);
     Task<RequestDto> AssignRequestAsync(Guid id, AssignServiceProviderDto input);
     Task<RequestDto> UpdateRequestAsync(Guid id, UpdateRequestStatusDto input);

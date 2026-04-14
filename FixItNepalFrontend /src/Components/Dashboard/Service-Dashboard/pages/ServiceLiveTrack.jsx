@@ -4,11 +4,11 @@ import { Map } from '../../../HOC/Map';
 import { useLocation } from 'react-router-dom';
 import instance from "../../../../Server/Axios";
 
-const Livetrack = () => {
+const ServiceLivetrack = () => {
 
-  const location = useLocation();
+const location = useLocation();
 const [request, setRequest] = useState(null);
-const [provider, setProvider] = useState(null);
+const [customer, setCustomer] = useState(null);
 const [loading, setLoading] = useState(true);
   
   var requestId = location.state?.requestId;
@@ -35,22 +35,14 @@ useEffect(() => {
 }, [requestId]);
 
 useEffect(() => {
-  const fetchProvider = async () => {
+  const fetchCustomer = async () => {
     if (!request?.serviceProviderId) return;
 
     try {
-      let res;
-
-      if (request.serviceProviderType === "Garage") {
         res = await instance.get(
-          `/api/garage/${request.serviceProviderId}`
+          `/api/customer/${request.customerId}`
         );
-      } else {
-        res = await instance.get(
-          `/api/mechanic/${request.serviceProviderId}`
-        );
-      }
-      setProvider(res.data);
+      setCustomer(res.data);
       setLoading(false);
 
     } catch (err) {
@@ -59,7 +51,7 @@ useEffect(() => {
     }
   };
 
-  fetchProvider();
+  fetchCustomer();
 }, [request]);
 
 
@@ -113,19 +105,19 @@ if (loading) {
           {/* Mechanic Profile Card */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-4 mb-6">
-               {provider.logo?.accessUrl ? (
+               {customer.logo?.accessUrl ? (
                         <img 
-                          src={provider.logo.accessUrl} 
+                          src={customer.logo.accessUrl} 
                           alt="Logo" 
                           className="w-10 h-10 rounded-lg object-cover border border-gray-100" 
                         />
                       ) : (
                         <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
-                          {item.name?.substring(0, 2).toUpperCase()}
+                          {customer.name?.substring(0, 2).toUpperCase()}
                         </div>
                       )}
               <div>
-                <h3 className="text-lg font-bold text-gray-900"> {provider?.name || "Loading..."}</h3>
+                <h3 className="text-lg font-bold text-gray-900"> {customer?.name || "Loading..."}</h3>
                 <div className="flex items-center gap-1 text-sm">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   <span className="font-bold text-gray-800">4.8</span>
@@ -153,7 +145,7 @@ if (loading) {
             {/* Action Buttons */}
             <div className="flex gap-3 mb-3">
               <button className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-colors">
-                <Phone className="w-4 h-4" />   <a href={`tel:${provider?.phone}`}>
+                <Phone className="w-4 h-4" />   <a href={`tel:${customer?.phone}`}>
   <button className="flex-1 bg-emerald-500 text-white py-3 rounded-xl">
     Call
   </button>
@@ -187,4 +179,4 @@ if (loading) {
   );
 };
 
-export default Livetrack;
+export default ServiceLivetrack;

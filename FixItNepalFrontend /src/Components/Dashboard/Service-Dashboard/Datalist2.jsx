@@ -14,10 +14,20 @@ export const Sidebar = [
     path:"/userdashboard"
   },
   {
+    title: "LiveTracking",
+    logo: <FaLocationCrosshairs />,
+    path: "/servicecenter/livetracking"
+  },
+  {
     title: "Appointment",
     logo: <FaHand />,
     path: "/requesthelp"
-  }
+  },
+    {
+    title: "Logout",
+    logo: <IoPersonSharp />,
+    path:"/profile"
+  },
 //   {
 //     title: "Nearby Mechanics",
 //     logo: <GiAutoRepair />,
@@ -43,9 +53,5 @@ export const Sidebar = [
 //     logo: <HiMiniBellAlert />,
 //     path: "/maintence"
 //   },
-//   {
-//     title: "Profile/Setting",
-//     logo: <IoPersonSharp />,
-//     path:"/profile"
-//   },
+
 ];

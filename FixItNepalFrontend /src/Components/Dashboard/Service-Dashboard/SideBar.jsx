@@ -3,6 +3,7 @@ import { Sidebar } from "./Datalist2";
 import  Servicedashboard  from "./pages/Servicedashboard";
 import { HelpCircle, Bell } from "lucide-react"; // Matching icons from UI
 import Appoint from "./pages/Appointment";
+import ServiceLivetrack from "./pages/ServiceLiveTrack";
 
 
 const SideBar2 = () => {
@@ -99,7 +100,10 @@ const SideBar2 = () => {
         <main className="flex-1 overflow-y-auto p-8">
           <div className="max-w-[1400px] mx-auto">
             {activeIndex === 0 && <Servicedashboard />}
-            {activeIndex === 1 && <Appoint />}
+            {activeIndex === 1 && <ServiceLivetrack />}
+            {activeIndex === 2 && <Appoint />}
+            {activeIndex === 3 && ""}
+
           </div>
         </main>
       </div>

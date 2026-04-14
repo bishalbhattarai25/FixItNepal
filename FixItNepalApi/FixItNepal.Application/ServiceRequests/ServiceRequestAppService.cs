@@ -27,6 +27,12 @@ public class ServiceRequestAppService(
     IServiceProviderNotifier serviceProviderNotifier
     ):IServiceRequestService
 {
+    public async Task<ServiceRequestDto> GetAsync(Guid id)
+    {
+        var serviceRequest = await serviceRequestRepository.GetAsync(id);
+        return mapper.Map<ServiceRequest, ServiceRequestDto>(serviceRequest);
+    }
+    
     public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
     {
         var locationCoordinates = mapper.Map<LocationCoordinationDto, Point>(input.LocationCoordinates);
