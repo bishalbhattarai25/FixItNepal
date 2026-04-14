@@ -190,6 +190,9 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             b.Property(x => x.Status)
                 .HasConversion<string>();
             
+            b.Property(x => x.ServiceProviderType)
+                .HasConversion<string>();
+            
             b.Property(a => a.LocationCoordinatePoint)
                 .HasColumnType(AddressConst.PointTypeInMySQL); 
             

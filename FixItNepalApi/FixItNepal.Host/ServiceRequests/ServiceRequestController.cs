@@ -20,9 +20,9 @@ public class ServiceRequestController(
     }
 
     [HttpPut("{id:guid}/assign")]
-    public async Task<RequestDto> AssignRequestAsync(Guid id, Guid serviceProviderId)
+    public async Task<RequestDto> AssignRequestAsync(Guid id, AssignServiceProviderDto input)
     {
-        var request = await  serviceRequestService.AssignRequestAsync(id, serviceProviderId);
+        var request = await  serviceRequestService.AssignRequestAsync(id, input);
         return request;
     }
     

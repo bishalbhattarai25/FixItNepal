@@ -72,7 +72,7 @@ public class ServiceRequestAppService(
         return serviceRequestDto;
     }
     
-    public async Task<RequestDto> AssignRequestAsync(Guid id, Guid serviceProviderId)
+    public async Task<RequestDto> AssignRequestAsync(Guid id, AssignServiceProviderDto input)
     {
         var request =  await serviceRequestRepository.GetAsync(id);
         if (request.Status != ServiceRequestStatus.Pending &&  request.Status != ServiceRequestStatus.Rejected )
@@ -81,7 +81,8 @@ public class ServiceRequestAppService(
         }
         
         request.Status = ServiceRequestStatus.Pending;
-        request.ServiceProviderId = serviceProviderId;
+        request.ServiceProviderId = input.ServiceProviderId;
+        request.ServiceProviderType = input.ServiceProviderType;
 
         serviceRequestRepository.Update(request);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
