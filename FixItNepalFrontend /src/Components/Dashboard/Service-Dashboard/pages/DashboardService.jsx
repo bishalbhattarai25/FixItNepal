@@ -4,6 +4,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { FaExclamationCircle } from "react-icons/fa";
 import { FaTools } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { FaRegClock } from "react-icons/fa";
 import { IoIosLocate } from "react-icons/io";
 import { AiOutlineCheck } from "react-icons/ai";
 

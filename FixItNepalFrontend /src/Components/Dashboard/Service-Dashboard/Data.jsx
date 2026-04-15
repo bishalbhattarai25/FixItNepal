@@ -26,7 +26,7 @@ export const SideBar = [
      {
     title: "Logout",
     logo: <IoPersonSharp />,
-    action: "logout", // 👈 important
+    action: "logout", 
   }
 //   {
 //     title: "Nearby Mechanics",

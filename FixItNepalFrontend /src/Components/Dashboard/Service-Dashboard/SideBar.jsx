@@ -9,7 +9,7 @@ const SideBar = () => {
         <NavLink
           key={index}
           to={item.path}
-          end={item.path === "/servicecenter"}   // 👈 IMPORTANT FIX
+          end={item.path === "/servicecenter"}   
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all relative
             ${
