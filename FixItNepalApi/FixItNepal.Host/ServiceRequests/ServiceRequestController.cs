@@ -14,7 +14,7 @@ public class ServiceRequestController(
 {
     
     [HttpGet("{id:guid}")]
-    public async Task<ServiceRequestDto> GetAsync(Guid id)
+    public async Task<RequestDto> GetAsync(Guid id)
     {
         var serviceRequest = await serviceRequestService.GetAsync(id);
         return serviceRequest;

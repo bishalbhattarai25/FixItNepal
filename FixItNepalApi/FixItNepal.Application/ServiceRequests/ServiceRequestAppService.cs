@@ -27,10 +27,10 @@ public class ServiceRequestAppService(
     IServiceProviderNotifier serviceProviderNotifier
     ):IServiceRequestService
 {
-    public async Task<ServiceRequestDto> GetAsync(Guid id)
+    public async Task<RequestDto> GetAsync(Guid id)
     {
         var serviceRequest = await serviceRequestRepository.GetAsync(id);
-        return mapper.Map<ServiceRequest, ServiceRequestDto>(serviceRequest);
+        return mapper.Map<ServiceRequest, RequestDto>(serviceRequest);
     }
     
     public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
