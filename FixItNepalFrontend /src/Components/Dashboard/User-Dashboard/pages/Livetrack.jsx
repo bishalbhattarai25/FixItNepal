@@ -3,6 +3,7 @@ import { Phone, MessageSquare, X, Headset, Star } from 'lucide-react';
 import { Map } from '../../../HOC/Map';
 import { useLocation } from 'react-router-dom';
 import instance from "../../../../Server/Axios";
+import LiveTrackMap from '../../../HOC/LiveTrackMap';
 
 const Livetrack = () => {
 
@@ -10,7 +11,9 @@ const Livetrack = () => {
 const [request, setRequest] = useState(null);
 const [provider, setProvider] = useState(null);
 const [loading, setLoading] = useState(true);
-  
+  const [userLocation, setUserLocation] = useState(null);
+  const [mechanicLocation, setMechanicLocation] = useState(null);
+
   var requestId = location.state?.requestId;
 
 useEffect(() => {
@@ -33,6 +36,17 @@ useEffect(() => {
 
   fetchRequest();
 }, [requestId]);
+
+
+useEffect(() => {
+  if (!request?.locationCoordinates) return;
+
+  const { latitude, longitude } = request.locationCoordinates;
+
+  if (latitude !== 0 && longitude !== 0) {
+    setUserLocation([latitude, longitude]);
+  }
+}, [request]);
 
 useEffect(() => {
   const fetchProvider = async () => {
@@ -104,8 +118,12 @@ if (loading) {
             </div>
           </div>
 
-          {/* Integrated Map Component */}
-          <Map />
+           {/* Integrated Map Component */}
+ <LiveTrackMap
+  userLocation={userLocation}
+  mechanicLocation={mechanicLocation}
+  role="ServiceProvider"
+/>
         </div>
 
         {/* Sidebar Info */}

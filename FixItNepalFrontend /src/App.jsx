@@ -1,9 +1,9 @@
 import HomePage from "./Pages/HomePage";
+import { useLocation } from "react-router-dom";
 import NavBar from "./Components/Navigation/NavBar";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Login } from "./Components/Login";
 import { Userdashboard } from "./Pages/Userdashboard";
-import Layout2 from "./Components/Dashboard/Service-Dashboard/layout";
 import Registerpage from "./Pages/Registerpage";
 import { Mechanicpage } from "./Pages/Mechanicpage";
 import { Admin } from "./Pages/Admin";
@@ -23,11 +23,28 @@ import Wallet from './Components/Dashboard/User-Dashboard/pages/wallet';
 import {Maintence} from './Components/Dashboard/User-Dashboard/pages/Maintence';
 import Profile from './Components/Dashboard/User-Dashboard/pages/Profile';
 import ServiceLivetrack from "./Components/Dashboard/Service-Dashboard/pages/ServiceLiveTrack";
+import Servicedashboard from "./Components/Dashboard/Service-Dashboard/pages/DashboardService";
+import DashboardService from "./Components/Dashboard/Service-Dashboard/pages/DashboardService";
+import Appointment from "./Components/Dashboard/Service-Dashboard/pages/Appointment";
+import { Layout2 } from "./Components/Dashboard/Service-Dashboard/layout";
+import { ServiceCenter } from "./Pages/ServiceCenter";
 
 function App() {
+   const location = useLocation();
+
+const hideNavbarRoutes = [
+  "/userdashboard",
+  "/mechanic",
+  "/superadmin",
+  "/servicecenter"
+];
+
+const shouldHideNavbar = hideNavbarRoutes.some((route) =>
+  location.pathname.startsWith(route)
+);
   return (
-    <BrowserRouter>
-      <NavBar />
+    <>
+     {!shouldHideNavbar && <NavBar />}
 
       <Routes>
         {/* PUBLIC ROUTE */}
@@ -50,16 +67,18 @@ function App() {
           </Route>
         </Route>
 
-        {/* service route */}
-       <Route element={<Protectedroute allowedRoles={["Garage"]} />}>
-  <Route path="/servicecenter" element={<Layout2 />} />
 
-  {/* ✅ LIVE TRACKING PAGE FOR SERVICE PROVIDER */}
-  <Route
-    path="/servicecenter/livetracking"
-    element={<ServiceLivetrack />}
-  />
+
+        {/* service-center route */}
+
+      <Route element={<Protectedroute allowedRoles={["Garage"]} />}>
+  <Route path="/servicecenter" element={<ServiceCenter />}>
+    <Route index element={<DashboardService />} />
+    <Route path="livetracking" element={<ServiceLivetrack />} />
+    <Route path="appointment" element={<Appointment />} />
+  </Route>
 </Route>
+
         {/* mechanic route */}
         <Route element={<Protectedroute allowedRoles={["Mechanic"]} />}>
           <Route path="/mechanic" element={<Mechanicpage />} />
@@ -81,7 +100,7 @@ function App() {
         />
         <Route path="register/mechanic" element={<MachineRegister />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

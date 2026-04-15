@@ -7,11 +7,11 @@ import { HiMiniBellAlert } from "react-icons/hi2";
 import { IoPersonSharp } from "react-icons/io5";
 import { FaHistory } from "react-icons/fa";
 
-export const Sidebar = [
+export const SideBar = [
   {
     title: "Dashboard",
     logo: <IoMdHome />,
-    path:"/userdashboard"
+    path:"/servicecenter"
   },
   {
     title: "LiveTracking",
@@ -21,13 +21,13 @@ export const Sidebar = [
   {
     title: "Appointment",
     logo: <FaHand />,
-    path: "/requesthelp"
+    path: "/servicecenter/appointment"
   },
-    {
+     {
     title: "Logout",
     logo: <IoPersonSharp />,
-    path:"/profile"
-  },
+    action: "logout", // 👈 important
+  }
 //   {
 //     title: "Nearby Mechanics",
 //     logo: <GiAutoRepair />,

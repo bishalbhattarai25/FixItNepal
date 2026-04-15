@@ -3,6 +3,8 @@ import { Phone, MessageSquare, X, Headset, Star } from 'lucide-react';
 import { Map } from '../../../HOC/Map';
 import { useLocation } from 'react-router-dom';
 import instance from "../../../../Server/Axios";
+import LiveTrackMap from '../../../HOC/LiveTrackMap';
+import { useServiceProviderHub } from '../../../../LiveHubs/useServiceProviderHub';
 
 const ServiceLivetrack = () => {
 
@@ -10,16 +12,34 @@ const location = useLocation();
 const [request, setRequest] = useState(null);
 const [customer, setCustomer] = useState(null);
 const [loading, setLoading] = useState(true);
+
+const [userLocation, setUserLocation] = useState(null);
+const [mechanicLocation, setMechanicLocation] = useState(null);
   
   var requestId = location.state?.requestId;
+  const serviceProviderId = localStorage.getItem("userId"); 
+
+const connectionRef = useServiceProviderHub(serviceProviderId, {
+  onStatusChange: (data) => {
+    console.log("LIVE UPDATE:", data);
+
+    if (data.requestId !== requestId) return;
+
+    setMechanicLocation([
+      data.latitude,
+      data.longitude,
+    ]);
+  }
+});
+
 
 useEffect(() => {
-  const fetchRequest = async () => {
-    if (!requestId) {
-      setLoading(false);
-      return;
-    }
+  if (!requestId) {
+    setLoading(false);
+    return;
+  }
 
+  const fetchRequest = async () => {
     try {
       const res = await instance.get(
         `/api/servicerequest/${requestId}`
@@ -35,11 +55,22 @@ useEffect(() => {
 }, [requestId]);
 
 useEffect(() => {
+  if (!request?.locationCoordinates) return;
+
+  const { latitude, longitude } = request.locationCoordinates;
+
+  if (latitude !== 0 && longitude !== 0) {
+    setUserLocation([latitude, longitude]);
+  }
+}, [request]);
+
+
+useEffect(() => {
   const fetchCustomer = async () => {
-    if (!request?.serviceProviderId) return;
+if (!request?.customerId) return;
 
     try {
-        res = await instance.get(
+        let res = await instance.get(
           `/api/customer/${request.customerId}`
         );
       setCustomer(res.data);
@@ -97,7 +128,11 @@ if (loading) {
           </div>
 
           {/* Integrated Map Component */}
-          <Map />
+ <LiveTrackMap
+  userLocation={userLocation}
+  mechanicLocation={mechanicLocation}
+  role="ServiceProvider"
+/>
         </div>
 
         {/* Sidebar Info */}
@@ -105,17 +140,17 @@ if (loading) {
           {/* Mechanic Profile Card */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-4 mb-6">
-               {customer.logo?.accessUrl ? (
-                        <img 
-                          src={customer.logo.accessUrl} 
-                          alt="Logo" 
-                          className="w-10 h-10 rounded-lg object-cover border border-gray-100" 
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
-                          {customer.name?.substring(0, 2).toUpperCase()}
-                        </div>
-                      )}
+               {customer?.logo?.accessUrl ? (
+  <img
+    src={customer.logo.accessUrl}
+    alt="Logo"
+    className="w-10 h-10 rounded-lg object-cover border border-gray-100"
+  />
+) : (
+  <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+    {customer?.name?.substring(0, 2).toUpperCase() || "??"}
+  </div>
+)}
               <div>
                 <h3 className="text-lg font-bold text-gray-900"> {customer?.name || "Loading..."}</h3>
                 <div className="flex items-center gap-1 text-sm">
