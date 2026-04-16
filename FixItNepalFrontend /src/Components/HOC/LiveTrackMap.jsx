@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from "react-leaflet";
 import { useEffect } from "react";
 
-// 👇 auto recenter map when positions change
+
 const RecenterMap = ({ center }) => {
   const map = useMap();
 
@@ -17,17 +17,24 @@ const RecenterMap = ({ center }) => {
 const LiveTrackMap = ({
   userLocation,
   mechanicLocation,
-  role = "user",
+  role
 }) => {
-  const userLatLng =
-    userLocation?.latitude
-      ? [userLocation.latitude, userLocation.longitude]
-      : userLocation;
+ const isValid = (loc) =>
+  Array.isArray(loc) && loc.length === 2 && !isNaN(loc[0]) && !isNaN(loc[1]);
 
-  const mechLatLng =
-    mechanicLocation?.latitude
-      ? [mechanicLocation.latitude, mechanicLocation.longitude]
-      : mechanicLocation;
+const userLatLng =
+  userLocation?.latitude !== undefined
+    ? [userLocation.latitude, userLocation.longitude]
+    : isValid(userLocation)
+    ? userLocation
+    : null;
+
+const mechLatLng =
+  mechanicLocation?.latitude !== undefined
+    ? [mechanicLocation.latitude, mechanicLocation.longitude]
+    : isValid(mechanicLocation)
+    ? mechanicLocation
+    : null;
 
   const center =
     role === "ServiceProvider"
@@ -68,7 +75,10 @@ const LiveTrackMap = ({
 
       {/* Route line */}
       {userLatLng && mechLatLng && (
-        <Polyline positions={[mechLatLng, userLatLng]} color="blue" />
+   <Polyline
+  positions={[mechLatLng, userLatLng]}
+  pathOptions={{ color: "blue", weight: 4 }}
+/>
       )}
     </MapContainer>
   );

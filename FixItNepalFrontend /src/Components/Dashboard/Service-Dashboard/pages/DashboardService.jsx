@@ -1,162 +1,268 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { MapPin, Star, AlertCircle, Clock, Check, X } from 'lucide-react';
+import { stats } from "../HOC/dashboard";
 import { Map } from "../../../HOC/Map";
-import { FaCheckCircle } from "react-icons/fa";
-import { FaExclamationCircle } from "react-icons/fa";
-import { FaTools } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
-import { FaRegClock } from "react-icons/fa";
-import { IoIosLocate } from "react-icons/io";
-import { AiOutlineCheck } from "react-icons/ai";
+import instance from "../../../../Server/Axios";
+import { useServiceProviderHub } from "../../../../LiveHubs/useServiceProviderHub";
+import { useLocationSender } from "../../../../LiveHubs/UseLocationSender";
+import { useNavigate } from "react-router-dom";
 
-export const Dashboard = () => {
+const Dashboard = () => {
+const [requests, setRequests] = useState([]);
+const [selectedReq, setSelectedReq] = useState(null);
+const [loading, setLoading] = useState(false);
+const [isTracking, setIsTracking] = useState(false);
+const [newAlert, setNewAlert] = useState(false); // 
+
+const navigate = useNavigate();
+
+const serviceProviderId = localStorage.getItem("userId");
+
+const connectionRef = useServiceProviderHub(serviceProviderId, {
+  onStatusChange: async (data) => {
+    console.log("FULL HUB DATA:", data);
+
+    if (data.liveUpdateType === "RequestAssigned") {
+      await fetchRequests(); 
+    }
+
+    else if (data.liveUpdateType === "RequestStatusUpdated") {
+      setRequests(prev => prev.filter(r => r.id !== data.requestId));
+      setSelectedReq(prev => prev?.id === data.requestId ? null : prev);
+    }
+  }
+});
+// const connectionRef = useServiceProviderHub(serviceProviderId, {
+//   onStatusChange: async (data) => {
+//     console.log("FULL HUB DATA:", data);
+
+//     if (data.liveUpdateType === "RequestAssigned") {
+//       const res = await instance.get(`/api/garage/${serviceProviderId}/todays-request`);
+//       const newReq = res.data.find(r => r.id === data.requestId);
+
+//       if (newReq?.requestType === "Emergency" && newReq?.status === "Pending") {
+//         setRequests(prev => {
+//           if (prev.find(r => r.id === newReq.id)) return prev;
+//           return [{ ...newReq, isNew: true }, ...prev];
+//         });
+//         setNewAlert(true);
+//         setTimeout(() => setNewAlert(false), 3000);
+//       }
+
+//     } else if (data.liveUpdateType === "RequestStatusUpdated") {
+//       setRequests(prev => prev.filter(r => r.id !== data.requestId));
+//       setSelectedReq(prev => prev?.id === data.requestId ? null : prev);
+//     }
+//   }
+// });
+
+
+  // Sends GPS location every 4s when isTracking is true
+  useLocationSender(                                           
+    connectionRef,
+    selectedReq?.id,
+    serviceProviderId,
+    isTracking
+  );
+
+  
+  const fetchRequests = async () => {
+    try {
+      const garageId = localStorage.getItem("userId");
+      const res = await instance.get(`/api/garage/${garageId}/todays-request`);
+      // Filter for Emergency & Pending only
+      const emergencies = (res.data || []).filter(r => r.requestType === "Emergency" && r.status === "Pending");
+      setRequests(emergencies);
+      if (emergencies.length > 0) setSelectedReq(emergencies[0]);
+    } catch (err) {
+      console.error("Fetch error", err);
+    }
+  };
+
+  useEffect(() => { fetchRequests(); }, []);
+
+  var providerId = localStorage.getItem("userId");
+const handleUpdate = async (id, status) => {
+  setLoading(true);
+
+  try {
+    await instance.put( `/api/servicerequest/${id}/update-status`,
+      {
+        serviceProviderId: providerId,      
+        status: status,   
+      });
+
+    if (status === "Accepted") {
+      setIsTracking(true);
+
+      navigate("/servicecenter/livetracking", {
+        state: {
+          requestId: id
+        }
+      });
+
+    } else {
+      setIsTracking(false);
+    }
+
+    fetchRequests();
+    setSelectedReq(null);
+
+  } catch (err) {
+    console.error("Update error", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
-    <div className="w-full px-6 pt-2 space-y-6">
-
-      {/* HEADER */}
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-zinc-500">Your moto rescue command center</p>
+    <div className="space-y-6 p-4">
+      {/* 1. Statistics Summary */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((s, i) => (
+          <div key={i} className="bg-white p-4 rounded-2xl border border-gray-100 flex items-center justify-between shadow-sm">
+            <div>
+              <p className="text-[10px] font-bold text-gray-400 uppercase">{s.label}</p>
+              <h2 className="text-xl font-black">{s.value}</h2>
+            </div>
+            <div className={`p-2 rounded-lg bg-gray-50 ${s.color}`}>{s.icon}</div>
+          </div>
+        ))}
       </div>
 
-      {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <div className="text-3xl text-blue-700 bg-blue-200 w-fit p-3 rounded-2xl">
-            <FaTools />
-          </div>
-          <div className="text-3xl font-bold text-zinc-600 mt-2">2</div>
-          <div className="text-sm text-zinc-500">Active Requests</div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <div className="text-3xl text-green-700 bg-green-200 w-fit p-3 rounded-2xl">
-            <FaCheckCircle />
-          </div>
-          <div className="text-3xl font-bold text-zinc-600 mt-2">47</div>
-          <div className="text-sm text-zinc-500">Total Services Used</div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <div className="text-3xl text-red-700 bg-red-200 w-fit p-3 rounded-2xl">
-            <FaExclamationCircle />
-          </div>
-          <div className="text-3xl font-bold text-zinc-600 mt-2">Emergency</div>
-          <div className="text-sm text-zinc-500">Fast Response</div>
-        </div>
-
+{/* emergency */}
+<div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-5">
+  {/* HEADER */}
+  <div className="flex justify-between items-center mb-5">
+    <div className="flex items-center gap-2">
+      <div className="p-2 bg-red-50 rounded-xl">
+        <AlertCircle size={16} className="text-red-600" />
       </div>
+      <h3 className="font-black text-sm text-gray-800">
+        Emergency Requests
+      </h3>
+    </div>
 
-      {/* MAIN GRID (FIXED ALIGNMENT) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+    <span className="bg-red-600 text-white text-[10px] px-3 py-1 rounded-full font-bold shadow-sm">
+      {requests.length} ACTIVE
+    </span>
+  </div>
 
-        {/* LEFT */}
-        <div className="lg:col-span-2 space-y-4">
+  {/* EMPTY STATE */}
+  {requests.length === 0 ? (
+    <div className="text-center text-gray-400 py-14">
+      <Clock size={34} className="mx-auto mb-3 opacity-20" />
+      <p className="text-xs font-semibold">All clear! No emergencies right now</p>
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      {requests.map((req) => (
+        <div
+          key={req.id}
+          className={`relative rounded-2xl border p-5 transition-all duration-200
+          hover:shadow-xl hover:-translate-y-1
+          ${
+            selectedReq?.id === req.id
+              ? "border-red-500 bg-red-50 shadow-md"
+              : "border-gray-100 bg-white"
+          }`}
+        >
+          {/* TOP BADGE */}
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-red-100 text-red-600">
+              {req.problemType}
+            </span>
 
-          {/* NEARBY BAR */}
-          <div className="flex items-center justify-between bg-white shadow-sm rounded-xl px-5 py-3">
-            <div className="flex items-center gap-3">
-              <div className="bg-green-500 w-3 h-3 rounded-full animate-pulse" />
-              <span className="font-semibold text-zinc-700">
-                12 Mechanics Nearby
-              </span>
-            </div>
+            <span className="text-[10px] text-gray-400 font-medium">
+              {new Date(req.creationTime).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </div>
 
-            <button className="bg-red-500 text-white px-4 py-1 rounded-lg text-sm">
-              View List
+          {/* REQUEST ID */}
+          <h4 className="text-sm font-black text-gray-900 tracking-wide">
+            #{req.id.slice(0, 8).toUpperCase()}
+          </h4>
+
+          {/* LOCATION */}
+          <div className="flex items-center gap-1 text-[11px] text-gray-500 mt-2">
+            <MapPin size={12} />
+            {req.locationCoordinates.latitude.toFixed(2)},{" "}
+            {req.locationCoordinates.longitude.toFixed(2)}
+          </div>
+
+          {/* STATUS DOT */}
+          <div className="flex items-center gap-2 mt-3">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+            </span>
+            <span className="text-[10px] text-red-600 font-semibold">
+              Urgent Request
+            </span>
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="flex gap-2 mt-4">
+            <button
+              disabled={loading}
+              onClick={() => handleUpdate(req.id, "Accepted")}
+              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1 shadow-sm hover:shadow-md transition"
+            >
+              <Check size={14} /> Accept
             </button>
+
+            <button
+  disabled={loading}
+  onClick={() => handleUpdate(req.id, "Rejected")}
+  className="flex-1 group relative overflow-hidden bg-white border border-red-200 text-red-500 py-2.5 rounded-xl font-bold text-xs transition-all duration-200 hover:bg-red-50 hover:border-red-400 hover:text-red-600 hover:shadow-sm"
+>
+  <div className="flex items-center justify-center gap-1">
+    <X
+      size={14}
+      className="transition-transform duration-200 group-hover:rotate-90"
+    />
+    Reject
+  </div>
+
+  {/* subtle red shine effect */}
+  <span className="absolute inset-0 bg-red-100 opacity-0 group-hover:opacity-20 transition" />
+</button>
           </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
-          {/* MAP (FIXED - NO OVERLAP) */}
-          <div className="h-[360px] rounded-2xl overflow-hidden shadow-sm relative bg-white">
-
-            {/* MAP LAYER */}
-            <div className="w-full h-full">
-              <Map />
-            </div>
-
-            {/* OVERLAY (SAFE POSITIONED) */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between bg-white/95 backdrop-blur-md rounded-xl px-4 py-3 shadow-lg">
-
-              <div className="flex items-center gap-3">
-                <div className="bg-red-500 text-white p-2 rounded-full">
-                  <FaLocationDot />
-                </div>
-
-                <div>
-                  <p className="text-sm font-bold">Your Location</p>
-                  <p className="text-xs text-zinc-500">Thamel, Kathmandu</p>
-                </div>
-              </div>
-
-              <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm">
-                <IoIosLocate />
-                Recenter
-              </button>
-
-            </div>
+   <div className="lg:col-span-2 bg-white p-4 rounded-3xl border border-gray-100 h-[450px] flex flex-col shadow-sm">
+          <h3 className="font-black text-sm mb-4 flex items-center gap-2">🔴 Live Assistance Map</h3>
+          <div className="flex-1 bg-slate-50 rounded-2xl overflow-hidden border border-gray-100">
+            <Map />
           </div>
-
         </div>
 
-        {/* RIGHT PANEL (FIXED HEIGHT ALIGNMENT) */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm space-y-6 h-[520px]">
-
-          {/* QUICK ACTION */}
-          <div>
-            <h3 className="font-bold text-xl mb-4">Quick Actions</h3>
-
-            <button className="w-full bg-red-500 text-white py-4 rounded-xl font-bold">
-              REQUEST EMERGENCY HELP
-            </button>
-          </div>
-
-          {/* FORM */}
-          <div>
-            <label className="text-sm text-zinc-500">Problem Type</label>
-
-            <select className="w-full mt-2 border rounded-lg px-4 py-2">
-              <option>Breakdown</option>
-              <option>Accident</option>
-              <option>Out of fuel</option>
-              <option>Battery Issue</option>
-              <option>Puncture</option>
-            </select>
-
-            <button className="w-full mt-3 bg-zinc-800 text-white py-2 rounded-lg">
-              CONFIRM REQUEST
-            </button>
-          </div>
-
-          <div className="border" />
-
-          {/* ACTIVITY */}
-          <div>
-            <h4 className="font-semibold mb-3">Recent Activity</h4>
-
-            <div className="flex items-center gap-3 mb-3">
-              <AiOutlineCheck className="text-green-500" />
+      {/* 4. Mechanic Status */}
+      <div className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
+        <h3 className="font-black text-sm mb-4">Available Mechanics</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {["Bikash T.", "Anjali M.", "Priya S."].map((name, i) => (
+            <div key={i} className="flex items-center gap-3 p-3 border border-gray-50 rounded-2xl">
+              <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-black">{name[0]}</div>
               <div>
-                <p className="text-sm">Service completed</p>
-                <p className="text-xs text-zinc-500">2 hours ago</p>
+                <p className="text-xs font-black">{name}</p>
+                <div className="flex items-center gap-1 text-[10px] text-gray-400">
+                  <Star size={8} className="text-yellow-400 fill-yellow-400" /> 4.8 Rating
+                </div>
               </div>
             </div>
-
-            <div className="flex items-center gap-3">
-              <FaRegClock className="text-yellow-500" />
-              <div>
-                <p className="text-sm">Maintenance due</p>
-                <p className="text-xs text-zinc-500">In 5 days</p>
-              </div>
-            </div>
-
-          </div>
-
+          ))}
         </div>
-
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Servicedashboard;
