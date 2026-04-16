@@ -56,6 +56,10 @@ public class LiveServiceProviderHub(
             await requestHub.Clients
                 .Group(dto.RequestId.ToString())
                 .ServiceProviderLocationUpdated(dto);
+            
+            await Clients
+                .Group(dto.ServiceProviderId.ToString())
+                .ServiceProviderLocationUpdated(dto);
         }
     
 }

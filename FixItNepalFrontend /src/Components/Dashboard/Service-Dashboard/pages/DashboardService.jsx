@@ -13,6 +13,7 @@ const [selectedReq, setSelectedReq] = useState(null);
 const [loading, setLoading] = useState(false);
 const [isTracking, setIsTracking] = useState(false);
 const [newAlert, setNewAlert] = useState(false); // 
+const [activeRequestId, setActiveRequestId] = useState(null);
 
 const navigate = useNavigate();
 
@@ -60,7 +61,7 @@ const connectionRef = useServiceProviderHub(serviceProviderId, {
   // Sends GPS location every 4s when isTracking is true
   useLocationSender(                                           
     connectionRef,
-    selectedReq?.id,
+    activeRequestId,
     serviceProviderId,
     isTracking
   );
@@ -92,16 +93,14 @@ const handleUpdate = async (id, status) => {
         status: status,   
       });
 
-    if (status === "Accepted") {
-      setIsTracking(true);
+  if (status === "Accepted") {
+  setActiveRequestId(id);  
+  setIsTracking(true);
 
-      navigate("/servicecenter/livetracking", {
-        state: {
-          requestId: id
-        }
-      });
-
-    } else {
+  navigate("/servicecenter/livetracking", {
+    state: { requestId: id }
+  });
+} else {
       setIsTracking(false);
     }
 

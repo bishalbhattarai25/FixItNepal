@@ -15,9 +15,14 @@ export const useServiceProviderHub = (serviceProviderId, handlers) => {
 
     connectionRef.current = connection;
 
-    // listen for incoming notifications (new request assigned, cancelled, etc.)
+    //  Request status updates
     connection.on("ServiceProviderRequestStatusChange", (data) => {
       handlers?.onStatusChange?.(data);
+    });
+
+    //  LIVE LOCATION updates (THIS WAS MISSING)
+    connection.on("ServiceProviderLocationUpdated", (data) => {
+      handlers?.onLocationUpdate?.(data);
     });
 
     connection.onreconnecting(() => console.log("Reconnecting..."));
@@ -25,6 +30,7 @@ export const useServiceProviderHub = (serviceProviderId, handlers) => {
     connection.onclose(() => console.log("Connection closed"));
 
     let stopped = false;
+
     const start = async () => {
       try {
         await connection.start();

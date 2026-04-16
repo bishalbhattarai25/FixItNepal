@@ -21,9 +21,11 @@ const [mechanicLocation, setMechanicLocation] = useState(null);
 
 const connectionRef = useServiceProviderHub(serviceProviderId, {
   onStatusChange: (data) => {
-    console.log("LIVE UPDATE:", data);
+    console.log("STATUS:", data);
+  },
 
-    if (data.requestId !== requestId) return;
+  onLocationUpdate: (data) => {
+    console.log("LOCATION:", data);
 
     setMechanicLocation([
       data.latitude,
