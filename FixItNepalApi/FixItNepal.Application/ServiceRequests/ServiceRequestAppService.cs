@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
@@ -6,6 +7,7 @@ using FixItNepal.Application.Contracts.Mechanics;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.Customs.Exceptions;
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.Repository;
@@ -27,6 +29,24 @@ public class ServiceRequestAppService(
     IServiceProviderNotifier serviceProviderNotifier
     ):IServiceRequestService
 {
+    public async Task<PagedResultDto<RequestDto>> GetListAsync(RequestPagedListDto input)
+    {
+        var filter = input.Status.HasValue
+            ? (Expression<Func<ServiceRequest, bool>>)(g => g.Status == input.Status.Value)
+            : null;
+        
+        var skipCount = input.SkipCount ?? 0;
+        var maxCount = input.MaxCount ?? 10;
+        
+        var requests = await serviceRequestRepository.GetPagedListAsync(skipCount, maxCount, filter);
+        var requestDtos = mapper.Map<ICollection<ServiceRequest>, ICollection<RequestDto>>(requests.Items);
+        return new PagedResultDto<RequestDto>
+        {
+            TotalCount = requests.TotalCount,
+            Items = requestDtos
+        };
+    }
+    
     public async Task<RequestDto> GetAsync(Guid id)
     {
         var serviceRequest = await serviceRequestRepository.GetAsync(id);
@@ -152,4 +172,5 @@ public class ServiceRequestAppService(
         };
         return lastLocationDto;
     }
+    
 }
