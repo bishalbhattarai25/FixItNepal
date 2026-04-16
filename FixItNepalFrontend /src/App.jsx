@@ -23,10 +23,8 @@ import Wallet from './Components/Dashboard/User-Dashboard/pages/wallet';
 import {Maintence} from './Components/Dashboard/User-Dashboard/pages/Maintence';
 import Profile from './Components/Dashboard/User-Dashboard/pages/Profile';
 import ServiceLivetrack from "./Components/Dashboard/Service-Dashboard/pages/ServiceLiveTrack";
-import Servicedashboard from "./Components/Dashboard/Service-Dashboard/pages/DashboardService";
 import DashboardService from "./Components/Dashboard/Service-Dashboard/pages/DashboardService";
 import Appointment from "./Components/Dashboard/Service-Dashboard/pages/Appointment";
-import { Layout2 } from "./Components/Dashboard/Service-Dashboard/layout";
 import { ServiceCenter } from "./Pages/ServiceCenter";
 
 function App() {
