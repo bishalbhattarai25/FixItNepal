@@ -265,4 +265,4 @@ const handleUpdate = async (id, status) => {
   );
 };
 
-export default Servicedashboard;
+export default Dashboard;
