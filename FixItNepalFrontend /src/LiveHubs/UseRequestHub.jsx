@@ -18,6 +18,10 @@ export const useRequestHub = (requestId, handlers) => {
     connection.on("RequestStatusChange", (data) => {
       handlers?.onStatusChange?.(data);
     });
+     //  LIVE LOCATION updates (THIS WAS MISSING)
+    connection.on("ServiceProviderLocationUpdated", (data) => {
+      handlers?.onLocationUpdate?.(data);
+    });
 
     connection.onreconnecting(() => {
       console.log("Reconnecting...");

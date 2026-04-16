@@ -17,7 +17,7 @@ const SideBar = () => {
     <nav className="space-y-1">
       {SidebarData.map((item, index) => {
         
-        // 🔴 ACTION ITEM (Logout)
+        // ACTION ITEM (Logout)
         if (item.action) {
           return (
             <button

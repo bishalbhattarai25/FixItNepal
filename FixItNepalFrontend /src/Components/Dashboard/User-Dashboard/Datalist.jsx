@@ -48,4 +48,9 @@ export const Sidebar = [
     logo: <IoPersonSharp />,
     path:"/userdashboard/profile"
   },
+   {
+    title: "Logout",
+    logo: <IoPersonSharp />,
+    action: "logout", 
+  }
 ];
