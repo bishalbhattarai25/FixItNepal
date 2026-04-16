@@ -12,6 +12,8 @@ public interface IMechanicService
     Task<MechanicDto> UpdateAsync(Guid id, CreateUpdateMechanicsDto input);
     Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus);
     Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id);
+    Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id);
+
 
 
 }

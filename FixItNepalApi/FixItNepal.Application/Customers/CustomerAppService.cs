@@ -1,10 +1,13 @@
+using System.Collections;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Customers;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customers;
 using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Repository;
+using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +16,7 @@ namespace FixItNepal.Application.Customers;
 
 public class CustomerAppService(
     IRepository<Customer> customerRepository,
+    IRepository<ServiceRequest> serviceRequestRepository,
     IMapper mapper,
     UserManager<AppUser>  userManager
         ):ICustomerService
@@ -67,5 +71,11 @@ public class CustomerAppService(
         }
         
         return mapper.Map<Customer, CustomerDto>(customer);
+    }
+
+    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    {
+        var requests = await serviceRequestRepository.GetListAsync(x => x.CustomerId == id);
+        return mapper.Map<ICollection<ServiceRequest>, ICollection<RequestDto>>(requests.ToList());
     }
 }

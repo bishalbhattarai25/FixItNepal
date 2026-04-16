@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Customers;
+using FixItNepal.Application.Contracts.ServiceRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FixItNepal.Host.Customers;
@@ -30,4 +31,12 @@ public class CustomerController(
         var customer =  await customerService.CreateAsync(input);
         return customer;
     }
+    
+    [HttpGet("{id:guid}/request-history")]
+    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    {
+        var requests = await customerService.GetRequestHistoryAsync(id);
+        return requests;
+    }
+
 }

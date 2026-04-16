@@ -114,6 +114,12 @@ public class MechanicAppService (
         return mapper.Map<IEnumerable<ServiceRequest>, IEnumerable<RequestDto>>(todayRequest); 
     }
     
+    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    {
+        var requests = await serviceRequestRepository.GetListAsync(x => x.ServiceProviderId == id);
+        return mapper.Map<ICollection<ServiceRequest>, ICollection<RequestDto>>(requests.ToList());
+    }
+    
     private ICollection<MechanicMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
     {
         return input.Select(x => new MechanicMediaFile()

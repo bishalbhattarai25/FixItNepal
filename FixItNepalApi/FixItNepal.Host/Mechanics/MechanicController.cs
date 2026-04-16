@@ -45,4 +45,11 @@ public class MechanicController(
     {
         await mechanicService.UpdateApprovalStatusAsync(id, approvalStatus);
     }
+    
+    [HttpGet("{id:guid}/request-history")]
+    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    {
+        var requests = await mechanicService.GetRequestHistoryAsync(id);
+        return requests;
+    }
 }

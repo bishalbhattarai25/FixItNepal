@@ -45,4 +45,11 @@ public class GarageController (
     {
         await garageService.UpdateApprovalStatusAsync(id, approvalStatus);
     }
+    
+    [HttpGet("{id:guid}/request-history")]
+    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    {
+        var requests = await garageService.GetRequestHistoryAsync(id);
+        return requests;
+    }
 }

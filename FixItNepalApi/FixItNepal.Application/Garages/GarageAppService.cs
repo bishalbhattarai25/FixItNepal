@@ -124,6 +124,12 @@ public class GarageAppService(
         var todayRequest = await serviceRequestRepository.GetTodayServiceRequestsAsync(id);
         return mapper.Map<IEnumerable<ServiceRequest>, IEnumerable<RequestDto>>(todayRequest); 
     }
+    
+    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    {
+        var requests = await serviceRequestRepository.GetListAsync(x => x.CustomerId == id);
+        return mapper.Map<ICollection<ServiceRequest>, ICollection<RequestDto>>(requests.ToList());
+    }
 
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
     {
