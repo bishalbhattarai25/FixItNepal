@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import instance from "../../../../Server/Axios";
 import LiveTrackMap from '../../../HOC/LiveTrackMap';
 import { useServiceProviderHub } from '../../../../LiveHubs/useServiceProviderHub';
+import { useLocationSender } from '../../../../LiveHubs/UseLocationSender';
 
 const ServiceLivetrack = () => {
 
@@ -18,6 +19,7 @@ const [mechanicLocation, setMechanicLocation] = useState(null);
   
   var requestId = location.state?.requestId;
   const serviceProviderId = localStorage.getItem("userId"); 
+
 
 const connectionRef = useServiceProviderHub(serviceProviderId, {
   onStatusChange: (data) => {
@@ -34,6 +36,12 @@ const connectionRef = useServiceProviderHub(serviceProviderId, {
   }
 });
 
+ useLocationSender(
+  connectionRef,
+  requestId,
+  serviceProviderId,
+  true
+);
 
 useEffect(() => {
   if (!requestId) {
@@ -182,10 +190,12 @@ if (loading) {
             {/* Action Buttons */}
             <div className="flex gap-3 mb-3">
               <button className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-colors">
-                <Phone className="w-4 h-4" />   <a href={`tel:${customer?.phone}`}>
-  <button className="flex-1 bg-emerald-500 text-white py-3 rounded-xl">
-    Call
-  </button>
+              <a
+  href={`tel:${customer?.phone}`}
+  className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-colors"
+>
+  <Phone className="w-4 h-4" />
+  Call
 </a>
               </button>
               <button className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-bold transition-colors">

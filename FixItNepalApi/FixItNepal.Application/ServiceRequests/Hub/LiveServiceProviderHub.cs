@@ -45,7 +45,10 @@ public class LiveServiceProviderHub(
         {
             var request = await serviceRequestRepository.GetAsync(x => x.Id == dto.RequestId && x.ServiceProviderId == dto.ServiceProviderId);
             
-            var serviceProviderLocation = new Point(dto.Longitude, dto.Latitude);
+            var serviceProviderLocation = new Point(dto.Longitude, dto.Latitude)
+            {
+                SRID = 4326
+            };
             request.LastKnownLocationOfServiceProvider = serviceProviderLocation;
 
              serviceRequestRepository.Update(request);

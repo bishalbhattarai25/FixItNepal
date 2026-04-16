@@ -48,5 +48,5 @@ export const useServiceProviderHub = (serviceProviderId, handlers) => {
     };
   }, [serviceProviderId]);
 
-  return connectionRef.current;
+  return connectionRef;
 };
