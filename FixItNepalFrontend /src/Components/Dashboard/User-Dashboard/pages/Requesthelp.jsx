@@ -57,7 +57,15 @@ export const Requesthelp = () => {
           radiusInKm: values.radiusInKm,
         };
 
-       const response = await instance.post("/api/servicerequest", payload);
+      // ONLY CHANGES: storing requestId + URL navigation
+
+const response = await instance.post("/api/servicerequest", payload);
+
+const requestId = response.data?.request?.id;
+
+// persist
+localStorage.setItem("activeRequestId", requestId);
+
 
         toast.success("Emergency Signal Sent! Help is on the way.", {
           duration: 3000,
@@ -69,9 +77,9 @@ export const Requesthelp = () => {
           },
         });
 
-        navigate("/userdashboard/nearbymechanics", { 
-          state: { activeRequest: response.data } 
-        });
+        // navigate via URL (NOT state)
+navigate(`/userdashboard/nearbymechanics/${requestId}`);
+
 
         formik.resetForm();
       } catch (err) {

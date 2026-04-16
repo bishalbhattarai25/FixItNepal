@@ -56,8 +56,8 @@ const shouldHideNavbar = hideNavbarRoutes.some((route) =>
             <Route index element={<Dashboard />} />
             {/* Default: /userdashboard */}
             <Route path="requesthelp" element={<Requesthelp />} />
-            <Route path="nearbymechanics" element={<Nearbymacf />} />
-            <Route path="livetracking" element={<Livetrack />} />
+            <Route path="nearbymechanics/:requestId?" element={<Nearbymacf />} />
+            <Route path="livetracking/:requestId?" element={<Livetrack />} />
             <Route path="servoceHistory" element={<Servicehistory />} />
             <Route path="payments" element={<Wallet />} />
             <Route path="maintence" element={<Maintence />} />

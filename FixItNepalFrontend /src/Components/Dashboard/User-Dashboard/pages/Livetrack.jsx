@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, MessageSquare, X, Headset, Star } from 'lucide-react';
 import { Map } from '../../../HOC/Map';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import instance from "../../../../Server/Axios";
 import LiveTrackMap from '../../../HOC/LiveTrackMap';
 import { useRequestHub } from '../../../../LiveHubs/UseRequestHub';
@@ -11,14 +11,17 @@ import { getEtaMinutes, getEtaText } from '../../../../MapHelper/EstimationTimeH
 
 const Livetrack = () => {
   const location = useLocation();
+   const { requestId: paramRequestId } = useParams();
+ 
+ // Fall back to localStorage
+ const requestId = paramRequestId || localStorage.getItem('activeRequestId');
+ 
 
   const [request, setRequest] = useState(null);
   const [provider, setProvider] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [mechanicLocation, setMechanicLocation] = useState(null);
-
-  var requestId = location.state?.requestId;
 
   // ---------------- FETCH REQUEST ----------------
   useEffect(() => {
@@ -45,14 +48,17 @@ const Livetrack = () => {
   // ---------------- SMOOTH MARKER ----------------
   const smoothMove = useSmoothMarker();
 
-  const connectionRef = useRequestHub(requestId, {
+  useRequestHub(requestId, {
     onStatusChange: (data) => {
       console.log("STATUS:", data);
+
+      if (data.requestStatus === "Completed" || data.requestStatus === "Cancelled") {
+      localStorage.removeItem('activeRequestId');
+      navigate('/userdashboard');
+    }
     },
 
     onLocationUpdate: (data) => {
-      console.log("MECHANIC MOVE:", data);
-
       smoothMove(setMechanicLocation, [
         data.latitude,
         data.longitude
@@ -102,10 +108,8 @@ const Livetrack = () => {
   }, [request]);
 
   const distanceKm = getDistanceKm(userLocation, mechanicLocation);
-
-const etaMin = getEtaMinutes(distanceKm);
-
-const statusText = getEtaText(etaMin);
+  const etaMin = getEtaMinutes(distanceKm);
+  const statusText = getEtaText(etaMin);
 
   // ---------------- LOADING ----------------
   if (!requestId) {
@@ -123,9 +127,28 @@ const statusText = getEtaText(etaMin);
       </div>
     );
   }
+//if there is no active request 
+if (!requestId) {
+  return (
+    <div className="p-6 bg-gray-50 min-h-screen font-sans flex items-center justify-center">
+      <div className="text-center">
+        <div className="text-6xl mb-4">🔧</div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">No Active Request</h2>
+        <p className="text-gray-500 mb-6">You haven't submitted a service request yet.</p>
+        <button
+          onClick={() => navigate('/userdashboard/requesthelp')}
+          className="bg-red-500 text-white px-6 py-3 rounded-xl font-bold"
+        >
+          Request Help Now
+        </button>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen font-sans">
+
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Live Tracking</h1>
@@ -147,7 +170,7 @@ const statusText = getEtaText(etaMin);
                 EN ROUTE
               </span>
               <span className="text-gray-400 text-xs">
-                Request #M2847
+                Request #{requestId}
               </span>
             </div>
 
@@ -156,9 +179,7 @@ const statusText = getEtaText(etaMin);
 
               <div>
                 <p className="text-sm font-semibold text-gray-800">
-                  {distanceKm
-                    ? `${distanceKm} km away`
-                    : "Calculating distance..."}
+                  {distanceKm ? `${distanceKm} km away` : "Calculating distance..."}
                 </p>
 
                 <p className="text-xs text-gray-500">
@@ -188,7 +209,6 @@ const statusText = getEtaText(etaMin);
               {provider?.logo?.accessUrl ? (
                 <img
                   src={provider.logo.accessUrl}
-                  alt="Logo"
                   className="w-10 h-10 rounded-lg object-cover border border-gray-100"
                 />
               ) : (
@@ -235,20 +255,20 @@ const statusText = getEtaText(etaMin);
 
               <a
                 href={`tel:${provider?.phone}`}
-                className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold"
+                className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 text-white py-3 rounded-xl font-bold"
               >
                 <Phone className="w-4 h-4" />
                 Call
               </a>
 
-              <button className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-bold">
+              <button className="flex-1 flex items-center justify-center gap-2 bg-blue-500 text-white py-3 rounded-xl font-bold">
                 <MessageSquare className="w-4 h-4" />
                 Chat
               </button>
 
             </div>
 
-            <button className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 py-3 rounded-xl font-bold hover:bg-red-50">
+            <button className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 py-3 rounded-xl font-bold">
               <X className="w-4 h-4" />
               Cancel Request
             </button>
@@ -265,11 +285,11 @@ const statusText = getEtaText(etaMin);
               <h3 className="text-lg font-bold">Need Help?</h3>
             </div>
 
-            <p className="text-sm text-red-50 opacity-90 mb-4">
+            <p className="text-sm text-red-50 mb-4">
               Our support team is available 24/7
             </p>
 
-            <button className="w-full bg-white text-red-500 py-3 rounded-xl font-bold hover:bg-gray-50">
+            <button className="w-full bg-white text-red-500 py-3 rounded-xl font-bold">
               Contact Support
             </button>
 
