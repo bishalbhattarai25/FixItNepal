@@ -25,7 +25,7 @@ const requestId = paramRequestId || localStorage.getItem('activeRequestId');
 
       try {
         const res = await instance.get(
-          `/api/servicerequest/${requestId}/nearby`
+          `/api/servicerequest/${requestId}/nearby-service-provider`
         );
 
         setApiResponse(res.data);

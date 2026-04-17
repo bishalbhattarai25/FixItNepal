@@ -53,7 +53,7 @@ public class ServiceRequestAppService(
         return mapper.Map<ServiceRequest, RequestDto>(serviceRequest);
     }
     
-    public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
+    public async Task<RequestDto> CreateRequestAsync(CreateRequestDto input)
     {
         var locationCoordinates = mapper.Map<LocationCoordinationDto, Point>(input.LocationCoordinates);
         var serviceRequest = new ServiceRequest()
@@ -76,26 +76,7 @@ public class ServiceRequestAppService(
         
         var request =  mapper.Map<ServiceRequest, RequestDto>(serviceRequest);
 
-        //user location into point to calculate the nearby garages and mechanics
-        
-        var userLocation = new Point(input.LocationCoordinates.Longitude, input.LocationCoordinates.Latitude);
-        var radiusInMeters = input.RadiusInKm * 1000;
-        
-        var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
-        var mechanics = await mechanicRepository.GetNearbyMechanicsAsync(userLocation, radiusInMeters);
-        
-        var nearbyGarages = mapper.Map<ICollection<Garage>, ICollection<GarageDto>>(garages);
-        var nearbyMechanics = mapper.Map<ICollection<Mechanic>, ICollection<MechanicDto>>(mechanics);
-        
-        var serviceRequestDto = new ServiceRequestDto()
-        {
-            Request = request,
-            NearbyGarages = nearbyGarages,
-            NearbyMechanics =  nearbyMechanics
-            
-        };
-
-        return serviceRequestDto;
+        return request;
     }
     
     public async Task<RequestDto> AssignRequestAsync(Guid id, AssignServiceProviderDto input)
@@ -139,10 +120,13 @@ public class ServiceRequestAppService(
         
     }
 
-    public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(LocationCoordinationDto input, double radiusInKm )
+    public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(Guid id )
     {
-        var userLocation = new Point(input.Longitude, input.Latitude);
-        var radiusInMeters = radiusInKm * 1000;
+        var request = await serviceRequestRepository.GetAsync(id);
+        var radiusinKm = 50;
+        
+        var userLocation = new Point(request.LocationCoordinatePoint.X, request.LocationCoordinatePoint.Y);
+        var radiusInMeters = radiusinKm * 1000;
         
         var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
         var mechanics = await mechanicRepository.GetNearbyMechanicsAsync(userLocation, radiusInMeters);

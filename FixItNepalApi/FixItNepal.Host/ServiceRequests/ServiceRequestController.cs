@@ -21,7 +21,7 @@ public class ServiceRequestController(
     }
     
     [HttpPost]
-    public async Task<ServiceRequestDto> CreateRequestAsync(CreateRequestDto input)
+    public async Task<RequestDto> CreateRequestAsync(CreateRequestDto input)
     {
         var serviceRequest = await  serviceRequestService.CreateRequestAsync(input);
         return serviceRequest;
@@ -41,11 +41,10 @@ public class ServiceRequestController(
         return request;
     }
 
-    [HttpPost("get-nearby-service-providers")]
-    public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(LocationCoordinationDto input,
-        double radiusInKm)
+    [HttpPost("{id:guid}/nearby-service-provider")]
+    public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(Guid id)
     {
-        var nearbyServiceProvider = await serviceRequestService.GetNearbyServiceProviderAsync(input, radiusInKm);
+        var nearbyServiceProvider = await serviceRequestService.GetNearbyServiceProviderAsync(id);
         return nearbyServiceProvider;
     }
 
