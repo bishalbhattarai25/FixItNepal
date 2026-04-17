@@ -72,7 +72,7 @@ const shouldHideNavbar = hideNavbarRoutes.some((route) =>
       <Route element={<Protectedroute allowedRoles={["Garage"]} />}>
   <Route path="/servicecenter" element={<ServiceCenter />}>
     <Route index element={<DashboardService />} />
-    <Route path="livetracking" element={<ServiceLivetrack />} />
+    <Route path="livetracking/:requestId?" element={<ServiceLivetrack />} />
     <Route path="appointment" element={<Appointment />} />
   </Route>
 </Route>

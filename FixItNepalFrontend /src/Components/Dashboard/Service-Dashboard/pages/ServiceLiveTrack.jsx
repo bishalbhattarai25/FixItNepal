@@ -20,7 +20,11 @@ const [loading, setLoading] = useState(true);
 const [userLocation, setUserLocation] = useState(null);
 const [mechanicLocation, setMechanicLocation] = useState(null);
   
-  var requestId = location.state?.requestId;
+const { requestId: paramRequestId } = useParams();
+ 
+ // Fall back to localStorage
+ const requestId = paramRequestId || localStorage.getItem('activeRequestId');
+ 
   const serviceProviderId = localStorage.getItem("userId"); 
 
 const connectionRef = useServiceProviderHub(serviceProviderId, {
@@ -106,8 +110,18 @@ const statusText = getEtaText(etaMin);
 //add loader here for loading
 if (!requestId) {
   return (
-    <div className="p-10 text-center text-gray-500">
-       No active tracking request
+    <div className="p-6 bg-gray-50 min-h-screen font-sans flex items-center justify-center">
+      <div className="text-center">
+        <div className="text-6xl mb-4">🔧</div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">No Active Request</h2>
+        <p className="text-gray-500 mb-6">You have no any  service request yet.</p>
+        <button
+          onClick={() => navigate('/servicecenter')}
+          className="bg-red-500 text-white px-6 py-3 rounded-xl font-bold"
+        >
+          Check The Emergency Request
+        </button>
+      </div>
     </div>
   );
 }
