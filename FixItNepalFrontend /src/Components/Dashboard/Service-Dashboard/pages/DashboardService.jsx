@@ -33,30 +33,6 @@ const connectionRef = useServiceProviderHub(serviceProviderId, {
     }
   }
 });
-// const connectionRef = useServiceProviderHub(serviceProviderId, {
-//   onStatusChange: async (data) => {
-//     console.log("FULL HUB DATA:", data);
-
-//     if (data.liveUpdateType === "RequestAssigned") {
-//       const res = await instance.get(`/api/garage/${serviceProviderId}/todays-request`);
-//       const newReq = res.data.find(r => r.id === data.requestId);
-
-//       if (newReq?.requestType === "Emergency" && newReq?.status === "Pending") {
-//         setRequests(prev => {
-//           if (prev.find(r => r.id === newReq.id)) return prev;
-//           return [{ ...newReq, isNew: true }, ...prev];
-//         });
-//         setNewAlert(true);
-//         setTimeout(() => setNewAlert(false), 3000);
-//       }
-
-//     } else if (data.liveUpdateType === "RequestStatusUpdated") {
-//       setRequests(prev => prev.filter(r => r.id !== data.requestId));
-//       setSelectedReq(prev => prev?.id === data.requestId ? null : prev);
-//     }
-//   }
-// });
-
 
   // Sends GPS location every 4s when isTracking is true
   useLocationSender(                                           
