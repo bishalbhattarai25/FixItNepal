@@ -119,7 +119,27 @@ public class ServiceRequestAppService(
         return mapper.Map<ServiceRequest, RequestDto>(request);
         
     }
-
+    public async Task<NearbyServiceProviderDto> GetNearbyServicesAsync(LocationCoordinationDto input, double radiusInKm)
+    {
+        
+        var userLocation = new Point(input.Longitude, input.Latitude);
+        var radiusInMeters = radiusInKm * 1000;
+        
+        var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
+        var mechanics = await mechanicRepository.GetNearbyMechanicsAsync(userLocation, radiusInMeters);
+        
+        var nearbyGarages = mapper.Map<ICollection<Garage>, ICollection<GarageDto>>(garages);
+        var nearbyMechanics = mapper.Map<ICollection<Mechanic>, ICollection<MechanicDto>>(mechanics);
+        
+        var nearbyServicesDto = new NearbyServiceProviderDto()
+        {
+            NearbyGarages = nearbyGarages,
+            NearbyMechanics =  nearbyMechanics
+            
+        };
+        return nearbyServicesDto;
+    }
+    
     public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(Guid id )
     {
         var request = await serviceRequestRepository.GetAsync(id);

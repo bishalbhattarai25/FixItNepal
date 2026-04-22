@@ -11,6 +11,8 @@ public interface IServiceRequestService
     Task<RequestDto> UpdateRequestAsync(Guid id, UpdateRequestStatusDto input);
     Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(Guid id );
     Task<LiveServiceProviderUpdateDto> GetLatestServiceProviderLocationAsync(Guid id);
+    Task<NearbyServiceProviderDto> GetNearbyServicesAsync(LocationCoordinationDto input, double radiusInKm);
+
 
 
 
