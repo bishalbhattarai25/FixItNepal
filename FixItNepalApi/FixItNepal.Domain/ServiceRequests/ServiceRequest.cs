@@ -5,6 +5,7 @@ using FixItNepal.Domain.Customers;
 using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Shared.Addresses;
 using FixItNepal.Domain.Shared.ServiceRequests;
+using FixItNepal.Domain.Shared.Vehicles;
 using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Domain.ServiceRequests;
@@ -38,6 +39,13 @@ public class ServiceRequest:BaseEntity
     public ServiceRequestStatus Status { get; set; } = ServiceRequestStatus.Pending;
     
     public DateTime CreationTime { get; set; } =  DateTime.UtcNow;
+    
+    // for schduled one 
+    public VehicleType? VehicleType { get; set; }
+    
+    [StringLength(50)]
+    public string? VehicleModel { get; set; }
+    public decimal? EstimatedBudget { get; set; }
     
     [Timestamp]
     public byte[] RowVersion { get; set; }

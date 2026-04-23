@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using AutoMapper;
+using FixItNepal.Application.BackgroundJobs;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.LiveStatus;
@@ -15,6 +16,9 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared.LiveStatus;
 using FixItNepal.Domain.Shared.ServiceRequests;
+using FixItNepal.Domain.Shared.Vehicles;
+using Hangfire;
+using LinqKit;
 using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Application.ServiceRequests;
@@ -31,9 +35,27 @@ public class ServiceRequestAppService(
 {
     public async Task<PagedResultDto<RequestDto>> GetListAsync(RequestPagedListDto input)
     {
-        var filter = input.Status.HasValue
-            ? (Expression<Func<ServiceRequest, bool>>)(g => g.Status == input.Status.Value)
-            : null;
+        Expression<Func<ServiceRequest, bool>> filter = x => true;
+        
+        if (input.Status.HasValue)
+        {
+            filter = filter.And(x => x.Status == input.Status.Value);
+        }
+
+        if (input.RequestType.HasValue)
+        {
+            filter = filter.And(x => x.RequestType == input.RequestType.Value);
+        }
+        
+        if (input.CustomerId.HasValue)
+        {
+            filter = filter.And(x => x.CustomerId == input.CustomerId.Value);
+        }
+        
+        if (input.ServiceProviderId.HasValue)
+        {
+            filter = filter.And(x => x.ServiceProviderId == input.ServiceProviderId.Value);
+        }
         
         var skipCount = input.SkipCount ?? 0;
         var maxCount = input.MaxCount ?? 10;
@@ -70,6 +92,13 @@ public class ServiceRequestAppService(
         {
             throw new BusinessException("ScheduledDateRequired", "Scheduled date cannot be null.");
         }
+
+        if (input.RequestType == RequestType.Scheduled)
+        {
+            serviceRequest.VehicleType = input.VehicleType;
+            serviceRequest.VehicleModel = input.VehicleModel;
+            serviceRequest.EstimatedBudget = input.EstimatedBudget;
+        }
         
         await serviceRequestRepository.InsertAsync(serviceRequest); 
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
@@ -87,7 +116,7 @@ public class ServiceRequestAppService(
             throw new BusinessException("RequestAlreadyProcessed", "Request already handled");
         }
         
-        request.Status = ServiceRequestStatus.Pending;
+        request.Status = ServiceRequestStatus.Assigned;
         request.ServiceProviderId = input.ServiceProviderId;
         request.ServiceProviderType = input.ServiceProviderType;
 
@@ -95,6 +124,11 @@ public class ServiceRequestAppService(
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
         
         await serviceProviderNotifier.NotifyChangeInRequestAsync(request, LiveUpdateType.RequestAssigned);
+
+        BackgroundJob.Schedule<RequestAssignedToPending>(
+            job => job.Execute(id),
+            TimeSpan.FromMinutes(3));
+                
         return mapper.Map<ServiceRequest, RequestDto>(request);
     }
     

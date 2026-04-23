@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
+using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Mechanics;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Application.Contracts.ServiceRequests;
@@ -15,6 +16,7 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -92,6 +94,11 @@ public class MechanicAppService (
             throw new Exception($"Failed to create role: {errors}");
         }
         
+        BackgroundJob.Enqueue<IAppUserEmailer>(x =>
+            x.SendApprovalEmailAsync(mechanic.Email!, mechanic.Name, ApiConst.AppMechanicRoleName,
+                mechanic.ApprovalStatus.ToString())
+        );
+        
         return mapper.Map<Mechanic, MechanicDto>(mechanic);
     }
 
@@ -106,6 +113,11 @@ public class MechanicAppService (
         mechanic.ApprovalStatus = approvalStatus;
         mechanicRepository.Update(mechanic);
         await unitOfWork.SaveChangesAsync(CancellationToken.None);
+        
+        BackgroundJob.Enqueue<IAppUserEmailer>(x =>
+            x.SendApprovalEmailAsync(mechanic.Email!, mechanic.Name, ApiConst.AppMechanicRoleName,
+                mechanic.ApprovalStatus.ToString())
+        );
     }
 
     public async Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id)

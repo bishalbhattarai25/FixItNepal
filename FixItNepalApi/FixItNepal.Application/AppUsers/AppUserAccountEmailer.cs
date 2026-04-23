@@ -40,7 +40,7 @@ public class AppUserAccountEmailer:IAppUserEmailer
             name,
             role,
             status,
-            dashboard_url = "https://fix-it-nepal.vercel.app/dashboard",
+            dashboard_url = "https://fix-it-nepal.vercel.app/login",
             year = DateTime.UtcNow.Year
         });
         
@@ -50,6 +50,4 @@ public class AppUserAccountEmailer:IAppUserEmailer
             html
         );
     }
-    
-    
 }

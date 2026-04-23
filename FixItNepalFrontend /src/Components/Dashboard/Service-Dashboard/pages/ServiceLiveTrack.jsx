@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Phone, MessageSquare, X, Headset, Star } from "lucide-react";
 import { Map } from "../../../HOC/Map";
-import { useLocation } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import instance from "../../../../Server/Axios";
 import LiveTrackMap from "../../../HOC/LiveTrackMap";
 import { useServiceProviderHub } from "../../../../LiveHubs/useServiceProviderHub";

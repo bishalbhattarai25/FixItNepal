@@ -97,6 +97,11 @@ public class GarageAppService(
             throw new Exception($"Failed to create role: {errors}");
         }
         
+        BackgroundJob.Enqueue<IAppUserEmailer>(x =>
+            x.SendApprovalEmailAsync(garage.Email!, garage.Name, ApiConst.AppGarageRoleName,
+                garage.ApprovalStatus.ToString())
+        );
+        
         return mapper.Map<Garage, GarageDto>(garage);
 
     }
