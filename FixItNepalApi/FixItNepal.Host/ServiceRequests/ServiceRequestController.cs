@@ -14,7 +14,7 @@ public class ServiceRequestController(
     :ControllerBase
 {
     [HttpGet]
-    public async Task<PagedResultDto<RequestDto>> GetListAsync(RequestPagedListDto input)
+    public async Task<PagedResultDto<RequestDto>> GetListAsync([FromQuery] RequestPagedListDto input)
     {
         var pagedList = await serviceRequestService.GetListAsync(input);
         return pagedList;
