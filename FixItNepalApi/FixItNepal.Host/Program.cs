@@ -95,9 +95,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(GarageAutomapperProfile).Assembly);
 builder.Services.AddSingleton(new Cloudinary(
     new Account(
-        builder.Configuration["Cloudinary:CloudName"],
-        builder.Configuration["Cloudinary:ApiKey"],
-        builder.Configuration["Cloudinary:ApiSecret"]
+        Environment.GetEnvironmentVariable("Cloudinary__CloudName") ?? builder.Configuration["Cloudinary:CloudName"],
+        Environment.GetEnvironmentVariable("Cloudinary__ApiKey") ??builder.Configuration["Cloudinary:ApiKey"],
+        Environment.GetEnvironmentVariable("Cloudinary__ApiSecret") ??builder.Configuration["Cloudinary:ApiSecret"]
     )
 ));
 
