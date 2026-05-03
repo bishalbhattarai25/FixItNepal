@@ -1,6 +1,7 @@
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.LiveStatus;
 using FixItNepal.Application.Contracts.ServiceRequests;
+using FixItNepal.Domain.Customs.PagedResult;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FixItNepal.Host.ServiceRequests;
@@ -12,6 +13,12 @@ public class ServiceRequestController(
     )
     :ControllerBase
 {
+    [HttpGet]
+    public async Task<PagedResultDto<RequestDto>> GetListAsync(RequestPagedListDto input)
+    {
+        var pagedList = await serviceRequestService.GetListAsync(input);
+        return pagedList;
+    }
     
     [HttpGet("{id:guid}")]
     public async Task<RequestDto> GetAsync(Guid id)
