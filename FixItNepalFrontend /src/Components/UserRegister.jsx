@@ -5,9 +5,10 @@ import instance from "../Server/Axios";
 export const UserRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  // const role = "user";
-  // 1. State strictly matching your requested fields
+
+  
   const [formData, setFormData] = useState({
+    name:"",
     phoneNumber: "",
     passWord: "",
   });
@@ -55,6 +56,20 @@ export const UserRegister = () => {
         {/* Register Form */}
         
         <form className="flex flex-col gap-6" onSubmit={handleRegister}>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest ml-1">
+              Name
+            </label>
+            <input
+                type="tel"
+                name="name"
+                placeholder="John Doe"
+                required
+                className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                onChange={handleChange}
+            />
+          </div>
           
           <div className="space-y-1.5">
             <label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest ml-1">

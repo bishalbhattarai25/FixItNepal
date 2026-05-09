@@ -53,5 +53,5 @@ public class ServiceRequest:BaseEntity
     public decimal? EstimatedBudget { get; set; }
     
     [Timestamp]
-    public byte[] RowVersion { get; set; }
+    public byte[]? RowVersion { get; set; }
 }

@@ -205,6 +205,12 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
                 .HasForeignKey(x => x.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
             
+            builder.Entity<ServiceRequest>()
+                .Property(x => x.RowVersion)
+                .IsRowVersion()
+                .IsConcurrencyToken()
+                .ValueGeneratedOnAddOrUpdate();
+            
             // b.Navigation(b => b.Address)
             //     .AutoInclude();
         });
