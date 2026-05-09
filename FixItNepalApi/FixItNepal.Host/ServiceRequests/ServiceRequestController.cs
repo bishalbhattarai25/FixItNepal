@@ -1,5 +1,6 @@
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.LiveStatus;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +68,13 @@ public class ServiceRequestController(
     {
         var nearbyServiceProvider = await serviceRequestService.GetNearbyServicesAsync(input, radiusInKm);
         return nearbyServiceProvider;
+    }
+    
+    [HttpGet("/availableslots/{serviceProviderId:guid}")]
+    public async Task<ICollection<AvailableSlotDto>> GetAvailableSlotAsync(Guid serviceProviderId, DateTime date)
+    {
+        var availableSlots = await serviceRequestService.GetAvailableSlotAsync(serviceProviderId, date);
+        return availableSlots;
     }
     
 }

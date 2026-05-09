@@ -21,6 +21,8 @@ public class ServiceRequest:BaseEntity
     public ServiceProviderType? ServiceProviderType { get; set; }
     
     public DateTime? ScheduledDate { get; set; }
+    public TimeSpan? ScheduledTime { get; set; }
+    
     
     [StringLength(ServiceRequestConst.MaxProblemDescriptionLength)]
     public string? ProblemDescription { get; set; } = null;

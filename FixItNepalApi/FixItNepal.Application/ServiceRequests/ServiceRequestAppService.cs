@@ -5,12 +5,14 @@ using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.LiveStatus;
 using FixItNepal.Application.Contracts.Mechanics;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
+using FixItNepal.Domain.OpeningHours;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
@@ -30,7 +32,8 @@ public class ServiceRequestAppService(
     IMechanicRepository mechanicRepository,
     IGarageRepository garageRepository,
     IRequestNotifier requestNotifier,
-    IServiceProviderNotifier serviceProviderNotifier
+    IServiceProviderNotifier serviceProviderNotifier,
+    IRepository<OpeningHour> openingHourRepository
     ):IServiceRequestService
 {
     public async Task<PagedResultDto<RequestDto>> GetListAsync(RequestPagedListDto input)
@@ -98,6 +101,7 @@ public class ServiceRequestAppService(
             serviceRequest.VehicleType = input.VehicleType;
             serviceRequest.VehicleModel = input.VehicleModel;
             serviceRequest.EstimatedBudget = input.EstimatedBudget;
+            serviceRequest.ScheduledTime = input.ScheduledTime;
         }
         
         await serviceRequestRepository.InsertAsync(serviceRequest); 
@@ -209,6 +213,39 @@ public class ServiceRequestAppService(
             Timestamp = DateTimeOffset.UtcNow   
         };
         return lastLocationDto;
+    }
+    public async Task<ICollection<AvailableSlotDto>> GetAvailableSlotAsync(Guid serviceProviderId, DateTime date)
+    {
+        var dayOfWeek = date.DayOfWeek;
+        var dateOnly = DateOnly.FromDateTime(date);
+
+        var availability = await openingHourRepository.GetAsync(x =>
+            x.ServiceProviderId == serviceProviderId &&
+            x.DayOfWeek == dayOfWeek);
+
+        var slots = GenerateSlot.GenerateSlots(
+            availability.StartTime,
+            availability.EndTime,
+            60);
+
+        var result = new List<AvailableSlotDto>();
+
+        foreach (var slot in slots)
+        {
+            var bookingCount = await serviceRequestRepository.CountAsync(x =>
+                x.ServiceProviderId == serviceProviderId &&
+                x.RequestType == RequestType.Scheduled &&
+                x.ScheduledDate == date.Date &&
+                x.ScheduledTime == slot);
+
+            result.Add(new AvailableSlotDto
+            {
+                Time = slot,
+                IsAvailable = bookingCount < availability.MaxAppointmentsPerSlot
+            });
+        }
+
+        return result;
     }
     
 }
