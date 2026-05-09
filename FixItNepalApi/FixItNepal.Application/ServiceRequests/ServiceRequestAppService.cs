@@ -21,7 +21,6 @@ using FixItNepal.Domain.Shared.ServiceRequests;
 using FixItNepal.Domain.Shared.Vehicles;
 using Hangfire;
 using LinqKit;
-using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Application.ServiceRequests;
 
@@ -80,7 +79,6 @@ public class ServiceRequestAppService(
     
     public async Task<RequestDto> CreateRequestAsync(CreateRequestDto input)
     {
-        var locationCoordinates = mapper.Map<LocationCoordinationDto, Point>(input.LocationCoordinates);
         var serviceRequest = new ServiceRequest()
         {
             CustomerId = input.CustomerId,
@@ -88,7 +86,8 @@ public class ServiceRequestAppService(
             RequestType = input.RequestType,
             ProblemDescription = input.ProblemDescription,
             ScheduledDate = input.ScheduledDate,
-            LocationCoordinatePoint = locationCoordinates,
+            Latitude = input.LocationCoordinates.Latitude,
+            Longitude = input.LocationCoordinates.Longitude,
         };
 
         if (input.RequestType == RequestType.Scheduled && input.ScheduledDate == null)
@@ -160,7 +159,7 @@ public class ServiceRequestAppService(
     public async Task<NearbyServiceProviderDto> GetNearbyServicesAsync(LocationCoordinationDto input, double radiusInKm)
     {
         
-        var userLocation = new Point(input.Longitude, input.Latitude);
+        var userLocation = new LocationCoordinate(input.Longitude, input.Latitude);
         var radiusInMeters = radiusInKm * 1000;
         
         var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
@@ -183,7 +182,7 @@ public class ServiceRequestAppService(
         var request = await serviceRequestRepository.GetAsync(id);
         var radiusinKm = 50;
         
-        var userLocation = new Point(request.LocationCoordinatePoint.X, request.LocationCoordinatePoint.Y);
+        var userLocation = new LocationCoordinate(request.Latitude, request.Longitude);
         var radiusInMeters = radiusinKm * 1000;
         
         var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
@@ -208,8 +207,8 @@ public class ServiceRequestAppService(
         {
             RequestId = id,
             ServiceProviderId = request.ServiceProviderId,
-            Longitude = request.LastKnownLocationOfServiceProvider!.X,
-            Latitude = request.LastKnownLocationOfServiceProvider.Y,
+            Longitude = request.Longitude,
+            Latitude = request.LastKnownLatitude,
             Timestamp = DateTimeOffset.UtcNow   
         };
         return lastLocationDto;

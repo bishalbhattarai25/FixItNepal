@@ -21,6 +21,6 @@ public class BaseAddressDto
 
     [MaxLength(AddressConst.PostalCodeMaxLength)]
     public string? PostalCode { get; set; }
-    
-    public LocationCoordinationDto? LocationCoordinatePoint { get; set; }
+
+    public LocationCoordinationDto LocationCoordinatePoint { get; set; } = null!;
 }

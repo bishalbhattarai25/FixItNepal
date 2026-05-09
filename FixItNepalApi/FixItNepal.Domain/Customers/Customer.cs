@@ -9,6 +9,8 @@ namespace FixItNepal.Domain.Customers;
 
 public class Customer:AppUser
 {
+    [StringLength(ApiConst.MaxNameLength)]
+    public string Name { get; set; } = null!;
     public ICollection<Vehicle>  Vehicles { get; set; } = new Collection<Vehicle>();
     public ICollection<ServiceRequest>  ServiceRequests { get; set; } = new Collection<ServiceRequest>();
 }

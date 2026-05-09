@@ -152,9 +152,6 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
         builder.Entity<Address>(b =>
         {
             b.ToTable(ApiConst.DbTablePrefix + nameof(Addresses));
-            
-            b.Property(a => a.LocationCoordinatePoint)
-                .HasColumnType(AddressConst.PointTypeInMySQL); 
         });
         
         // --------------MediaFile --------------------- //
@@ -202,8 +199,6 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             b.Property(x => x.ServiceProviderType)
                 .HasConversion<string>();
             
-            b.Property(a => a.LocationCoordinatePoint)
-                .HasColumnType(AddressConst.PointTypeInMySQL); 
             
             b.HasOne(x => x.Customer)
                 .WithMany(x => x.ServiceRequests)

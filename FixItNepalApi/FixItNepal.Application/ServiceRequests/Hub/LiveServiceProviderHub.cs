@@ -6,7 +6,6 @@ using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Application.ServiceRequests.Hub;
 
@@ -45,11 +44,9 @@ public class LiveServiceProviderHub(
         {
             var request = await serviceRequestRepository.GetAsync(x => x.Id == dto.RequestId && x.ServiceProviderId == dto.ServiceProviderId);
             
-            var serviceProviderLocation = new Point(dto.Longitude, dto.Latitude)
-            {
-                SRID = 4326
-            };
-            request.LastKnownLocationOfServiceProvider = serviceProviderLocation;
+        
+            request.LastKnownLatitude = dto.Latitude;
+            request.LastKnownLongitude = dto.Longitude;
 
              serviceRequestRepository.Update(request);
              await unitOfWork.SaveChangesAsync(CancellationToken.None);

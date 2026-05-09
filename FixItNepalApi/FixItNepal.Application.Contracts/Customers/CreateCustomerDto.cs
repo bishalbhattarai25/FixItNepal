@@ -5,6 +5,11 @@ namespace FixItNepal.Application.Contracts.Customers;
 
 public class CreateCustomerDto
 {
+    
+    [Required]
+    public string Name { get; set; } = null!;
+
+    
     [Required]
     [Phone]
     public string PhoneNumber { get; set; } = null!;
