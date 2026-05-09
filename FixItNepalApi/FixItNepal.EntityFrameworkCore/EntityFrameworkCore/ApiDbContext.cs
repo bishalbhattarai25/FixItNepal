@@ -4,6 +4,7 @@ using FixItNepal.Domain.Customers;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.Mechanics;
 using FixItNepal.Domain.MediaFiles;
+using FixItNepal.Domain.OpeningHours;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.Addresses;
@@ -38,6 +39,9 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
     //service-requests
     public DbSet<ServiceRequest>  ServiceRequests { get; set; }
     
+    //openinghour
+    public DbSet<OpeningHour>  OpeningHours { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -68,6 +72,11 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
                 .AutoInclude();
             b.Navigation(g => g.GarageMediaFiles)
                 .AutoInclude();
+
+            b.HasMany(x => x.OpeningHours)
+                .WithOne()
+                .HasForeignKey(x => x.ServiceProviderId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         });
         
@@ -204,5 +213,16 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             // b.Navigation(b => b.Address)
             //     .AutoInclude();
         });
+
+        builder.Entity<OpeningHour>(b =>
+        {
+            b.ToTable(ApiConst.DbTablePrefix + nameof(OpeningHours));
+            
+            b.Property(x => x.ServiceProviderType)
+                .HasConversion<string>();
+
+            b.HasIndex(x => x.ServiceProviderId);
+        });
+
     }
 }

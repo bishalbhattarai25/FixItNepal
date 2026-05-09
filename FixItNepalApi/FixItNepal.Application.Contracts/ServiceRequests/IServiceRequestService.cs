@@ -1,5 +1,6 @@
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.LiveStatus;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Domain.Customs.PagedResult;
 
 namespace FixItNepal.Application.Contracts.ServiceRequests;
@@ -14,6 +15,8 @@ public interface IServiceRequestService
     Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(Guid id );
     Task<LiveServiceProviderUpdateDto> GetLatestServiceProviderLocationAsync(Guid id);
     Task<NearbyServiceProviderDto> GetNearbyServicesAsync(LocationCoordinationDto input, double radiusInKm);
+    Task<ICollection<AvailableSlotDto>> GetAvailableSlotAsync(Guid serviceProviderId, DateTime date);
+
 
 
 

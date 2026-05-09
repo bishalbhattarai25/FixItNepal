@@ -17,5 +17,6 @@ public class BaseRequestDto
     [StringLength(50)]
     public string? VehicleModel { get; set; }
     public decimal? EstimatedBudget { get; set; }
+    public TimeSpan? ScheduledTime { get; set; }
 
 }

@@ -4,6 +4,7 @@ using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
@@ -11,11 +12,14 @@ using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Garages;
 using FixItNepal.Domain.MediaFiles;
+using FixItNepal.Domain.OpeningHours;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Repository.UnitOfWork;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
+using FixItNepal.Domain.Shared.OpeningHours;
+using FixItNepal.Domain.Shared.ServiceRequests;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +33,7 @@ public class GarageAppService(
     IUnitOfWork unitOfWork,
     UserManager<AppUser> userManager,
     IServiceRequestRepository serviceRequestRepository,
+    IRepository<OpeningHour> openingHourRepository,
     IAppUserEmailer emailer
     ) : IGarageService
 {
@@ -81,6 +86,9 @@ public class GarageAppService(
         garage.SetPhoneNumber(input.PhoneNumber);
         garage.SetUserName(input.PhoneNumber);
 
+        var openingHours = CreateOpeningHours(OpeningHourSeedData.DefaultAvailability);
+        garage.OpeningHours = openingHours;
+
         
         var result = await userManager.CreateAsync(garage, input.PassWord);
 
@@ -104,6 +112,19 @@ public class GarageAppService(
         
         return mapper.Map<Garage, GarageDto>(garage);
 
+    }
+
+    private HashSet<OpeningHour> CreateOpeningHours(
+        ICollection<OpeningHourSeedModel> input)
+    {
+        return input.Select(x => new OpeningHour()
+        {
+            ServiceProviderType = ServiceProviderType.Garage,
+            DayOfWeek =  x.DayOfWeek,
+            StartTime = x.StartTime,
+            EndTime = x.EndTime,
+            MaxAppointmentsPerSlot = x.MaxAppointmentsPerSlot,
+        }).ToHashSet();
     }
 
     public Task<GarageDto> UpdateAsync(Guid id, CreateUpdateGarageDto input)
@@ -143,4 +164,6 @@ public class GarageAppService(
             MediaFileId = x.ImageId
         }).ToList();
     }
+    
+    
 }

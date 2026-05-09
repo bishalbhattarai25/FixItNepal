@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using FixItNepal.Domain.Addresses;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.MediaFiles;
+using FixItNepal.Domain.OpeningHours;
 using FixItNepal.Domain.Shared;
 using FixItNepal.Domain.Shared.AppUsers;
 
@@ -21,5 +22,8 @@ public class Garage:AppUser
     
     //documents for the garages 
     public ICollection<GarageMediaFile> GarageMediaFiles { get; set; } = new Collection<GarageMediaFile>();
+    
+    public ICollection<OpeningHour>  OpeningHours { get; set; } =
+        new Collection<OpeningHour>();
 
 }

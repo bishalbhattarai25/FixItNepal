@@ -67,7 +67,16 @@ public class GenericRepository<T> (
         _dbSet.Remove(entity);
         return Task.CompletedTask;
     }
-    
+
+    public async Task<int> CountAsync(Expression<Func<T, bool>>? filter)
+    {
+        if (filter != null)
+        {
+            return await _dbSet.Where(filter).CountAsync();
+        }
+        return await _dbSet.CountAsync();
+    }
+
     public async Task<(int TotalCount, ICollection<T> Items)> GetPagedListAsync(
         int skipCount = 0,
         int maxResultCount = 10,
