@@ -39,23 +39,27 @@ and secure communication between customers and service providers.
 ## Backend
 
 * ASP.NET Core Web API
+* C#
 * Entity Framework Core
-* MySql
+* PostgreSQL
 * SignalR
 * JWT Authentication
-* Twilio OTP Integration
+* Hangfire
+* MailKit
 
 ## Frontend
 
 * React
+* Javascript
 * Tailwind CSS
 * Axios
+* Leaflet
 
 ## Deployment
 
-* Render
-* Vercel
-* Railway
+* Render - Backend and Database
+* Vercel - Frontend
+
 
 ---
 
@@ -95,6 +99,7 @@ Handles:
 * Scheduled appointments
 * Request tracking
 * Nearby provider discovery
+* Live Tracking
 
 ## Appointment Module
 
@@ -108,8 +113,6 @@ Handles:
 ## Notification Module
 
 Handles:
-
-* SMS notifications
 * Real-time updates
 * Status notifications
 
@@ -117,7 +120,7 @@ Handles:
 
 # Database
 
-The project uses MySQL as the primary database.
+The project uses PostgreSQL as the primary database.
 
 ## Main Entities
 
@@ -141,6 +144,7 @@ Make sure you have installed:
 * MySQL
 * Node.js
 * Git
+* Docker
 
 ---
 
@@ -152,6 +156,7 @@ Make sure you have installed:
 git clone <repository-url>
 cd FixITNepal
 ```
+run docker compose up --build
 
 ## Configure App Settings
 
@@ -190,7 +195,7 @@ dotnet run
 Backend will start on:
 
 ```bash
-https://localhost:443xx
+https://localhost:71**
 ```
 
 ---
