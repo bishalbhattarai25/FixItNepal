@@ -15,7 +15,11 @@ public class AddressAutomapperProfile:Profile
             .ForPath(dest => dest.LocationCoordinatePoint.Longitude,
                 opt => opt.MapFrom(src => src.Longitude));
 
-        CreateMap<CreateAddressDto, Address>();
+        CreateMap<CreateAddressDto, Address>()
+            .ForMember(dest => dest.Latitude,
+                opt => opt.MapFrom(src => src.LocationCoordinatePoint.Latitude))
+            .ForMember(dest => dest.Longitude,
+                opt => opt.MapFrom(src => src.LocationCoordinatePoint.Longitude));;
         
     }
 }

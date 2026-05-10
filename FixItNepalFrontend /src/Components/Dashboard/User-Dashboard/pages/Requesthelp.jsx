@@ -26,9 +26,9 @@ export const Requesthelp = () => {
     { name: "Out of Fuel", icon: Fuel },
   ];
 
-  var customerId = localStorage.getItem("userId")
+  var customerId = localStorage.getItem("userId");
   const initialValues = {
-    customerId:customerId,
+    customerId: customerId,
     requestType: "Emergency",
     problemType: "",
     scheduledDate: new Date().toISOString(),
@@ -46,7 +46,7 @@ export const Requesthelp = () => {
       setIsSubmitting(true);
       try {
         const payload = {
-          customerId:values.customerId,
+          customerId: values.customerId,
           requestType: values.requestType,
           problemType: values.problemType,
           scheduledDate: values.scheduledDate,
@@ -57,15 +57,14 @@ export const Requesthelp = () => {
           radiusInKm: values.radiusInKm,
         };
 
-      // ONLY CHANGES: storing requestId + URL navigation
+        // ONLY CHANGES: storing requestId + URL navigation
 
-const response = await instance.post("/api/servicerequest", payload);
+        const response = await instance.post("/api/servicerequest", payload);
 
-const requestId = response.data?.request?.id;
+       const requestId = response.data?.id;
 
-// persist
-localStorage.setItem("activeRequestId", requestId);
-
+        // persist
+        localStorage.setItem("activeRequestId", requestId);
 
         toast.success("Emergency Signal Sent! Help is on the way.", {
           duration: 3000,
@@ -78,8 +77,7 @@ localStorage.setItem("activeRequestId", requestId);
         });
 
         // navigate via URL (NOT state)
-navigate(`/userdashboard/nearbymechanics/${requestId}`);
-
+        navigate(`/userdashboard/nearbymechanics/${requestId}`);
 
         formik.resetForm();
       } catch (err) {

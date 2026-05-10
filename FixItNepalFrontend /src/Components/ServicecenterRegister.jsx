@@ -297,8 +297,49 @@ export const ServiceCenterRegister = () => {
             />
           </div>
         </div>
+        <div className="mb-8">
+  <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+    <svg
+      className="w-5 h-5 text-2xl text-green-600"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <FaRegMap />
+    </svg>
+    Location Coordinates
+  </h3>
 
-        {/* Location Coordinates Section */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div>
+      <input
+        placeholder="Latitude (e.g., 27.7172)"
+        className={`${inputStyle} ${formik.touched.address?.locationCoordinatePoint?.latitude && formik.errors.address?.locationCoordinatePoint?.latitude ? "border-red-500 focus:ring-red-500" : ""}`}
+        {...formik.getFieldProps(
+          "address.locationCoordinatePoint.latitude",
+        )}
+      />
+      <p className="text-xs text-gray-400 mt-1 ml-1">
+        Example: 27.7172
+      </p>
+    </div>
+    <div>
+      <input
+        placeholder="Longitude (e.g., 85.3240)"
+        className={`${inputStyle} ${formik.touched.address?.locationCoordinatePoint?.longitude && formik.errors.address?.locationCoordinatePoint?.longitude ? "border-red-500 focus:ring-red-500" : ""}`}
+        {...formik.getFieldProps(
+          "address.locationCoordinatePoint.longitude",
+        )}
+      />
+      <p className="text-xs text-gray-400 mt-1 ml-1">
+        Example: 85.3240
+      </p>
+    </div>
+  </div>
+</div>
+
+
+        {/* Location Coordinates Section
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
             <svg
@@ -314,12 +355,12 @@ export const ServiceCenterRegister = () => {
 
           <div className="grid grid-cols-1 gap-5">
             {/* MAP FULL WIDTH */}
-            <div className="w-full">
+            {/* <div className="w-full">
               <MapPicker formik={formik} />
             </div>
 
             {/* INPUTS BELOW */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <input
                 value={formik.values.address.locationCoordinatePoint.latitude}
                 disabled
@@ -332,8 +373,8 @@ export const ServiceCenterRegister = () => {
                 className={inputStyle}
               />
             </div>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */} 
 
         {/* Form Actions */}
         <div className="space-y-4">
