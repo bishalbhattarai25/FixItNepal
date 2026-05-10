@@ -13,5 +13,5 @@ public class AddressConst
     public const double MaxLongitude = 180.0;
     
     public const int GpsCoordinateSrid = 4326;
-    public const string PointTypeInMySQL = "POINT SRID 4326";
+    public const string PointTypeInMySQL = "geometry(Point, 4326)";
 }

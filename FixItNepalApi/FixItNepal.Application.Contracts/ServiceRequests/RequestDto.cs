@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Domain.Shared.Addresses;
 using FixItNepal.Domain.Shared.ServiceRequests;
-using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Application.Contracts.ServiceRequests;
 

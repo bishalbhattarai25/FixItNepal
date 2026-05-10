@@ -9,6 +9,7 @@ import { FiUpload } from "react-icons/fi";
 import { GiMechanicGarage } from "react-icons/gi";
 import { MdLocationPin } from "react-icons/md";
 import { FaRegMap } from "react-icons/fa6";
+import MapPicker from "./HOC/MapPicker";
 
 const initialValues = {
   name: "",
@@ -47,8 +48,12 @@ export const ServiceCenterRegister = () => {
           address: {
             ...values.address,
             locationCoordinatePoint: {
-              latitude: parseFloat(values.address.locationCoordinatePoint.latitude),
-              longitude: parseFloat(values.address.locationCoordinatePoint.longitude),
+              latitude: parseFloat(
+                values.address.locationCoordinatePoint.latitude,
+              ),
+              longitude: parseFloat(
+                values.address.locationCoordinatePoint.longitude,
+              ),
             },
           },
           documentMediaFiles: [{ imageId: values.documentId }],
@@ -97,7 +102,9 @@ export const ServiceCenterRegister = () => {
             </span>
             <span className="text-gray-800"> Service Center</span>
           </h2>
-          <p className="text-gray-500 mt-2">Join as a professional Service Provider</p>
+          <p className="text-gray-500 mt-2">
+            Join as a professional Service Provider
+          </p>
         </div>
 
         {/* File Upload Section - Now at the top */}
@@ -305,30 +312,25 @@ export const ServiceCenterRegister = () => {
             Location Coordinates
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <input
-                placeholder="Latitude (e.g., 27.7172)"
-                className={`${inputStyle} ${formik.touched.address?.locationCoordinatePoint?.latitude && formik.errors.address?.locationCoordinatePoint?.latitude ? "border-red-500 focus:ring-red-500" : ""}`}
-                {...formik.getFieldProps(
-                  "address.locationCoordinatePoint.latitude",
-                )}
-              />
-              <p className="text-xs text-gray-400 mt-1 ml-1">
-                Example: 27.7172
-              </p>
+          <div className="grid grid-cols-1 gap-5">
+            {/* MAP FULL WIDTH */}
+            <div className="w-full">
+              <MapPicker formik={formik} />
             </div>
-            <div>
+
+            {/* INPUTS BELOW */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <input
-                placeholder="Longitude (e.g., 85.3240)"
-                className={`${inputStyle} ${formik.touched.address?.locationCoordinatePoint?.longitude && formik.errors.address?.locationCoordinatePoint?.longitude ? "border-red-500 focus:ring-red-500" : ""}`}
-                {...formik.getFieldProps(
-                  "address.locationCoordinatePoint.longitude",
-                )}
+                value={formik.values.address.locationCoordinatePoint.latitude}
+                disabled
+                className={inputStyle}
               />
-              <p className="text-xs text-gray-400 mt-1 ml-1">
-                Example: 85.3240
-              </p>
+
+              <input
+                value={formik.values.address.locationCoordinatePoint.longitude}
+                disabled
+                className={inputStyle}
+              />
             </div>
           </div>
         </div>
@@ -402,8 +404,6 @@ export const ServiceCenterRegister = () => {
           * Required fields
         </p>
       </form>
-
-      
     </div>
   );
 };

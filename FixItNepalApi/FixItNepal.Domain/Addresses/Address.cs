@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Shared.Addresses;
-using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Domain.Addresses;
 
@@ -22,7 +21,10 @@ public class Address:BaseEntity
 
     [MaxLength(AddressConst.PostalCodeMaxLength)]
     public string? PostalCode { get; set; }
+    
+    [Range(AddressConst.MinLatitude, AddressConst.MaxLatitude)]
+    public double Latitude { get; set; }
+    [Range(AddressConst.MinLongitude, AddressConst.MaxLongitude)]
+    public double Longitude { get; set; }
 
-    [Column(TypeName = AddressConst.PointTypeInMySQL)]
-    public Point? LocationCoordinatePoint { get; set; }
 }

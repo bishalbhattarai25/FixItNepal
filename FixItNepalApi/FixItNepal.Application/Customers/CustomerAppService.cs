@@ -46,6 +46,8 @@ public class CustomerAppService(
 
         var customer = new Customer();
         
+        customer.Name = input.Name;
+        
         var phoneNumberExists = await userManager.Users.AnyAsync(x => x.PhoneNumber == input.PhoneNumber) ;
         if (phoneNumberExists)
         {

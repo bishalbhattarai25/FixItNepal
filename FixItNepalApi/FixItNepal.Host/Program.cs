@@ -26,7 +26,7 @@ using FixItNepal.EntityFrameworkCore.Repository.UnitOfWork;
 using FixItNepal.EntityFrameworkCore.ServiceRequests;
 using FixItNepal.Host.Middlewares;
 using Hangfire;
-using Hangfire.MySql;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -44,19 +44,10 @@ var connectionString = Environment.GetEnvironmentVariable("MYSQL_CONNECTION")
                        ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApiDbContext>(options =>
-    options.UseMySql(
-        connectionString,
-        ServerVersion.AutoDetect(
-            connectionString
-        ),
-        mySqlOptions =>
-        {
-            mySqlOptions.MigrationsAssembly(
-                "FixItNepal.EntityFrameworkCore"
-            );
-            mySqlOptions.UseNetTopologySuite();
-        }
-    )
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.MigrationsAssembly("FixItNepal.EntityFrameworkCore");
+    })
 );
 
 builder.Services.AddIdentityCore<AppUser>(options =>
@@ -110,16 +101,17 @@ builder.Services.AddHangfireServer(options =>
     );
 
 builder.Services.AddHangfire(options =>
+{
     options.UseStorage(
-        new MySqlStorage(Environment.GetEnvironmentVariable("MYSQL_CONNECTION")
-                         ?? builder.Configuration.GetConnectionString("DefaultConnection"),
-            new MySqlStorageOptions
+        new PostgreSqlStorage(
+            connectionString,
+            new PostgreSqlStorageOptions
             {
-                TablesPrefix = "Hangfire",
-                TransactionIsolationLevel = System.Transactions.IsolationLevel.ReadCommitted
+                SchemaName = "hangfire"
             }
         )
-    ));
+    );
+});
 
 
 //razor 
@@ -236,6 +228,7 @@ app.MapHub<LiveRequestHub>("/liveStatusHub");
 app.MapHub<LiveServiceProviderHub>("/liveServiceProviderHub");
 app.UseHangfireDashboard("/hangfire");
 
+Console.WriteLine("Seeding admin");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
@@ -245,6 +238,8 @@ using (var scope = app.Services.CreateScope())
 
     // Seed data
     await CustomIdentitySeeder.SeedAsync(scope.ServiceProvider);
+    
+    Console.WriteLine("Seeded superadmin");
 }
 
 app.Run();

@@ -1,6 +1,7 @@
 
 
-using NetTopologySuite.Geometries;
+
+using FixItNepal.Domain.Addresses;
 
 namespace FixItNepal.Domain.Customs.Helper;
 
@@ -34,8 +35,8 @@ public class GeoDistanceHelper
     /// <summary>
     /// Calculates distance in meters between two NetTopologySuite Points
     /// </summary>
-    public static double GetDistanceInMeters(Point p1, Point p2)
+    public static double GetDistanceInMeters(LocationCoordinate p1, LocationCoordinate p2)
     {
-        return GetDistanceInMeters(p1.Y, p1.X, p2.Y, p2.X); // Y=lat, X=lng
+        return GetDistanceInMeters(p1.Latitude, p1.Longitude, p2.Latitude, p2.Longitude); // Y=lat, X=lng
     }
 }

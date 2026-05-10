@@ -6,7 +6,6 @@ using FixItNepal.Domain.Customs;
 using FixItNepal.Domain.Shared.Addresses;
 using FixItNepal.Domain.Shared.ServiceRequests;
 using FixItNepal.Domain.Shared.Vehicles;
-using NetTopologySuite.Geometries;
 
 namespace FixItNepal.Domain.ServiceRequests;
 
@@ -29,18 +28,22 @@ public class ServiceRequest:BaseEntity
     
     public Guid? ServiceProviderId { get; set; }
     
-    [Column(TypeName = AddressConst.PointTypeInMySQL)]
-    public Point? LastKnownLocationOfServiceProvider { get; set; }
+    [Range(AddressConst.MinLatitude, AddressConst.MaxLatitude)]
+    public double LastKnownLatitude { get; set; }
+    
+    [Range(AddressConst.MinLongitude, AddressConst.MaxLongitude)]
+    public double LastKnownLongitude { get; set; }
     
     
-    [Column(TypeName = AddressConst.PointTypeInMySQL)]
-    public Point? LocationCoordinatePoint { get; set; }
+    [Range(AddressConst.MinLatitude, AddressConst.MaxLatitude)]
+    public double Latitude { get; set; }
     
-    // public required Address Address { get; set; } = null!;
+    [Range(AddressConst.MinLongitude, AddressConst.MaxLongitude)]
+    public double Longitude { get; set; }
 
     public ServiceRequestStatus Status { get; set; } = ServiceRequestStatus.Pending;
     
-    public DateTime CreationTime { get; set; } =  DateTime.UtcNow;
+    public DateTime CreationTime { get; set; }
     
     // for schduled one 
     public VehicleType? VehicleType { get; set; }
@@ -50,5 +53,5 @@ public class ServiceRequest:BaseEntity
     public decimal? EstimatedBudget { get; set; }
     
     [Timestamp]
-    public byte[] RowVersion { get; set; }
+    public byte[]? RowVersion { get; set; }
 }
