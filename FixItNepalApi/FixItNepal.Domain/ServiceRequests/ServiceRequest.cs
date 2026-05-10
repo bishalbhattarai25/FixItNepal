@@ -43,7 +43,7 @@ public class ServiceRequest:BaseEntity
 
     public ServiceRequestStatus Status { get; set; } = ServiceRequestStatus.Pending;
     
-    public DateTime CreationTime { get; set; } =  DateTime.UtcNow;
+    public DateTime CreationTime { get; set; }
     
     // for schduled one 
     public VehicleType? VehicleType { get; set; }

@@ -85,9 +85,9 @@ public class ServiceRequestAppService(
             ProblemType = input.ProblemType,
             RequestType = input.RequestType,
             ProblemDescription = input.ProblemDescription,
-            ScheduledDate = input.ScheduledDate,
             Latitude = input.LocationCoordinates.Latitude,
             Longitude = input.LocationCoordinates.Longitude,
+            CreationTime = DateTime.UtcNow
         };
 
         if (input.RequestType == RequestType.Scheduled && input.ScheduledDate == null)
@@ -97,6 +97,9 @@ public class ServiceRequestAppService(
 
         if (input.RequestType == RequestType.Scheduled)
         {
+            serviceRequest.ScheduledDate = input.ScheduledDate.HasValue 
+                ? DateTime.SpecifyKind(input.ScheduledDate.Value, DateTimeKind.Utc) 
+                : null;
             serviceRequest.VehicleType = input.VehicleType;
             serviceRequest.VehicleModel = input.VehicleModel;
             serviceRequest.EstimatedBudget = input.EstimatedBudget;
