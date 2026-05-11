@@ -18,7 +18,9 @@ function NavBar() {
     <div className='h-[60px] bg-white shadow-lg flex justify-between px-10 py-1 items-center'>
       
       {/* Brand Logo */}
-      <div className='text-2xl font-semibold drop-shadow-lg'>
+      <div onClick={()=> {
+        navigate('/')
+      }} className='text-2xl font-semibold drop-shadow-lg cursor-pointer'>
         FixIt<span className='text-red-500'>Nepal</span>
       </div>
 

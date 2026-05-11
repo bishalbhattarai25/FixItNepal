@@ -1,7 +1,9 @@
+using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
+using FixItNepal.Domain.Shared.ServiceRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FixItNepal.Host.Garages;
@@ -51,5 +53,11 @@ public class GarageController (
     {
         var requests = await garageService.GetRequestHistoryAsync(id);
         return requests;
+    }
+    
+    [HttpGet("{id:guid}/appointments")]
+    public async Task<ICollection<AppointmentDto>> GetAppointments(Guid id, DateTime? date, ServiceRequestStatus? status)
+    {
+        return await garageService.GetAppointmentsAsync(id, date, status);
     }
 }

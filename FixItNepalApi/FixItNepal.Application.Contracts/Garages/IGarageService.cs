@@ -1,6 +1,8 @@
+using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
+using FixItNepal.Domain.Shared.ServiceRequests;
 
 namespace FixItNepal.Application.Contracts.Garages;
 
@@ -13,5 +15,8 @@ public interface IGarageService
     Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus);
     Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id);
     Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id);
+
+    Task<ICollection<AppointmentDto>> GetAppointmentsAsync(Guid id, DateTime? date,
+        ServiceRequestStatus? status);
 
 }
