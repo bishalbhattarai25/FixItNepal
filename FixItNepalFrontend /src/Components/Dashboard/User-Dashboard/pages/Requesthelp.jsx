@@ -23,7 +23,7 @@ export const Requesthelp = () => {
     { name: "Breakdown", icon: AlertTriangle },
     { name: "Puncture", icon: Zap },
     { name: "Accident", icon: Car },
-    { name: "Out of Fuel", icon: Fuel },
+    { name: "OutOfFuel", icon: Fuel },
   ];
 
   var customerId = localStorage.getItem("userId");

@@ -3,7 +3,7 @@ import { MapPin, Zap } from "lucide-react";
 import instance from "../../../../Server/Axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRequestHub } from "../../../../LiveHubs/UseRequestHub";
-import { NearbyMap } from "../../../HOC/NearbyMap"; // ✅ ONLY CHANGE
+import { NearbyMap } from "../../../HOC/NearbyMap";
 
 const Nearbymecf = () => {
   const { requestId: paramRequestId } = useParams();

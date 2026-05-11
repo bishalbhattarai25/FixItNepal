@@ -5,5 +5,11 @@ public enum ProblemType
     BreakDown,
     Puncture,
     Accident,
-    OutOfFuel
+    OutOfFuel,
+    FlatTire,
+    BatteryDead,
+    OilChange,
+    BrakeService,
+    EngineIssue,
+    GeneralMaintenance
 }

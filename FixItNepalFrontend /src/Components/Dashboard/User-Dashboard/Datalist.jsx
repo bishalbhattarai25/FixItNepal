@@ -33,11 +33,11 @@ export const Sidebar = [
     logo: <FaHistory />,
     path:"/userdashboard/servoceHistory"
   },
-  {
-    title: "Wallet/Payments",
-    logo: <FaWallet />,
-    path: "/userdashboard/payments"
-  },
+  // {
+  //   title: "Wallet/Payments",
+  //   logo: <FaWallet />,
+  //   path: "/userdashboard/payments"
+  // },
   {
     title: "Maintence Alert",
     logo: <HiMiniBellAlert />,

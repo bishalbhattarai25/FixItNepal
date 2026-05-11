@@ -8,7 +8,16 @@ import {
 } from "lucide-react";
 import instance from "../../../../Server/Axios";
 import { validationSchema } from "../../../HOC/Validation";
-import { serviceTypes, problemTypes, vehicleTypes } from "../../../HOC/lib/Datalist";
+import { serviceTypes, problemTypes } from "../../../HOC/lib/Datalist";
+
+// ── Vehicle types matching backend enum exactly ───────────────────────────────
+const vehicleTypes = [
+  { value: "TwoWheeler",      label: "Two Wheeler" },
+  { value: "ThreeWheeler",    label: "Three Wheeler" },
+  { value: "FourWheeler",     label: "Four Wheeler" },
+  { value: "HeavyVehicle",    label: "Heavy Vehicle" },
+  { value: "ElectricVehicle", label: "Electric Vehicle" },
+];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -20,17 +29,26 @@ const inputCls = (touched, error) =>
 const FieldError = ({ touched, error }) =>
   touched && error ? <p className="text-red-500 text-sm mt-1">{error}</p> : null;
 
+/**
+ * Builds the POST /api/servicerequest payload.
+ * - scheduledDate: full ISO datetime combining date + selected slot time
+ * - scheduledTime: the raw slot time string (e.g. "09:00")
+ */
 const buildPayload = (values, location, selectedSlot) => ({
   customerId: values.customerId,
   requestType: values.requestType,
   problemType: values.problemType,
-  vehicleType: values.vehicleType,
+  vehicleType: values.vehicleType,           // matches enum: TwoWheeler, FourWheeler, etc.
   vehicleModel: values.vehicleModel,
-  scheduledDate: new Date(`${values.scheduledDate}T${selectedSlot}:00`).toISOString(),
+  scheduledDate: new Date(`${values.scheduledDate}T${selectedSlot}`).toISOString(),
+  scheduledTime: selectedSlot,               // required separate field
   problemDescription: values.problemDescription,
   estimatedBudget: values.estimatedBudget ? parseFloat(values.estimatedBudget) : 0,
-  locationCoordinates: { latitude: location.latitude, longitude: location.longitude },
-  radiusInKm:10,
+  locationCoordinates: {
+    latitude: location.latitude,
+    longitude: location.longitude,
+  },
+  radiusInKm: 50,
 });
 
 // ── Step Indicator ────────────────────────────────────────────────────────────
@@ -46,13 +64,19 @@ const StepIndicator = ({ current }) => (
       return (
         <React.Fragment key={step}>
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-              ${done ? "bg-green-500 text-white" : active ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-500"}`}>
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
+              ${done ? "bg-green-500 text-white" : active ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-500"}`}
+            >
               {done ? "✓" : step}
             </div>
-            <span className={`text-sm font-medium ${active ? "text-blue-600" : "text-gray-400"}`}>{label}</span>
+            <span className={`text-sm font-medium ${active ? "text-blue-600" : "text-gray-400"}`}>
+              {label}
+            </span>
           </div>
-          {i < STEP_LABELS.length - 1 && <ChevronRight className="w-4 h-4 text-gray-300 mx-2" />}
+          {i < STEP_LABELS.length - 1 && (
+            <ChevronRight className="w-4 h-4 text-gray-300 mx-2" />
+          )}
         </React.Fragment>
       );
     })}
@@ -70,13 +94,16 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
         <label className="block text-sm font-medium text-gray-700 mb-1.5">Request Type</label>
         <div className="grid grid-cols-2 gap-3">
           {serviceTypes.map((type) => (
-            <button type="button" key={type.value}
+            <button
+              type="button"
+              key={type.value}
               onClick={() => setFieldValue("requestType", type.value)}
               className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
                 values.requestType === type.value
                   ? "border-blue-500 bg-blue-50 text-blue-700"
                   : "border-gray-200 hover:border-gray-300 text-gray-700"
-              }`}>
+              }`}
+            >
               {type.label}
             </button>
           ))}
@@ -87,10 +114,19 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
       {/* Problem Type */}
       <div className="mb-5">
         <label className="block text-sm font-medium text-gray-700 mb-1.5">Problem Type</label>
-        <select name="problemType" value={values.problemType} onChange={handleChange} onBlur={handleBlur}
-          className={inputCls(touched.problemType, errors.problemType)}>
+        <select
+          name="problemType"
+          value={values.problemType}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={inputCls(touched.problemType, errors.problemType)}
+        >
           <option value="">Select problem type</option>
-          {problemTypes.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+          {problemTypes.map((t) => (
+            <option key={t.value} value={t.value}>
+              {t.label}
+            </option>
+          ))}
         </select>
         <FieldError touched={touched.problemType} error={errors.problemType} />
       </div>
@@ -99,18 +135,33 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
       <div className="grid grid-cols-2 gap-4 mb-5">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">Vehicle Type</label>
-          <select name="vehicleType" value={values.vehicleType} onChange={handleChange} onBlur={handleBlur}
-            className={inputCls(touched.vehicleType, errors.vehicleType)}>
+          <select
+            name="vehicleType"
+            value={values.vehicleType}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={inputCls(touched.vehicleType, errors.vehicleType)}
+          >
             <option value="">Select vehicle type</option>
-            {vehicleTypes.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+            {vehicleTypes.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
           </select>
           <FieldError touched={touched.vehicleType} error={errors.vehicleType} />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">Vehicle Model</label>
-          <input type="text" name="vehicleModel" value={values.vehicleModel}
-            onChange={handleChange} onBlur={handleBlur} placeholder="e.g., Honda CB350"
-            className={inputCls(touched.vehicleModel, errors.vehicleModel)} />
+          <input
+            type="text"
+            name="vehicleModel"
+            value={values.vehicleModel}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder="e.g., Honda CB350"
+            className={inputCls(touched.vehicleModel, errors.vehicleModel)}
+          />
           <FieldError touched={touched.vehicleModel} error={errors.vehicleModel} />
         </div>
       </div>
@@ -120,10 +171,15 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
         <label className="block text-sm font-medium text-gray-700 mb-1.5">
           <Calendar className="inline w-4 h-4 mr-1" /> Service Date
         </label>
-        <input type="date" name="scheduledDate" value={values.scheduledDate}
-          onChange={handleChange} onBlur={handleBlur}
+        <input
+          type="date"
+          name="scheduledDate"
+          value={values.scheduledDate}
+          onChange={handleChange}
+          onBlur={handleBlur}
           min={new Date().toISOString().split("T")[0]}
-          className={inputCls(touched.scheduledDate, errors.scheduledDate)} />
+          className={inputCls(touched.scheduledDate, errors.scheduledDate)}
+        />
         <FieldError touched={touched.scheduledDate} error={errors.scheduledDate} />
       </div>
 
@@ -132,10 +188,15 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
         <label className="block text-sm font-medium text-gray-700 mb-1.5">
           <Wrench className="inline w-4 h-4 mr-1" /> Problem Description
         </label>
-        <textarea name="problemDescription" rows="3" value={values.problemDescription}
-          onChange={handleChange} onBlur={handleBlur}
+        <textarea
+          name="problemDescription"
+          rows="3"
+          value={values.problemDescription}
+          onChange={handleChange}
+          onBlur={handleBlur}
           placeholder="Describe the issue or maintenance needed..."
-          className={inputCls(touched.problemDescription, errors.problemDescription)} />
+          className={inputCls(touched.problemDescription, errors.problemDescription)}
+        />
         <FieldError touched={touched.problemDescription} error={errors.problemDescription} />
       </div>
 
@@ -144,28 +205,44 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
         <label className="block text-sm font-medium text-gray-700 mb-1.5">
           <DollarSign className="inline w-4 h-4 mr-1" /> Estimated Budget (Optional)
         </label>
-        <input type="number" name="estimatedBudget" value={values.estimatedBudget}
-          onChange={handleChange} onBlur={handleBlur} placeholder="Enter your budget"
-          className={inputCls(touched.estimatedBudget, errors.estimatedBudget)} />
+        <input
+          type="number"
+          name="estimatedBudget"
+          value={values.estimatedBudget}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Enter your budget"
+          className={inputCls(touched.estimatedBudget, errors.estimatedBudget)}
+        />
         <FieldError touched={touched.estimatedBudget} error={errors.estimatedBudget} />
       </div>
 
       {/* GPS Status */}
       <div className="mb-5 p-3 rounded-lg border border-gray-200 flex items-center gap-2 text-sm">
         <MapPin className="w-4 h-4 text-gray-400" />
-        <div className={`w-2.5 h-2.5 rounded-full ${
-          locationStatus === "detecting" ? "bg-yellow-400 animate-pulse" :
-          locationStatus === "detected"  ? "bg-green-500" : "bg-red-500"
-        }`} />
+        <div
+          className={`w-2.5 h-2.5 rounded-full ${
+            locationStatus === "detecting"
+              ? "bg-yellow-400 animate-pulse"
+              : locationStatus === "detected"
+              ? "bg-green-500"
+              : "bg-red-500"
+          }`}
+        />
         <span className={locationStatus === "denied" ? "text-red-600" : "text-gray-600"}>
           {locationStatus === "detecting" && "Detecting your location..."}
-          {locationStatus === "detected"  && `Location detected: ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`}
-          {locationStatus === "denied"    && "Location access denied. Coordinates will default to 0."}
+          {locationStatus === "detected" &&
+            `Location detected: ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`}
+          {locationStatus === "denied" &&
+            "Location access denied. Coordinates will default to 0."}
         </span>
       </div>
 
-      <button type="button" onClick={onNext}
-        className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+      <button
+        type="button"
+        onClick={onNext}
+        className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+      >
         Find Nearby Providers <ChevronRight className="w-5 h-5" />
       </button>
     </div>
@@ -185,33 +262,52 @@ const NearbyProviders = ({ providers, onSelect, onBack }) => {
     return (
       <div className="text-center py-10">
         <p className="text-gray-500 mb-4">No nearby providers found in your area.</p>
-        <button onClick={onBack} className="text-blue-500 underline text-sm">Go back</button>
+        <button onClick={onBack} className="text-blue-500 underline text-sm">
+          Go back
+        </button>
       </div>
     );
 
   return (
     <div>
-      <p className="text-sm text-gray-500 mb-4">{all.length} provider(s) found. Select one to continue.</p>
+      <p className="text-sm text-gray-500 mb-4">
+        {all.length} provider(s) found. Select one to continue.
+      </p>
       <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
         {all.map((provider) => (
-          <button key={provider.id} type="button" onClick={() => onSelect(provider)}
-            className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all flex items-center gap-4">
+          <button
+            key={provider.id}
+            type="button"
+            onClick={() => onSelect(provider)}
+            className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all flex items-center gap-4"
+          >
             {provider.logo?.accessUrl ? (
-              <img src={provider.logo.accessUrl} alt={provider.name}
-                className="w-12 h-12 rounded-full object-cover border border-gray-200" />
+              <img
+                src={provider.logo.accessUrl}
+                alt={provider.name}
+                className="w-12 h-12 rounded-full object-cover border border-gray-200"
+              />
             ) : (
               <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                {provider.providerType === "Garage"
-                  ? <Building2 className="w-6 h-6 text-blue-500" />
-                  : <User className="w-6 h-6 text-blue-500" />}
+                {provider.providerType === "Garage" ? (
+                  <Building2 className="w-6 h-6 text-blue-500" />
+                ) : (
+                  <User className="w-6 h-6 text-blue-500" />
+                )}
               </div>
             )}
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 truncate">{provider.name}</p>
-              <p className="text-sm text-gray-500">{provider.address?.city}, {provider.address?.tole}</p>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                provider.providerType === "Garage" ? "bg-purple-100 text-purple-700" : "bg-green-100 text-green-700"
-              }`}>
+              <p className="text-sm text-gray-500">
+                {provider.address?.city}, {provider.address?.tole}
+              </p>
+              <span
+                className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  provider.providerType === "Garage"
+                    ? "bg-purple-100 text-purple-700"
+                    : "bg-green-100 text-green-700"
+                }`}
+              >
                 {provider.providerType}
               </span>
             </div>
@@ -219,18 +315,36 @@ const NearbyProviders = ({ providers, onSelect, onBack }) => {
           </button>
         ))}
       </div>
-      <button type="button" onClick={onBack} className="mt-4 text-sm text-gray-500 underline">← Back</button>
+      <button
+        type="button"
+        onClick={onBack}
+        className="mt-4 text-sm text-gray-500 underline"
+      >
+        ← Back
+      </button>
     </div>
   );
 };
 
 // ── Step 3: Available Slots ───────────────────────────────────────────────────
 
-const AvailableSlots = ({ provider, slots, selectedSlot, onSlotSelect, onSubmit, onBack, isSubmitting }) => (
+const AvailableSlots = ({
+  provider,
+  slots,
+  selectedSlot,
+  onSlotSelect,
+  onSubmit,
+  onBack,
+  isSubmitting,
+}) => (
   <div>
     <div className="flex items-center gap-3 mb-5 p-3 bg-blue-50 rounded-xl border border-blue-100">
       {provider.logo?.accessUrl ? (
-        <img src={provider.logo.accessUrl} alt={provider.name} className="w-10 h-10 rounded-full object-cover" />
+        <img
+          src={provider.logo.accessUrl}
+          alt={provider.name}
+          className="w-10 h-10 rounded-full object-cover"
+        />
       ) : (
         <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center">
           <Building2 className="w-5 h-5 text-blue-600" />
@@ -245,11 +359,15 @@ const AvailableSlots = ({ provider, slots, selectedSlot, onSlotSelect, onSubmit,
     <p className="text-sm font-medium text-gray-700 mb-3">Select an available time slot:</p>
 
     {slots.length === 0 ? (
-      <p className="text-gray-500 text-sm py-4 text-center">No available slots for this date.</p>
+      <p className="text-gray-500 text-sm py-4 text-center">
+        No available slots for this date.
+      </p>
     ) : (
       <div className="grid grid-cols-3 gap-2 mb-6">
         {slots.map((slot) => (
-          <button key={slot.time} type="button"
+          <button
+            key={slot.time}
+            type="button"
             disabled={!slot.isAvailable}
             onClick={() => slot.isAvailable && onSlotSelect(slot.time)}
             className={`p-2.5 rounded-lg border text-sm font-medium transition-all ${
@@ -258,19 +376,28 @@ const AvailableSlots = ({ provider, slots, selectedSlot, onSlotSelect, onSubmit,
                 : selectedSlot === slot.time
                 ? "border-blue-500 bg-blue-500 text-white"
                 : "border-gray-200 hover:border-blue-300 text-gray-700"
-            }`}>
+            }`}
+          >
             {slot.time}
           </button>
         ))}
       </div>
     )}
 
-    <button type="button" onClick={onSubmit} disabled={!selectedSlot || isSubmitting}
-      className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed">
+    <button
+      type="button"
+      onClick={onSubmit}
+      disabled={!selectedSlot || isSubmitting}
+      className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed"
+    >
       <CheckCircle className="w-5 h-5" />
       {isSubmitting ? "Submitting..." : "Confirm Booking"}
     </button>
-    <button type="button" onClick={onBack} className="mt-3 w-full text-sm text-gray-500 underline">
+    <button
+      type="button"
+      onClick={onBack}
+      className="mt-3 w-full text-sm text-gray-500 underline"
+    >
       ← Back to providers
     </button>
   </div>
@@ -298,9 +425,15 @@ const InfoSidebar = () => {
         <Wrench className="w-8 h-8 mb-4" />
         <p className="text-lg font-medium">Benefits of Scheduled Maintenance</p>
         <ul className="mt-4 space-y-2 text-sm">
-          {["Prevent major breakdowns", "Extend vehicle lifespan", "Better fuel efficiency", "Maintain warranty coverage"].map((item) => (
+          {[
+            "Prevent major breakdowns",
+            "Extend vehicle lifespan",
+            "Better fuel efficiency",
+            "Maintain warranty coverage",
+          ].map((item) => (
             <li key={item} className="flex items-start gap-2">
-              <span className="text-blue-200">•</span><span>{item}</span>
+              <span className="text-blue-200">•</span>
+              <span>{item}</span>
             </li>
           ))}
         </ul>
@@ -311,7 +444,9 @@ const InfoSidebar = () => {
         <div className="space-y-5">
           {steps.map(({ step, title, desc }) => (
             <div key={step} className="flex gap-3">
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">{step}</div>
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">
+                {step}
+              </div>
               <div>
                 <p className="font-semibold text-gray-900 text-sm">{title}</p>
                 <p className="text-xs text-gray-500">{desc}</p>
@@ -359,7 +494,10 @@ export const Maintence = () => {
 
   // Auto-detect GPS on mount
   useEffect(() => {
-    if (!navigator.geolocation) { setLocationStatus("denied"); return; }
+    if (!navigator.geolocation) {
+      setLocationStatus("denied");
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLocation({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
@@ -384,18 +522,21 @@ export const Maintence = () => {
     onSubmit: () => {},
   });
 
-  // Step 1 → 2: validate then fetch nearby providers
+  // Step 1 → 2: validate then POST /nearby-services
   const handleFindProviders = async () => {
     const errors = await formik.validateForm();
-    formik.setTouched(Object.keys(formik.values).reduce((acc, k) => ({ ...acc, [k]: true }), {}));
+    formik.setTouched(
+      Object.keys(formik.values).reduce((acc, k) => ({ ...acc, [k]: true }), {})
+    );
     if (Object.keys(errors).length > 0) return;
 
     setIsLoading(true);
     try {
-      const { data } = await instance.post("/nearby-services", {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      }, { params: { radiusInKm: 50 } });
+      const { data } = await instance.post(
+        "/nearby-services",
+        { latitude: location.latitude, longitude: location.longitude },
+        { params: { radiusInKm: 50 } }
+      );
       setProviders(data);
       setStep(2);
     } catch {
@@ -405,15 +546,16 @@ export const Maintence = () => {
     }
   };
 
-  // Step 2 → 3: fetch available slots
+  // Step 2 → 3: GET /availableslots/{serviceProviderId}?date=<ISO>
   const handleSelectProvider = async (provider) => {
     setSelectedProvider(provider);
     setIsLoading(true);
     try {
+      const isoDate = new Date(`${formik.values.scheduledDate}T00:00:00`).toISOString();
       const { data } = await instance.get(`/availableslots/${provider.id}`, {
-        params: { date: new Date(`${formik.values.scheduledDate}T00:00:00`).toISOString() },
+        params: { date: isoDate },
       });
-      setSlots(data);
+      setSlots(data); // [{ time: "09:00", isAvailable: true }, ...]
       setStep(3);
     } catch {
       toast.error("Failed to fetch available slots.");
@@ -422,14 +564,18 @@ export const Maintence = () => {
     }
   };
 
-  // Step 3: submit booking
+  // Step 3: POST /api/servicerequest
   const handleSubmit = async () => {
     if (!selectedSlot) return;
     setIsSubmitting(true);
     try {
-      await instance.post("/api/servicerequest", buildPayload(formik.values, location, selectedSlot));
+      await instance.post(
+        "/api/servicerequest",
+        buildPayload(formik.values, location, selectedSlot)
+      );
       toast.success("Booking confirmed!", {
-        duration: 3000, position: "top-center",
+        duration: 3000,
+        position: "top-center",
         style: { background: "#10B981", color: "#fff", fontWeight: "bold" },
       });
       navigate("/userdashboard/servicehistory");
