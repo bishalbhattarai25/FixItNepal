@@ -25,6 +25,7 @@ import {
 } from "@tanstack/react-query";
 
 import instance from "../../../../Server/Axios";
+import { NearbyMap } from "../../../HOC/NearbyMap";
 
 
 export const Dashboard = () => {
