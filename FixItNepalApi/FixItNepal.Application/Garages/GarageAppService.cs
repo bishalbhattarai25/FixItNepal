@@ -170,6 +170,53 @@ public class GarageAppService(
         return mapper.Map<AppointmentAnalytics, AppointmentAnalyticsDto>(analytics);
     }
 
+    public async Task<OpeningHoursDto> GetOpeningHourAsync(Guid id)
+    {
+        var garage = await garageRepository.GetAsync(id);
+        return mapper.Map<IEnumerable<OpeningHour>, OpeningHoursDto>(garage.OpeningHours);
+        
+    } 
+    
+    public async Task<OpeningHoursDto> UpdateOpeningHoursAsync(
+        Guid id,
+        OpeningHoursDto input)
+    {
+        var garage = await garageRepository.GetAsync(id);
+
+        var dbOpeningHourIds = garage.OpeningHours
+            .Select(oh => oh.Id)
+            .ToHashSet();
+        var updatedOpeningHours = input.OpeningHours;
+        var openingHourDtos = updatedOpeningHours.ToArray();
+        var updatedOpeningHourIds = openingHourDtos
+            .Select(oh => oh.Id)
+            .ToHashSet();
+        if (!dbOpeningHourIds.SetEquals(updatedOpeningHourIds))
+        {
+            throw new BusinessException("Invalid:OpeningHour", "Provided are not valid one");
+        }
+
+        var updatingOpeningHours = new HashSet<OpeningHour>();
+
+        foreach (var x in garage.OpeningHours)
+        {
+            var updated = openingHourDtos.First(oh => oh.Id == x.Id);
+            x.DayOfWeek = updated.DayOfWeek;
+            x.StartTime = updated.StartTime;
+            x.EndTime = updated.EndTime;
+            x.IsItClosed = updated.IsItClosed;
+            x.MaxAppointmentsPerSlot = updated.MaxAppointmentsPerSlot;
+            updatingOpeningHours.Add(x);
+        }
+
+        garage.OpeningHours = updatingOpeningHours;
+        
+         garageRepository.Update(garage);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+
+        return mapper.Map<IEnumerable<OpeningHour>, OpeningHoursDto>(garage.OpeningHours);
+    }
+
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)
     {
         return input.Select(x => new GarageMediaFile()

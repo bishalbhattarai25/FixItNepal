@@ -1,5 +1,6 @@
 using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.Customs;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
@@ -27,5 +28,10 @@ public interface IGarageService
 
     Task<AppointmentAnalyticsDto> GetAppointmentAnalyticsAsync(Guid id);
 
+    Task<OpeningHoursDto> GetOpeningHourAsync(Guid id);
+
+    Task<OpeningHoursDto> UpdateOpeningHoursAsync(
+        Guid id,
+        OpeningHoursDto input);
 
 }

@@ -93,7 +93,7 @@ const handleUpdate = async (id, status) => {
   return (
     <div className="space-y-6 p-4">
       {/* 1. Statistics Summary */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {stats.map((s, i) => (
           <div key={i} className="bg-white p-4 rounded-2xl border border-gray-100 flex items-center justify-between shadow-sm">
             <div>
