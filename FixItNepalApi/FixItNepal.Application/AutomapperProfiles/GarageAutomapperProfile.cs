@@ -1,6 +1,8 @@
 using AutoMapper;
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Domain.Garages;
+using FixItNepal.Domain.OpeningHours;
 
 namespace FixItNepal.Application.AutomapperProfiles;
 
@@ -14,5 +16,9 @@ public class GarageAutomapperProfile: Profile
             .ForMember(dest => dest.Documents, opt => opt.MapFrom(g => g.GarageMediaFiles.Select(x => x.MediaFile)));
         
         CreateMap<CreateUpdateGarageDto, Garage>();
+        
+        CreateMap<OpeningHour, OpeningHourDto>();
+        CreateMap<OpeningHour, OpeningHoursDto>();
+
     }
 }

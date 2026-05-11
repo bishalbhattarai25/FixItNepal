@@ -154,13 +154,27 @@ public class GarageAppService(
     
     public async Task<ICollection<AppointmentDto>> GetAppointmentsAsync(Guid id, DateTime? date, ServiceRequestStatus? status)
     {
-        var appointments = await serviceRequestRepository.GetAppointmentsAsync(id, date, status);
+        DateTime? newDate = null;
+
+        if (date.HasValue)
+        {
+            newDate = DateTime.SpecifyKind(date.Value, DateTimeKind.Utc);
+        }
+        
+        var appointments = await serviceRequestRepository.GetAppointmentsAsync(id, newDate, status);
         return mapper.Map<ICollection<AppointmentDto>>(appointments); 
     }
     
     public async Task<PagedResultDto<RequestDto>> GetRequestHistoryAsync(Guid id,  DateTime? date, ServiceRequestStatus? status, RequestType? type, PagedRequestDto pagedRequest)
     {
-        var requests = await serviceRequestRepository.GetRequestHistory(id, date, status, type, pagedRequest.SkipCount ?? 0, pagedRequest.MaxCount ?? 10);
+        DateTime? newDate = null;
+
+        if (date.HasValue)
+        {
+            newDate = DateTime.SpecifyKind(date.Value, DateTimeKind.Utc);
+        }
+        
+        var requests = await serviceRequestRepository.GetRequestHistory(id, newDate, status, type, pagedRequest.SkipCount ?? 0, pagedRequest.MaxCount ?? 10);
         return mapper.Map<PagedDbResult<ServiceRequest>, PagedResultDto<RequestDto>>(requests);
     }
     

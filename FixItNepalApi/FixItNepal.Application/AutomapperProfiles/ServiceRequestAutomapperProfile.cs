@@ -4,6 +4,7 @@ using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Analytics.Garages;
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.ServiceRequests;
 
 namespace FixItNepal.Application.AutomapperProfiles;
@@ -26,6 +27,8 @@ public class ServiceRequestAutomapperProfile: Profile
         //analytics 
 
         CreateMap<AppointmentAnalytics, AppointmentAnalyticsDto>();
+        
+        CreateMap(typeof(PagedDbResult<>), typeof(PagedResultDto<>));
     }
     
 }

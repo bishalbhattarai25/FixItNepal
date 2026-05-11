@@ -12,7 +12,7 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
 {
     public async Task<IEnumerable<ServiceRequest>> GetTodayServiceRequestsAsync(Guid id)
     {
-        var today = DateTime.Now.Date;
+        var today = DateTime.UtcNow.Date;
         return await _dbSet.Where(x => x.ServiceProviderId == id && x.CreationTime.Date == today)
             .ToListAsync();
     }
@@ -47,6 +47,7 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
         int skipCount,
         int maxResultCount)
     {
+        
         var query = _dbSet.AsQueryable();
 
         query = query.Where(x => x.ServiceProviderId == id);
