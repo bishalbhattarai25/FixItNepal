@@ -3,56 +3,39 @@ import { WorkData } from "./Homedata";
 
 const ThirdSec = () => {
   return (
-    <section className="w-full py-20 bg-gray-100">
-      
-      {/* Container */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* Heading */}
+    <section className="py-24 px-6 bg-gray-50">
+      <div className="max-w-5xl mx-auto">
+
         <div className="text-center mb-16">
-          <h1 className=" text-gray-600 text-4xl md:text-5xl font-extrabold tracking-tight uppercase">
-            HOW FIX-IT NEPAL WORKS
-          </h1>
-          <h3 className="text-gray-600 mt-4 text-lg md:text-xl font-medium">
-            Get help in 3 simple steps
-          </h3>
+          <span className="text-xs font-bold uppercase tracking-widest text-gray-400">How It Works</span>
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mt-3 tracking-tight">
+            Help in 3 Simple Steps
+          </h2>
+          <p className="text-gray-400 mt-3 text-base">Fast, reliable, and built for Nepal.</p>
         </div>
 
-        {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-20">
-          {WorkData.map((data, index) => {
-            return (
-              <div
-                key={index}
-                className="flex flex-col items-center text-center group"
-              >
-                {/* Icon + Step */}
-                <div className="relative mb-6">
-                  <div
-                    className={`${data.logobg} text-white text-5xl p-7 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105`}
-                  >
-                    {data.logo}
-                  </div>
+        <div className="relative grid md:grid-cols-3 gap-8">
 
-                  <span
-                    className={`absolute -top-3 -right-5 ${data.textbg} text-white text-xs font-bold px-3 py-1 rounded-full`}
-                  >
-                    Step {index + 1}
-                  </span>
-                </div>
+          {/* Connecting line (desktop only) */}
+          <div className="hidden md:block absolute top-10 left-[16.5%] right-[16.5%] h-px bg-gray-200 z-0" />
 
-                {/* Text */}
-                <h2 className="text-xl md:text-3xl font-bold mb-3">
-                  {data.Topic}
-                </h2>
-                <p className="text-gray-600 text-sm md:text-base max-w-sm leading-relaxed">
-                  {data.subbody}
-                </p>
+          {WorkData.map((data, index) => (
+            <div key={index} className="relative z-10 flex flex-col items-center text-center">
+
+              {/* Step circle */}
+              <div className={`w-20 h-20 ${data.logobg} rounded-full flex items-center justify-center text-white text-3xl shadow-md mb-5 group-hover:scale-105 transition-transform`}>
+                {data.logo}
               </div>
-            );
-          })}
-        </div>
 
+              <span className={`text-xs font-bold uppercase tracking-widest ${data.stepColor} mb-2`}>
+                Step {index + 1}
+              </span>
+
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{data.Topic}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">{data.subbody}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

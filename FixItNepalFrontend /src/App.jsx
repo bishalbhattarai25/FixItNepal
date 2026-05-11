@@ -20,7 +20,7 @@ import Nearbymacf from "./Components/Dashboard/User-Dashboard/pages/Nearbymacf";
 import Livetrack from "./Components/Dashboard/User-Dashboard/pages/Livetrack";
 import Servicehistory from "./Components/Dashboard/User-Dashboard/pages/Servicehistory";
 import Wallet from './Components/Dashboard/User-Dashboard/pages/wallet';
-import {Maintence} from './Components/Dashboard/User-Dashboard/pages/Maintence';
+import { Maintence } from './Components/Dashboard/User-Dashboard/pages/Maintence';
 import Profile from './Components/Dashboard/User-Dashboard/pages/Profile';
 import ServiceLivetrack from "./Components/Dashboard/Service-Dashboard/pages/ServiceLiveTrack";
 import DashboardService from "./Components/Dashboard/Service-Dashboard/pages/DashboardService";

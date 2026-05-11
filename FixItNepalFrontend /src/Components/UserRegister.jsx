@@ -1,125 +1,118 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, User, Phone, Lock, ChevronLeft } from "lucide-react";
 import instance from "../Server/Axios";
 
 export const UserRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ name: "", phoneNumber: "", passWord: "" });
 
-  
-  const [formData, setFormData] = useState({
-    name:"",
-    phoneNumber: "",
-    passWord: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const response = await instance.post('/api/customer',formData)
-      
-      console.log(response);
-        alert("Registration Successful!");
-        navigate("/login");
-
-       
-    
+      await instance.post("/api/customer", formData);
+      alert("Registration Successful!");
+      navigate("/login");
     } catch (err) {
-      console.error("Register Error:", err);
-      const errorMessage = err.response?.data?.message || "Registration failed. Please try again.";
-      alert(errorMessage);
+      alert(err.response?.data?.message || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50 p-4 font-sans">
-      <div className="shadow-2xl rounded-[2.5rem] p-10 w-full max-w-[400px] bg-white border border-zinc-100">
-        
-        {/* Brand Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-black tracking-tighter">
-            <span className="text-orange-500">FIX</span>
-            <span className="text-zinc-900">IT</span>
-            <span className="text-green-500"> Nepal</span>
-          </h1>
-          <p className="text-zinc-400 font-medium mt-2">Create your account</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+
+        {/* Back */}
+        <button onClick={() => navigate("/register")} className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 mb-6 transition-colors">
+          <ChevronLeft className="w-4 h-4" /> Back
+        </button>
+
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+
+          {/* Header */}
+          <div className="mb-8">
+            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+              <User className="w-5 h-5 text-blue-500" />
+            </div>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tight">Create Account</h1>
+            <p className="text-gray-400 text-sm mt-1">Register as a user to get roadside help</p>
+          </div>
+
+          <form onSubmit={handleRegister} className="space-y-5">
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">Full Name</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  required
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">Phone Number</label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  placeholder="98XXXXXXXX"
+                  required
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">Password</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="passWord"
+                  placeholder="••••••••"
+                  required
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all"
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors">
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 mt-2"
+            >
+              {loading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "Create Account"}
+            </button>
+
+          </form>
+
+          <p className="text-center text-sm text-gray-400 mt-6">
+            Already have an account?{" "}
+            <button onClick={() => navigate("/login")} className="text-blue-600 font-semibold hover:underline underline-offset-2">
+              Log in
+            </button>
+          </p>
+
         </div>
-
-        {/* Register Form */}
-        
-        <form className="flex flex-col gap-6" onSubmit={handleRegister}>
-
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest ml-1">
-              Name
-            </label>
-            <input
-                type="tel"
-                name="name"
-                placeholder="John Doe"
-                required
-                className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
-                onChange={handleChange}
-            />
-          </div>
-          
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest ml-1">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              placeholder="98XXXXXXXX"
-              required
-              className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest ml-1">
-              Set Password
-            </label>
-            <input
-              type="password"
-              name="passWord"
-              placeholder="••••••••"
-              required
-              className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
-              onChange={handleChange}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            // onClick={()=>navigate(`/register/${role}/${formData.passWord}`)}
-            className="mt-2 bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all active:scale-[0.98] disabled:opacity-70 flex justify-center items-center"
-          >
-            {loading ? (
-              <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : "Register"}
-          </button>
-        </form>
-
-        <p className="text-center text-sm text-zinc-400 mt-8">
-          Already have an account?{" "}
-          <span
-            className="font-bold text-blue-600 cursor-pointer hover:underline"
-            onClick={() => navigate("/login")}
-          >
-            log in
-          </span>
-        </p>
       </div>
     </div>
   );

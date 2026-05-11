@@ -1,82 +1,80 @@
-import React from 'react';
-import { NavData } from './NavData';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React from "react";
+import { NavData } from "./NavData";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const navigate = useNavigate();
-  
-  // Get auth data from localStorage
   const token = localStorage.getItem("token");
-  const userRole = localStorage.getItem("role"); 
+  const userRole = localStorage.getItem("role");
 
   const handleLogout = () => {
-    localStorage.clear(); // Clears token, role, and userId
-    navigate('/login');
+    localStorage.clear();
+    navigate("/login");
   };
 
   return (
-    <div className='h-[60px] bg-white shadow-lg flex justify-between px-10 py-1 items-center'>
-      
-      {/* Brand Logo */}
-      <div className='text-2xl font-semibold drop-shadow-lg'>
-        FixIt<span className='text-red-500'>Nepal</span>
+    <nav className="sticky top-0 z-50 h-[60px] bg-white border-b border-gray-100 shadow-sm flex justify-between px-6 md:px-10 items-center">
+
+      {/* Brand */}
+      <div
+        className="text-xl font-black tracking-tight cursor-pointer select-none"
+        onClick={() => navigate("/")}
+      >
+        FixIt<span className="text-red-500">Nepal</span>
       </div>
 
-      {/* Filtered Navigation Links */}
-      <div className='flex gap-10 items-center'>
+      {/* Nav links */}
+      <div className="flex gap-8 items-center">
         {NavData.map((val, index) => {
-          // If a role is required and it doesn't match the current user, don't render it
-          if (val.role && val.role !== userRole) {
-            return null;
-          }
-
+          if (val.role && val.role !== userRole) return null;
           return (
-            <div key={index}>
-              <NavLink 
-                to={val.path}
-                className={({ isActive }) => 
-                  isActive 
-                    ? "text-red-500 font-bold border-b-2 border-red-500" 
-                    : "text-gray-600 hover:text-red-400 transition"
-                }
-              >
-                {/* {val.title} */}
-              </NavLink>
-            </div>
+            <NavLink
+              key={index}
+              to={val.path}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-red-500 font-semibold text-sm border-b-2 border-red-500 pb-0.5"
+                  : "text-gray-500 hover:text-gray-900 text-sm transition-colors"
+              }
+            >
+              {val.title}
+            </NavLink>
           );
         })}
       </div>
 
-      {/* Auth Buttons: Toggle between Login/Register and Logout */}
-      <div className='flex gap-2 items-center'>
+      {/* Auth */}
+      <div className="flex gap-2 items-center">
         {!token ? (
           <>
-            <NavLink to={'/login'}>
-              <button className='bg-red-600 h-[35px] text-white px-5 font-semibold rounded-full hover:bg-red-700 transition'>
-                Login
-              </button>
-            </NavLink>
-            <NavLink to={'/register'}>
-              <button className='bg-blue-600 h-[35px] text-white px-5 font-semibold rounded-full hover:bg-blue-700 transition'>
-                Register
-              </button>
-            </NavLink>
+            <button
+              onClick={() => navigate("/login")}
+              className="text-sm font-semibold text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              Login
+            </button>
+            <button
+              onClick={() => navigate("/register")}
+              className="text-sm font-semibold bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              Register
+            </button>
           </>
         ) : (
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded capitalize">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full capitalize">
               {userRole}
             </span>
-            <button 
+            <button
               onClick={handleLogout}
-              className='border-2 border-red-600 text-red-600 h-[35px] px-5 font-semibold rounded-full hover:bg-red-600 hover:text-white transition'
+              className="text-sm font-semibold border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition-colors"
             >
               Logout
             </button>
           </div>
         )}
       </div>
-    </div>
+    </nav>
   );
 }
 

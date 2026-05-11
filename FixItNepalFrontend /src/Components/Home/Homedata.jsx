@@ -31,8 +31,12 @@ export const ListData = [
     title3: "Secure digital payment",
     button: "I'm a Rider",
     bgcolor: "bg-red-200",
-    btncolor: "bg-red-500",
+    btncolor: "bg-red-500 hover:bg-red-600",
     borderColor: "hover:border-red-500",
+    accentBorder: "border-l-red-500",
+    iconBg: "bg-red-50",
+    iconColor: "text-red-500",
+    path: "/register/user",
   },
   {
     logo: <FaTools />,
@@ -43,8 +47,12 @@ export const ListData = [
     title3: "Performance dashboard",
     button: "I'm a Mechanic",
     bgcolor: "bg-[#FFE8E3]",
-    btncolor: "bg-[#FF6B4A]",
-    borderColor: "hover:border-[#FF6B4A]"
+    btncolor: "bg-orange-500 hover:bg-orange-600",
+    borderColor: "hover:border-[#FF6B4A]",
+    accentBorder: "border-l-orange-500",
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
+    path: "/register/mechanic",
   },
   {
     logo: <TbBuildingCottage />,
@@ -55,8 +63,12 @@ export const ListData = [
     title3: "Central command dashboard",
     button: "I'm a Partner",
     bgcolor: "bg-[#B8B9FF]",
-    btncolor: "bg-[#4F46E5]",
-    borderColor: "hover:border-[#4F46E5]"
+    btncolor: "bg-indigo-600 hover:bg-indigo-700",
+    borderColor: "hover:border-[#4F46E5]",
+    accentBorder: "border-l-indigo-500",
+    iconBg: "bg-indigo-50",
+    iconColor: "text-indigo-500",
+    path: "/register/servicecenter",
   }
 ];
 
@@ -66,21 +78,24 @@ export const WorkData = [
     Topic: "Share GPS Location",
     subbody: "Tap once and your exact location is sent to our system instantly",
     logobg: "bg-red-600",
-    textbg: "bg-red-500"
+    textbg: "bg-red-500",
+    stepColor: "text-red-500",
   },
   {
     logo: <IoSearch />,
     Topic: "System Finds Provider",
     subbody: "AI matches you with the nearest verified mechanic or service provider",
-    logobg: "bg-[#FF6B4A]",
-    textbg: "bg-[#F0A899]"
+    logobg: "bg-orange-500",
+    textbg: "bg-orange-400",
+    stepColor: "text-orange-500",
   },
   {
     logo: <FaTools />,
     Topic: "Get Instant Help",
     subbody: "Your mechanic arrives and resolves your issue on the spot",
     logobg: "bg-indigo-600",
-    textbg: "bg-indigo-500"
+    textbg: "bg-indigo-500",
+    stepColor: "text-indigo-500",
   }
 ];
 
