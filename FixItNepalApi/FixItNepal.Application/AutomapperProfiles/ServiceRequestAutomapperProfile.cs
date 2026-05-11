@@ -1,5 +1,6 @@
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
+using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.ServiceRequests;
 
@@ -14,6 +15,10 @@ public class ServiceRequestAutomapperProfile: Profile
                 opt => opt.MapFrom(src => src.Latitude))
             .ForPath(dest => dest.LocationCoordinates.Longitude,
                 opt => opt.MapFrom(src => src.Longitude));
+        
+        CreateMap<ServiceRequest, AppointmentDto>()
+            .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src))
+            .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer));
         
     }
     

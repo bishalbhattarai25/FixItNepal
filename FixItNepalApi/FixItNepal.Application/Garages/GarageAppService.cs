@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
+using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.AppUsers;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
@@ -32,9 +33,7 @@ public class GarageAppService(
     IRepository<MediaFile>  mediaFileRepository,
     IUnitOfWork unitOfWork,
     UserManager<AppUser> userManager,
-    IServiceRequestRepository serviceRequestRepository,
-    IRepository<OpeningHour> openingHourRepository,
-    IAppUserEmailer emailer
+    IServiceRequestRepository serviceRequestRepository
     ) : IGarageService
 {
     public async Task<PagedResultDto<GarageDto>> GetListAsync(GaragePagedListDto input)
@@ -149,6 +148,12 @@ public class GarageAppService(
     {
         var todayRequest = await serviceRequestRepository.GetTodayServiceRequestsAsync(id);
         return mapper.Map<IEnumerable<ServiceRequest>, IEnumerable<RequestDto>>(todayRequest); 
+    }
+    
+    public async Task<ICollection<AppointmentDto>> GetAppointmentsAsync(Guid id, DateTime? date, ServiceRequestStatus? status)
+    {
+        var appointments = await serviceRequestRepository.GetAppointmentsAsync(id, date, status);
+        return mapper.Map<ICollection<AppointmentDto>>(appointments); 
     }
     
     public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
