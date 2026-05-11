@@ -6,7 +6,8 @@ public enum ServiceRequestStatus
     Assigned,
     Accepted,   
     Rejected,
-    InProgress,    
+    InProgress,
+    CompletedByGarage,
     Completed,
     Cancelled
 }
