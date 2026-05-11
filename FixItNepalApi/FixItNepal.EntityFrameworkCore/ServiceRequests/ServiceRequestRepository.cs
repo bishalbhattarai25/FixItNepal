@@ -85,7 +85,7 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
         
         query = query.Where(x => x.ServiceProviderId == id && x.RequestType == RequestType.Scheduled);
         
-        var today = DateTime.Now.Date;
+        var today = DateTime.UtcNow.Date;
 
         var todayCount = await query.Where(x => x.ScheduledDate == today).CountAsync();
         var upcomingCount = await query.Where(x => x.ScheduledDate > today).CountAsync();
