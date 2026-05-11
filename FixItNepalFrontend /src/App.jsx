@@ -26,6 +26,8 @@ import ServiceLivetrack from "./Components/Dashboard/Service-Dashboard/pages/Ser
 import DashboardService from "./Components/Dashboard/Service-Dashboard/pages/DashboardService";
 import Appointment from "./Components/Dashboard/Service-Dashboard/pages/Appointment";
 import { ServiceCenter } from "./Pages/ServiceCenter";
+import GarageProfile from "./Components/Dashboard/Service-Dashboard/pages/GarageProfile";
+import GarageServicehistory from "./Components/Dashboard/Service-Dashboard/pages/GarageServiceRequestHistory";
 
 function App() {
    const location = useLocation();
@@ -74,6 +76,10 @@ const shouldHideNavbar = hideNavbarRoutes.some((route) =>
     <Route index element={<DashboardService />} />
     <Route path="livetracking/:requestId?" element={<ServiceLivetrack />} />
     <Route path="appointment" element={<Appointment />} />
+    <Route path="profile" element={<GarageProfile />} />
+    <Route path="requesthistory" element={<GarageServicehistory />} />
+
+
   </Route>
 </Route>
 

@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Appointments;
+using FixItNepal.Application.Contracts.Customs;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
@@ -14,9 +15,15 @@ public interface IGarageService
     Task<GarageDto> UpdateAsync( Guid id, CreateUpdateGarageDto input);
     Task UpdateApprovalStatusAsync(Guid id, ApprovalStatus approvalStatus);
     Task<IEnumerable<RequestDto>> GetServiceRequestOfTodayAsync(Guid id);
-    Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id);
 
     Task<ICollection<AppointmentDto>> GetAppointmentsAsync(Guid id, DateTime? date,
         ServiceRequestStatus? status);
+
+    Task<PagedResultDto<RequestDto>> GetRequestHistoryAsync(
+        Guid id, 
+        DateTime? date, 
+        ServiceRequestStatus? status,
+        RequestType? type, PagedRequestDto pagedRequest);
+
 
 }

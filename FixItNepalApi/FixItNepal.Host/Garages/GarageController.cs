@@ -1,4 +1,5 @@
 using FixItNepal.Application.Contracts.Appointments;
+using FixItNepal.Application.Contracts.Customs;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
@@ -49,9 +50,9 @@ public class GarageController (
     }
     
     [HttpGet("{id:guid}/request-history")]
-    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    public async Task<PagedResultDto<RequestDto>> GetRequestHistoryAsync(Guid id, DateTime? date, ServiceRequestStatus? status, RequestType? requestType, [FromQuery] PagedRequestDto input )
     {
-        var requests = await garageService.GetRequestHistoryAsync(id);
+        var requests = await garageService.GetRequestHistoryAsync(id,  date, status, requestType, input);
         return requests;
     }
     

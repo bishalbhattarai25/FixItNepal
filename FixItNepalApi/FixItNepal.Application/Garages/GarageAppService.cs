@@ -3,6 +3,7 @@ using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.AppUsers;
+using FixItNepal.Application.Contracts.Customs;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Application.Contracts.OpeningHours;
@@ -156,10 +157,10 @@ public class GarageAppService(
         return mapper.Map<ICollection<AppointmentDto>>(appointments); 
     }
     
-    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    public async Task<PagedResultDto<RequestDto>> GetRequestHistoryAsync(Guid id,  DateTime? date, ServiceRequestStatus? status, RequestType? type, PagedRequestDto pagedRequest)
     {
-        var requests = await serviceRequestRepository.GetListAsync(x => x.CustomerId == id);
-        return mapper.Map<ICollection<ServiceRequest>, ICollection<RequestDto>>(requests.ToList());
+        var requests = await serviceRequestRepository.GetRequestHistory(id, date, status, type, pagedRequest.SkipCount ?? 0, pagedRequest.MaxCount ?? 10);
+        return mapper.Map<PagedDbResult<ServiceRequest>, PagedResultDto<RequestDto>>(requests);
     }
 
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)

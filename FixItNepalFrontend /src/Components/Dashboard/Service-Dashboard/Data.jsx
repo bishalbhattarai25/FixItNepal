@@ -23,6 +23,16 @@ export const SideBar = [
     logo: <FaHand />,
     path: "/servicecenter/appointment"
   },
+   {
+    title: "Profile",
+    logo: <FaHand />,
+    path: "/servicecenter/profile"
+  },
+   {
+    title: "Request History",
+    logo: <FaHand />,
+    path: "/servicecenter/requesthistory"
+  },
      {
     title: "Logout",
     logo: <IoPersonSharp />,

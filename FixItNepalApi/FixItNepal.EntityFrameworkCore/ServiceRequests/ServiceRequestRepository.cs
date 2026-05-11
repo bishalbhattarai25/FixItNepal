@@ -1,3 +1,4 @@
+using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared.ServiceRequests;
 using FixItNepal.EntityFrameworkCore.EntityFrameworkCore;
@@ -22,10 +23,11 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
     {
         var query = _dbSet.AsQueryable();
 
+        query = query.Where(x => x.RequestType == RequestType.Scheduled);
         if (date.HasValue)
         {
             var d = date.Value.Date;
-            query = query.Where(x => x.CreationTime.Date == d);
+            query = query.Where(x => x.ScheduledDate == d);
         }
 
         if (status.HasValue)
@@ -34,5 +36,44 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
         }
 
         return await query.ToListAsync();
+    }
+    
+    public async Task<PagedDbResult<ServiceRequest>> GetRequestHistory(
+        Guid id,
+        DateTime? date,
+        ServiceRequestStatus? status,
+        RequestType? requestType,
+        int skipCount,
+        int maxResultCount)
+    {
+        var query = _dbSet.AsQueryable();
+
+        query = query.Where(x => x.ServiceProviderId == id);
+        query = query.Where(x => x.RequestType == RequestType.Scheduled);
+
+        if (date.HasValue)
+        {
+            var d = date.Value.Date;
+            query = query.Where(x => x.ScheduledDate == d);
+        }
+
+        if (status.HasValue)
+        {
+            query = query.Where(x => x.Status == status);
+        }
+        if (requestType.HasValue)
+        {
+            query = query.Where(x => x.RequestType == requestType);
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(x => x.CreationTime)
+            .Skip(skipCount)
+            .Take(maxResultCount)
+            .ToListAsync();
+
+        return new PagedDbResult<ServiceRequest>(totalCount, items);
     }
 }
