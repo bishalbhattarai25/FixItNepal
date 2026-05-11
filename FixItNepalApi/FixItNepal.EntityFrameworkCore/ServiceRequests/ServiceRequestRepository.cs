@@ -50,9 +50,6 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
         
         var query = _dbSet.AsQueryable();
 
-        query = query.Where(x => x.ServiceProviderId == id);
-        query = query.Where(x => x.RequestType == RequestType.Scheduled);
-
         if (date.HasValue)
         {
             var d = date.Value.Date;
