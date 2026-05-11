@@ -16,11 +16,10 @@ function NavBar() {
     <nav className="sticky top-0 z-50 h-[60px] bg-white border-b border-gray-100 shadow-sm flex justify-between px-6 md:px-10 items-center">
 
       {/* Brand */}
-      <div
-        className="text-xl font-black tracking-tight cursor-pointer select-none"
-        onClick={() => navigate("/")}
-      >
-        FixIt<span className="text-red-500">Nepal</span>
+      <div onClick={()=> {
+        navigate('/')
+      }} className='text-2xl font-semibold drop-shadow-lg cursor-pointer'>
+        FixIt<span className='text-red-500'>Nepal</span>
       </div>
 
       {/* Nav links */}
