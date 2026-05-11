@@ -1,108 +1,76 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import { Rocket, Download, UserPlus } from "lucide-react";
+import { Rocket, UserPlus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
-    <footer className="bg-slate-800 text-gray-300">
+    <footer className="bg-gray-900 text-gray-400">
 
-      {/* ================= BIG CTA SECTION ================= */}
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 py-32 text-center">
-        
-        <h2 className="text-5xl md:text-6xl font-extrabold text-white leading-tight">
-          Get FIX-IT NEPAL
+      {/* CTA */}
+      <div className="bg-gray-950 py-20 text-center px-6">
+        <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
+          Ready to Get Started?
         </h2>
-
-        <p className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto">
-          Join thousands of riders and mechanics already using Nepal's
-          smartest moto rescue platform
+        <p className="mt-4 text-base text-gray-400 max-w-xl mx-auto">
+          Join thousands of riders and mechanics already using Nepal's smartest moto rescue platform.
         </p>
-
-        <div className="flex flex-wrap justify-center gap-8 mt-14">
-          
-          <button className="flex items-center gap-3 bg-red-500 hover:bg-red-600 text-white px-10 py-5 text-lg font-semibold rounded-xl transition shadow-lg">
-            <Rocket size={22} />
+        <div className="flex flex-wrap justify-center gap-4 mt-10">
+          <button
+            onClick={() => navigate("/register/user")}
+            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-7 py-3 text-sm font-semibold rounded-xl transition shadow-sm"
+          >
+            <Rocket size={16} />
             Get Started
           </button>
-
-          <button className="flex items-center gap-3 bg-gray-200 hover:bg-gray-300 text-gray-800 px-10 py-5 text-lg font-semibold rounded-xl transition shadow-lg">
-            <Download size={22} />
-            Download App
-          </button>
-
-          <button className="flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white px-10 py-5 text-lg font-semibold rounded-xl transition shadow-lg">
-            <UserPlus size={22} />
+          <button
+            onClick={() => navigate("/register/mechanic")}
+            className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-7 py-3 text-sm font-semibold rounded-xl transition shadow-sm"
+          >
+            <UserPlus size={16} />
             Register as Mechanic
           </button>
-
         </div>
       </div>
 
-      {/* ================= BIG LINKS SECTION ================= */}
-      <div className="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-4 gap-16">
-
+      {/* Links */}
+      <div className="max-w-5xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
         <div>
-          <h3 className="text-white text-2xl font-bold mb-6">
-            FIX-IT NEPAL
+          <h3 className="text-white text-lg font-black mb-4">
+            FixIt<span className="text-red-500">Nepal</span>
           </h3>
-          <p className="text-base leading-relaxed">
+          <p className="text-sm leading-relaxed">
             Nepal's first smart moto rescue and roadside assistance platform.
           </p>
         </div>
 
-        <div>
-          <h4 className="text-white text-lg font-semibold mb-6">About</h4>
-          <ul className="space-y-3 text-base">
-            <li className="hover:text-white cursor-pointer">Our Story</li>
-            <li className="hover:text-white cursor-pointer">Team</li>
-            <li className="hover:text-white cursor-pointer">Careers</li>
-            <li className="hover:text-white cursor-pointer">Press</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-white text-lg font-semibold mb-6">Features</h4>
-          <ul className="space-y-3 text-base">
-            <li className="hover:text-white cursor-pointer">For Riders</li>
-            <li className="hover:text-white cursor-pointer">For Mechanics</li>
-            <li className="hover:text-white cursor-pointer">For Partners</li>
-            <li className="hover:text-white cursor-pointer">Pricing</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-white text-lg font-semibold mb-6">Contact</h4>
-          <ul className="space-y-3 text-base">
-            <li className="hover:text-white cursor-pointer">Support</li>
-            <li className="hover:text-white cursor-pointer">Help Center</li>
-            <li className="hover:text-white cursor-pointer">Terms</li>
-            <li className="hover:text-white cursor-pointer">Privacy</li>
-          </ul>
-        </div>
-
+        {[
+          { title: "About", links: ["Our Story", "Team", "Careers", "Press"] },
+          { title: "Features", links: ["For Riders", "For Mechanics", "For Partners", "Pricing"] },
+          { title: "Contact", links: ["Support", "Help Center", "Terms", "Privacy"] },
+        ].map((col) => (
+          <div key={col.title}>
+            <h4 className="text-white text-sm font-bold mb-4 uppercase tracking-widest">{col.title}</h4>
+            <ul className="space-y-2.5">
+              {col.links.map((link) => (
+                <li key={link} className="text-sm hover:text-white cursor-pointer transition-colors">{link}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
-      {/* ================= BIG BOTTOM BAR ================= */}
-      <div className="border-t border-slate-700 py-10 px-6 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto">
-
-        <p className="text-base">
-          © 2024 FIX-IT NEPAL. All rights reserved.
-        </p>
-
-        <div className="flex gap-6 mt-6 md:mt-0">
-          <div className="w-14 h-14 bg-slate-700 hover:bg-slate-600 flex items-center justify-center rounded-full cursor-pointer transition text-lg">
-            <FaFacebookF />
-          </div>
-          <div className="w-14 h-14 bg-slate-700 hover:bg-slate-600 flex items-center justify-center rounded-full cursor-pointer transition text-lg">
-            <FaTwitter />
-          </div>
-          <div className="w-14 h-14 bg-slate-700 hover:bg-slate-600 flex items-center justify-center rounded-full cursor-pointer transition text-lg">
-            <FaInstagram />
-          </div>
-          <div className="w-14 h-14 bg-slate-700 hover:bg-slate-600 flex items-center justify-center rounded-full cursor-pointer transition text-lg">
-            <FaLinkedinIn />
-          </div>
+      {/* Bottom bar */}
+      <div className="border-t border-gray-800 py-6 px-6 flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-4">
+        <p className="text-xs">© 2024 FixIt Nepal. All rights reserved.</p>
+        <div className="flex gap-3">
+          {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
+            <div key={i} className="w-9 h-9 bg-gray-800 hover:bg-gray-700 flex items-center justify-center rounded-full cursor-pointer transition text-sm">
+              <Icon />
+            </div>
+          ))}
         </div>
-
       </div>
 
     </footer>

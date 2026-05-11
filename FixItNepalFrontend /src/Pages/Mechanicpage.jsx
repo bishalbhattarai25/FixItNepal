@@ -5,9 +5,6 @@ export const Mechanicpage = () => {
   return (
     <div>
       <Layout />
-
-
-
     </div>
   )
 }
