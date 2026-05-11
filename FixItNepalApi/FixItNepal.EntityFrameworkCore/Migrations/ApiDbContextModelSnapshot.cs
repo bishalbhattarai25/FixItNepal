@@ -295,6 +295,7 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bytea");
 

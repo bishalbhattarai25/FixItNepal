@@ -226,6 +226,11 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
                 .HasConversion<string>();
 
             b.HasIndex(x => x.ServiceProviderId);
+            
+            b.HasOne(x => x.Garage)
+                .WithMany(x => x.OpeningHours)
+                .HasForeignKey(x => x.ServiceProviderId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
     }
