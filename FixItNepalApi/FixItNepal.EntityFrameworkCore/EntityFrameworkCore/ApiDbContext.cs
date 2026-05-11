@@ -77,6 +77,9 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
                 .WithOne()
                 .HasForeignKey(x => x.ServiceProviderId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            b.Navigation(x => x.OpeningHours)
+                .AutoInclude();
 
         });
         
