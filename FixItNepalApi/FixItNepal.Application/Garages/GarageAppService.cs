@@ -187,9 +187,12 @@ public class GarageAppService(
     public async Task<OpeningHoursDto> GetOpeningHourAsync(Guid id)
     {
         var garage = await garageRepository.GetAsync(id);
-        return mapper.Map<IEnumerable<OpeningHour>, OpeningHoursDto>(garage.OpeningHours);
-        
-    } 
+
+        return new OpeningHoursDto
+        {
+            OpeningHours = mapper.Map<ICollection<OpeningHour>, List<OpeningHourDto>>(garage.OpeningHours)
+        };
+    }
     
     public async Task<OpeningHoursDto> UpdateOpeningHoursAsync(
         Guid id,
