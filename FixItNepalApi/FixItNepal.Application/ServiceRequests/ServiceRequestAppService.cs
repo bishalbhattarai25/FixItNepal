@@ -87,7 +87,8 @@ public class ServiceRequestAppService(
             ProblemDescription = input.ProblemDescription,
             Latitude = input.LocationCoordinates.Latitude,
             Longitude = input.LocationCoordinates.Longitude,
-            CreationTime = DateTime.UtcNow
+            CreationTime = DateTime.UtcNow,
+            Radius = input.RadiusInKm
         };
 
         if (input.RequestType == RequestType.Scheduled && input.ScheduledDate == null)
@@ -162,7 +163,7 @@ public class ServiceRequestAppService(
     public async Task<NearbyServiceProviderDto> GetNearbyServicesAsync(LocationCoordinationDto input, double radiusInKm)
     {
         
-        var userLocation = new LocationCoordinate(input.Longitude, input.Latitude);
+        var userLocation = new LocationCoordinate(input.Latitude, input.Longitude);
         var radiusInMeters = radiusInKm * 1000;
         
         var garages = await garageRepository.GetNearbyGaragesAsync(userLocation, radiusInMeters );
@@ -183,7 +184,7 @@ public class ServiceRequestAppService(
     public async Task<NearbyServiceProviderDto> GetNearbyServiceProviderAsync(Guid id )
     {
         var request = await serviceRequestRepository.GetAsync(id);
-        var radiusinKm = 50;
+        var radiusinKm = request.Radius;
         
         var userLocation = new LocationCoordinate(request.Latitude, request.Longitude);
         var radiusInMeters = radiusinKm * 1000;

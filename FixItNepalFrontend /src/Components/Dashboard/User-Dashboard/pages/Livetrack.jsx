@@ -27,21 +27,22 @@ const Livetrack = () => {
   const smoothMove = useSmoothMarker();
 
   // ---------------- APPROVE HANDLER ----------------
-  const handleApprove = async () => {
-    try {
-      await instance.put(
-        `/api/servicerequest/${requestId}/update-status`,
-        {
-          status: "Completed",
-        }
-      );
+ const handleApprove = async () => {
+  try {
+    await instance.put(
+      `/api/servicerequest/${requestId}/update-status`,
+      {
+        serviceProviderId: request?.serviceProviderId,
+        status: "Completed",
+      }
+    );
 
-      localStorage.removeItem("activeRequestId");
-      navigate("/userdashboard");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    localStorage.removeItem("activeRequestId");
+    navigate("/userdashboard");
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   // ---------------- REAL-TIME HUB ----------------
   useRequestHub(requestId, {

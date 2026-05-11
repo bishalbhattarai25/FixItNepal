@@ -395,7 +395,7 @@ export const Maintence = () => {
       const { data } = await instance.post("/nearby-services", {
         latitude: location.latitude,
         longitude: location.longitude,
-      }, { params: { radiusInKm: 10 } });
+      }, { params: { radiusInKm: 50 } });
       setProviders(data);
       setStep(2);
     } catch {

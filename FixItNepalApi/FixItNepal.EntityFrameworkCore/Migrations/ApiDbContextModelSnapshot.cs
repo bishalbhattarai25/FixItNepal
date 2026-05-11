@@ -289,6 +289,9 @@ namespace FixItNepal.EntityFrameworkCore.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("Radius")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("RequestType")
                         .IsRequired()
                         .HasColumnType("text");
