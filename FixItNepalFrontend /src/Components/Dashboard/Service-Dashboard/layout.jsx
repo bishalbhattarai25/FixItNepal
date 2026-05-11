@@ -1,16 +1,30 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import SideBar2 from "./SideBar";
+import instance from "../../../Server/Axios";
 
 export const Layout2 = () => {
+  const garageId = localStorage.getItem("userId");
+
+  /* ================= FETCH GARAGE ================= */
+  const { data: garage, isLoading } = useQuery({
+    queryKey: ["garage", garageId],
+    enabled: !!garageId,
+    queryFn: async () => {
+      const res = await instance.get(`/api/garage/${garageId}`);
+      return res.data;
+    },
+  });
+
   return (
     <div className="h-screen w-full flex bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900 overflow-hidden">
 
-      {/* SIDEBAR */}
+      {/* ================= SIDEBAR ================= */}
       <aside className="w-72 flex-shrink-0 border-r border-slate-200/60 bg-white/70 backdrop-blur-xl shadow-sm">
         <div className="h-full flex flex-col">
 
-          {/* Logo / Brand */}
+          {/* BRAND */}
           <div className="px-6 py-5 border-b border-slate-100">
             <h1 className="text-lg font-black tracking-wide text-red-500">
               Service Center
@@ -18,30 +32,32 @@ export const Layout2 = () => {
             <p className="text-xs text-slate-400">Dashboard Panel</p>
           </div>
 
-          {/* Sidebar Items */}
+          {/* SIDEBAR ITEMS */}
           <div className="flex-1 overflow-y-auto px-3 py-4">
             <SideBar2 />
           </div>
 
-          {/* Footer */}
+          {/* FOOTER */}
           <div className="p-4 border-t border-slate-100 text-xs text-slate-400">
             © 2026 FixItNepal
           </div>
+
         </div>
       </aside>
 
-      {/* MAIN AREA */}
+      {/* ================= MAIN AREA ================= */}
       <div className="flex-1 flex flex-col overflow-hidden">
 
-        {/* HEADER */}
+        {/* ================= HEADER ================= */}
         <header className="h-16 flex items-center justify-between px-8 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 shadow-sm">
 
-          {/* Search */}
+          {/* SEARCH */}
           <div className="w-full max-w-xl">
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
                 🔍
               </span>
+
               <input
                 type="text"
                 placeholder="Search requests, mechanics, services..."
@@ -50,31 +66,40 @@ export const Layout2 = () => {
             </div>
           </div>
 
-          {/* Profile */}
+          {/* PROFILE */}
           <div className="flex items-center gap-3">
+
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-semibold">Garage Admin</p>
-              <p className="text-[10px] text-slate-400">Online</p>
+              <p className="text-xs font-semibold">
+                {isLoading ? "Loading..." : garage?.name || "Garage Admin"}
+              </p>
+
+              <p className="text-[10px] text-slate-400">
+                {garage?.phoneNumber || "Online"}
+              </p>
             </div>
 
             <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-red-500 to-orange-400 flex items-center justify-center text-white font-bold text-sm shadow-md">
-              G
+              {garage?.name?.charAt(0)?.toUpperCase() || "G"}
             </div>
+
           </div>
+
         </header>
 
-        {/* CONTENT */}
+        {/* ================= CONTENT ================= */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
           <div className="max-w-[1400px] mx-auto">
 
-            {/* content card wrapper */}
             <div className="bg-white/70 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-sm p-6 lg:p-8 min-h-[calc(100vh-140px)]">
 
               <Outlet />
 
             </div>
+
           </div>
         </main>
+
       </div>
     </div>
   );

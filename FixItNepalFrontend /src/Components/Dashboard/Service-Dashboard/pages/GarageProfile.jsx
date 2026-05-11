@@ -26,6 +26,16 @@ const GarageProfile = () => {
     queryFn: () => fetchGarageProfile(garageId),
   });
 
+  const handleLogout = () => {
+    // CLEAR STORAGE
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+
+    // REDIRECT
+    window.location.href = "/login";
+  };
+
   if (isLoading) return <div className="p-6 text-gray-500">Loading...</div>;
 
   if (isError || !data)
@@ -181,17 +191,26 @@ const GarageProfile = () => {
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
             <h3 className="text-xl font-bold mb-6">Security</h3>
 
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50">
+            <button
+              disabled
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed opacity-60"
+            >
               <Lock className="w-5 h-5 text-gray-400" />
               Change Password
             </button>
 
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50">
+            <button
+              disabled
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed opacity-60"
+            >
               <ShieldCheck className="w-5 h-5 text-gray-400" />
               Two-Factor Auth
             </button>
 
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 bg-red-50 hover:bg-red-100">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 bg-red-50 hover:bg-red-100"
+            >
               <LogOut className="w-5 h-5" />
               Logout
             </button>

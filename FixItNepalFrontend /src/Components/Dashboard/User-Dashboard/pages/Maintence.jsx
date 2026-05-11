@@ -29,19 +29,14 @@ const inputCls = (touched, error) =>
 const FieldError = ({ touched, error }) =>
   touched && error ? <p className="text-red-500 text-sm mt-1">{error}</p> : null;
 
-/**
- * Builds the POST /api/servicerequest payload.
- * - scheduledDate: full ISO datetime combining date + selected slot time
- * - scheduledTime: the raw slot time string (e.g. "09:00")
- */
 const buildPayload = (values, location, selectedSlot) => ({
   customerId: values.customerId,
   requestType: values.requestType,
   problemType: values.problemType,
-  vehicleType: values.vehicleType,           // matches enum: TwoWheeler, FourWheeler, etc.
+  vehicleType: values.vehicleType,          
   vehicleModel: values.vehicleModel,
   scheduledDate: new Date(`${values.scheduledDate}T${selectedSlot}`).toISOString(),
-  scheduledTime: selectedSlot,               // required separate field
+  scheduledTime: selectedSlot,             
   problemDescription: values.problemDescription,
   estimatedBudget: values.estimatedBudget ? parseFloat(values.estimatedBudget) : 0,
   locationCoordinates: {
@@ -89,7 +84,7 @@ const ServiceDetailsForm = ({ formik, locationStatus, location, onNext }) => {
   const { values, touched, errors, handleChange, handleBlur, setFieldValue } = formik;
   return (
     <div>
-      {/* Request Type */}
+      Request Type
       <div className="mb-5">
         <label className="block text-sm font-medium text-gray-700 mb-1.5">Request Type</label>
         <div className="grid grid-cols-2 gap-3">

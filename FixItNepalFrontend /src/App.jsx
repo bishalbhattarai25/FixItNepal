@@ -61,7 +61,7 @@ const shouldHideNavbar = hideNavbarRoutes.some((route) =>
             <Route path="requesthelp" element={<Requesthelp />} />
             <Route path="nearbymechanics/:requestId?" element={<Nearbymacf />} />
             <Route path="livetracking/:requestId?" element={<Livetrack />} />
-            <Route path="servoceHistory" element={<Servicehistory />} />
+            <Route path="serviceHistory" element={<Servicehistory />} />
             <Route path="payments" element={<Wallet />} />
             <Route path="maintence" element={<Maintence />} />
             <Route path="profile" element={<Profile />} />

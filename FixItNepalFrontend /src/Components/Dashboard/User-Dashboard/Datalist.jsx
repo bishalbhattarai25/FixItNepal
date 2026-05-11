@@ -31,7 +31,7 @@ export const Sidebar = [
   {
     title: "Service History",
     logo: <FaHistory />,
-    path:"/userdashboard/servoceHistory"
+    path:"/userdashboard/serviceHistory"
   },
   // {
   //   title: "Wallet/Payments",

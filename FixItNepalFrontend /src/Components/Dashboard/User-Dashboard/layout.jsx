@@ -1,12 +1,26 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import SideBar from "./SideBar";
+import instance from "../../../Server/Axios";
 
 export const Layout = () => {
+  const userId = localStorage.getItem("userId");
+
+  /* ================= FETCH CUSTOMER ================= */
+  const { data: customer, isLoading } = useQuery({
+    queryKey: ["customer", userId],
+    enabled: !!userId,
+    queryFn: async () => {
+      const res = await instance.get(`/api/customer/${userId}`);
+      return res.data;
+    },
+  });
+
   return (
     <div className="h-screen w-full flex bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900 overflow-hidden">
 
-      {/* SIDEBAR */}
+      {/* ================= SIDEBAR ================= */}
       <aside className="w-72 flex-shrink-0 border-r border-slate-200/60 bg-white/70 backdrop-blur-xl shadow-sm">
         <div className="h-full flex flex-col">
 
@@ -31,10 +45,10 @@ export const Layout = () => {
         </div>
       </aside>
 
-      {/* MAIN AREA */}
+      {/* ================= MAIN AREA ================= */}
       <div className="flex-1 flex flex-col overflow-hidden">
 
-        {/* HEADER (same style as Layout2) */}
+        {/* ================= HEADER ================= */}
         <header className="h-16 flex items-center justify-between px-8 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 shadow-sm">
 
           {/* SEARCH */}
@@ -54,24 +68,30 @@ export const Layout = () => {
 
           {/* PROFILE */}
           <div className="flex items-center gap-3">
+
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-semibold">User</p>
-              <p className="text-[10px] text-slate-400">Online</p>
+              <p className="text-xs font-semibold">
+                {isLoading ? "Loading..." : customer?.name || "User"}
+              </p>
+              <p className="text-[10px] text-slate-400">
+                {customer?.phoneNumber || "Online"}
+              </p>
             </div>
 
             <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-red-500 to-orange-400 flex items-center justify-center text-white font-bold text-sm shadow-md">
-              U
+              {customer?.name?.charAt(0)?.toUpperCase() || "U"}
             </div>
+
           </div>
 
         </header>
 
-        {/* CONTENT (EXACT Layout2 STYLE) */}
-<main className="flex-1 overflow-y-auto pt-6 px-2">
-  <div className="w-full h-full bg-white/70 backdrop-blur-xl border border-slate-200/60 shadow-sm min-h-[calc(100vh-64px)]">
-    <Outlet />
-  </div>
-</main>
+        {/* ================= CONTENT ================= */}
+        <main className="flex-1 overflow-y-auto pt-6 px-2">
+          <div className="w-full h-full bg-white/70 backdrop-blur-xl border border-slate-200/60 shadow-sm min-h-[calc(100vh-64px)]">
+            <Outlet />
+          </div>
+        </main>
 
       </div>
     </div>
