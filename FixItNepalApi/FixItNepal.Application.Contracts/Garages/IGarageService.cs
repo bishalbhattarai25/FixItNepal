@@ -25,5 +25,7 @@ public interface IGarageService
         ServiceRequestStatus? status,
         RequestType? type, PagedRequestDto pagedRequest);
 
+    Task<AppointmentAnalyticsDto> GetAppointmentAnalyticsAsync(Guid id);
+
 
 }

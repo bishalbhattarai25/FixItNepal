@@ -1,7 +1,9 @@
 using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Appointments;
+using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.ServiceRequests;
+using FixItNepal.Domain.Analytics.Garages;
 using FixItNepal.Domain.ServiceRequests;
 
 namespace FixItNepal.Application.AutomapperProfiles;
@@ -20,6 +22,10 @@ public class ServiceRequestAutomapperProfile: Profile
             .ForMember(dest => dest.Request, opt => opt.MapFrom(src => src))
             .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer));
         
+        
+        //analytics 
+
+        CreateMap<AppointmentAnalytics, AppointmentAnalyticsDto>();
     }
     
 }

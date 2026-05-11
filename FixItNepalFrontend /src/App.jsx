@@ -28,6 +28,7 @@ import Appointment from "./Components/Dashboard/Service-Dashboard/pages/Appointm
 import { ServiceCenter } from "./Pages/ServiceCenter";
 import GarageProfile from "./Components/Dashboard/Service-Dashboard/pages/GarageProfile";
 import GarageServicehistory from "./Components/Dashboard/Service-Dashboard/pages/GarageServiceRequestHistory";
+import OpeningHours from "./Components/Dashboard/Service-Dashboard/pages/OpeningHours";
 
 function App() {
    const location = useLocation();
@@ -78,6 +79,7 @@ const shouldHideNavbar = hideNavbarRoutes.some((route) =>
     <Route path="appointment" element={<Appointment />} />
     <Route path="profile" element={<GarageProfile />} />
     <Route path="requesthistory" element={<GarageServicehistory />} />
+    <Route path="openinghours" element={<OpeningHours />} />
 
 
   </Route>

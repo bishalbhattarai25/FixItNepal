@@ -1,3 +1,4 @@
+using FixItNepal.Domain.Analytics.Garages;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.ServiceRequests;
 using FixItNepal.Domain.Shared.ServiceRequests;
@@ -75,5 +76,28 @@ public class ServiceRequestRepository(ApiDbContext dbContext) :GenericRepository
             .ToListAsync();
 
         return new PagedDbResult<ServiceRequest>(totalCount, items);
+    }
+
+    public async Task<AppointmentAnalytics> GetAppointmentAnalyticsAsync(Guid id)
+    {
+        var query = _dbSet.AsQueryable();
+        
+        query = query.Where(x => x.ServiceProviderId == id && x.RequestType == RequestType.Scheduled);
+        
+        var today = DateTime.Now.Date;
+
+        var todayCount = await query.Where(x => x.ScheduledDate == today).CountAsync();
+        var upcomingCount = await query.Where(x => x.ScheduledDate > today).CountAsync();
+        var completed = await query.Where(x => x.Status == ServiceRequestStatus.Completed).CountAsync();
+        var total = await query.CountAsync();
+
+        return new AppointmentAnalytics()
+        {
+            Today = (uint)todayCount,
+            Upcoming = (uint)upcomingCount,
+            Completed = (uint)completed,
+            Total =(uint) total
+        };
+
     }
 }

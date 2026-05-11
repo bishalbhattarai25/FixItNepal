@@ -61,4 +61,11 @@ public class GarageController (
     {
         return await garageService.GetAppointmentsAsync(id, date, status);
     }
+
+    [HttpGet("{id:guid}/appointment-analytics")]
+    public async Task<AppointmentAnalyticsDto> GetAppointmentAnalyticsAsync(Guid id)
+    {
+        return await garageService.GetAppointmentAnalyticsAsync(id);
+
+    }
 }

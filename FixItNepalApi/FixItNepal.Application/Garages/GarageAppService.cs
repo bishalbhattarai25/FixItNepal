@@ -9,6 +9,7 @@ using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
+using FixItNepal.Domain.Analytics.Garages;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
@@ -161,6 +162,12 @@ public class GarageAppService(
     {
         var requests = await serviceRequestRepository.GetRequestHistory(id, date, status, type, pagedRequest.SkipCount ?? 0, pagedRequest.MaxCount ?? 10);
         return mapper.Map<PagedDbResult<ServiceRequest>, PagedResultDto<RequestDto>>(requests);
+    }
+    
+    public async Task<AppointmentAnalyticsDto> GetAppointmentAnalyticsAsync(Guid id)
+    {
+        var analytics = await serviceRequestRepository.GetAppointmentAnalyticsAsync(id);
+        return mapper.Map<AppointmentAnalytics, AppointmentAnalyticsDto>(analytics);
     }
 
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)

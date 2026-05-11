@@ -24,6 +24,12 @@ export const SideBar = [
     path: "/servicecenter/appointment"
   },
    {
+    title: "Opening Hour",
+    logo: <FaHand />,
+    path: "/servicecenter/openinghours"
+  },
+
+   {
     title: "Profile",
     logo: <FaHand />,
     path: "/servicecenter/profile"

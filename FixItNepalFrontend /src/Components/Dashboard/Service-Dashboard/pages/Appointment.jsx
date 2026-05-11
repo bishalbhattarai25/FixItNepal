@@ -14,6 +14,7 @@ import {
 
 import { useQuery } from "@tanstack/react-query";
 import instance from "../../../../Server/Axios";
+import { stats as staticStats } from "../HOC/Appointdata.jsx";
 
 /* ---------------- UTC helper ---------------- */
 const toUTCDate = (dateStr) => {
@@ -34,18 +35,22 @@ const getInitials = (name = "") =>
     .map((n) => n[0].toUpperCase())
     .join("");
 
-/* ---------------- API ---------------- */
+/* ---------------- APIs ---------------- */
 const fetchAppointments = async (garageId, status, date) => {
-  const res = await instance.get(
-    `/api/garage/${garageId}/appointments`,
-    {
-      params: {
-        status: status !== "All" ? status : undefined,
-        date: date ? toUTCDate(date) : undefined,
-      },
-    }
-  );
+  const res = await instance.get(`/api/garage/${garageId}/appointments`, {
+    params: {
+      status: status !== "All" ? status : undefined,
+      date: date ? toUTCDate(date) : undefined,
+    },
+  });
 
+  return res.data;
+};
+
+const fetchAnalytics = async (garageId) => {
+  const res = await instance.get(
+    `/api/garage/${garageId}/appointment-analytics`
+  );
   return res.data;
 };
 
@@ -56,6 +61,7 @@ const Appointment = () => {
 
   const garageId = localStorage.getItem("userId");
 
+  /* ---------------- appointments ---------------- */
   const {
     data: apiData = [],
     isLoading,
@@ -63,8 +69,13 @@ const Appointment = () => {
     refetch,
   } = useQuery({
     queryKey: ["appointments", garageId, statusFilter, dateFilter],
-    queryFn: () =>
-      fetchAppointments(garageId, statusFilter, dateFilter),
+    queryFn: () => fetchAppointments(garageId, statusFilter, dateFilter),
+  });
+
+  /* ---------------- analytics ---------------- */
+  const { data: analytics } = useQuery({
+    queryKey: ["analytics", garageId],
+    queryFn: () => fetchAnalytics(garageId),
   });
 
   const appointments = apiData.map((item) => ({
@@ -75,6 +86,23 @@ const Appointment = () => {
     date: item.request?.scheduledDate?.split("T")[0],
     time: item.request?.scheduledTime,
   }));
+
+  /* ---------------- ONLY DATA FIX (NO UI CHANGE) ---------------- */
+  const stats = staticStats.map((s) => {
+    if (s.label === "Today") {
+      return { ...s, value: analytics?.today ?? 0 };
+    }
+    if (s.label === "Upcoming") {
+      return { ...s, value: analytics?.upcoming ?? 0 };
+    }
+    if (s.label === "Completed") {
+      return { ...s, value: analytics?.completed ?? 0 };
+    }
+    if (s.label === "All Appointments") {
+      return { ...s, value: analytics?.total ?? 0 };
+    }
+    return s;
+  });
 
   if (isLoading) return <div className="p-6 text-gray-500">Loading...</div>;
 
@@ -127,7 +155,31 @@ const Appointment = () => {
         </div>
       </div>
 
-      {/* CONTROLS (UNCHANGED) */}
+      {/* STATS) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {stats.map((stat, i) => (
+          <div
+            key={i}
+            className={`${stat.bgColor} p-5 rounded-2xl border border-white flex justify-between items-start shadow-sm`}
+          >
+            <div>
+              <p className="text-gray-500 text-sm font-bold mb-1">
+                {stat.label}
+              </p>
+              <h2 className="text-3xl font-black text-gray-900">
+                {stat.value}
+              </h2>
+            </div>
+            <div
+              className={`${stat.iconBg} ${stat.iconColor} p-2 rounded-xl shadow-sm`}
+            >
+              {stat.icon}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* FILTERS*/}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
 
         <div className="flex gap-2">
@@ -159,6 +211,7 @@ const Appointment = () => {
               className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm w-64"
             />
           </div>
+
           <button
             onClick={refetch}
             className="p-2 text-gray-400 hover:text-red-500"
@@ -168,10 +221,10 @@ const Appointment = () => {
         </div>
       </div>
 
-      {/* CARD VIEW (UNCHANGED 1:1) */}
+      {/* CARD VIEW (UNCHANGED) */}
       {viewMode === "card" ? (
         appointments.length === 0 ? (
-          <div className="text-center text-gray-400 font-bold py-10 col-span-full">
+          <div className="text-center text-gray-400 font-bold py-10">
             No data
           </div>
         ) : (
@@ -184,7 +237,6 @@ const Appointment = () => {
               >
                 <div className="p-5">
 
-                  {/* ONLY CHANGE: ST → initials */}
                   <div className="flex gap-4 mb-4">
                     <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-inner">
                       {getInitials(apt.name)}

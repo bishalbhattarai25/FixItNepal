@@ -1,3 +1,4 @@
+using FixItNepal.Domain.Analytics.Garages;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Repository;
 using FixItNepal.Domain.Shared.ServiceRequests;
@@ -19,6 +20,9 @@ public interface IServiceRequestRepository:IRepository<ServiceRequest>
         RequestType? requestType,
         int skipCount,
         int maxResultCount);
+
+    Task<AppointmentAnalytics> GetAppointmentAnalyticsAsync(Guid id);
+
 
 
 }
