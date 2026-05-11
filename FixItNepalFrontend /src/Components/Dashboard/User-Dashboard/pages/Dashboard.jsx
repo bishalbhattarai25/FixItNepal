@@ -26,7 +26,6 @@ import {
 
 import instance from "../../../../Server/Axios";
 
-import { NearbyMap } from "../../../HOC/NearByMap";
 
 export const Dashboard = () => {
 
