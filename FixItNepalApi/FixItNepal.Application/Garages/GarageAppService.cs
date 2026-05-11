@@ -3,11 +3,13 @@ using AutoMapper;
 using FixItNepal.Application.Contracts.Addresses;
 using FixItNepal.Application.Contracts.Appointments;
 using FixItNepal.Application.Contracts.AppUsers;
+using FixItNepal.Application.Contracts.Customs;
 using FixItNepal.Application.Contracts.Garages;
 using FixItNepal.Application.Contracts.MediaFiles;
 using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Addresses;
+using FixItNepal.Domain.Analytics.Garages;
 using FixItNepal.Domain.AppUsers;
 using FixItNepal.Domain.Customs.Exceptions;
 using FixItNepal.Domain.Customs.PagedResult;
@@ -156,10 +158,63 @@ public class GarageAppService(
         return mapper.Map<ICollection<AppointmentDto>>(appointments); 
     }
     
-    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    public async Task<PagedResultDto<RequestDto>> GetRequestHistoryAsync(Guid id,  DateTime? date, ServiceRequestStatus? status, RequestType? type, PagedRequestDto pagedRequest)
     {
-        var requests = await serviceRequestRepository.GetListAsync(x => x.CustomerId == id);
-        return mapper.Map<ICollection<ServiceRequest>, ICollection<RequestDto>>(requests.ToList());
+        var requests = await serviceRequestRepository.GetRequestHistory(id, date, status, type, pagedRequest.SkipCount ?? 0, pagedRequest.MaxCount ?? 10);
+        return mapper.Map<PagedDbResult<ServiceRequest>, PagedResultDto<RequestDto>>(requests);
+    }
+    
+    public async Task<AppointmentAnalyticsDto> GetAppointmentAnalyticsAsync(Guid id)
+    {
+        var analytics = await serviceRequestRepository.GetAppointmentAnalyticsAsync(id);
+        return mapper.Map<AppointmentAnalytics, AppointmentAnalyticsDto>(analytics);
+    }
+
+    public async Task<OpeningHoursDto> GetOpeningHourAsync(Guid id)
+    {
+        var garage = await garageRepository.GetAsync(id);
+        return mapper.Map<IEnumerable<OpeningHour>, OpeningHoursDto>(garage.OpeningHours);
+        
+    } 
+    
+    public async Task<OpeningHoursDto> UpdateOpeningHoursAsync(
+        Guid id,
+        OpeningHoursDto input)
+    {
+        var garage = await garageRepository.GetAsync(id);
+
+        var dbOpeningHourIds = garage.OpeningHours
+            .Select(oh => oh.Id)
+            .ToHashSet();
+        var updatedOpeningHours = input.OpeningHours;
+        var openingHourDtos = updatedOpeningHours.ToArray();
+        var updatedOpeningHourIds = openingHourDtos
+            .Select(oh => oh.Id)
+            .ToHashSet();
+        if (!dbOpeningHourIds.SetEquals(updatedOpeningHourIds))
+        {
+            throw new BusinessException("Invalid:OpeningHour", "Provided are not valid one");
+        }
+
+        var updatingOpeningHours = new HashSet<OpeningHour>();
+
+        foreach (var x in garage.OpeningHours)
+        {
+            var updated = openingHourDtos.First(oh => oh.Id == x.Id);
+            x.DayOfWeek = updated.DayOfWeek;
+            x.StartTime = updated.StartTime;
+            x.EndTime = updated.EndTime;
+            x.IsItClosed = updated.IsItClosed;
+            x.MaxAppointmentsPerSlot = updated.MaxAppointmentsPerSlot;
+            updatingOpeningHours.Add(x);
+        }
+
+        garage.OpeningHours = updatingOpeningHours;
+        
+         garageRepository.Update(garage);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+
+        return mapper.Map<IEnumerable<OpeningHour>, OpeningHoursDto>(garage.OpeningHours);
     }
 
     private ICollection<GarageMediaFile> CreateMediaFiles(ICollection<CreateDocumentMediaFileDto> input)

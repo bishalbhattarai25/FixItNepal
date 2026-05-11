@@ -6,6 +6,8 @@ import { FaWallet } from "react-icons/fa";
 import { HiMiniBellAlert } from "react-icons/hi2";
 import { IoPersonSharp } from "react-icons/io5";
 import { FaHistory } from "react-icons/fa";
+import { IoMdTimer } from "react-icons/io";
+import { MdHistory } from "react-icons/md";
 
 export const SideBar = [
   {
@@ -22,6 +24,22 @@ export const SideBar = [
     title: "Appointment",
     logo: <FaHand />,
     path: "/servicecenter/appointment"
+  },
+   {
+    title: "Opening Hour",
+    logo: <IoMdTimer />,
+    path: "/servicecenter/openinghours"
+  },
+
+   {
+    title: "Profile",
+    logo: <IoPersonSharp />,
+    path: "/servicecenter/profile"
+  },
+   {
+    title: "Request History",
+    logo:<MdHistory />,
+    path: "/servicecenter/requesthistory"
   },
      {
     title: "Logout",

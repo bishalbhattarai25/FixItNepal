@@ -213,6 +213,9 @@ public class ApiDbContext: IdentityDbContext<AppUser,IdentityRole<Guid>, Guid>
             
             // b.Navigation(b => b.Address)
             //     .AutoInclude();
+
+            b.Navigation(x => x.Customer)
+                .AutoInclude();
         });
 
         builder.Entity<OpeningHour>(b =>

@@ -1,5 +1,7 @@
 using FixItNepal.Application.Contracts.Appointments;
+using FixItNepal.Application.Contracts.Customs;
 using FixItNepal.Application.Contracts.Garages;
+using FixItNepal.Application.Contracts.OpeningHours;
 using FixItNepal.Application.Contracts.ServiceRequests;
 using FixItNepal.Domain.Customs.PagedResult;
 using FixItNepal.Domain.Shared.AppUsers;
@@ -49,9 +51,9 @@ public class GarageController (
     }
     
     [HttpGet("{id:guid}/request-history")]
-    public async Task<ICollection<RequestDto>> GetRequestHistoryAsync(Guid id)
+    public async Task<PagedResultDto<RequestDto>> GetRequestHistoryAsync(Guid id, DateTime? date, ServiceRequestStatus? status, RequestType? requestType, [FromQuery] PagedRequestDto input )
     {
-        var requests = await garageService.GetRequestHistoryAsync(id);
+        var requests = await garageService.GetRequestHistoryAsync(id,  date, status, requestType, input);
         return requests;
     }
     
@@ -59,5 +61,26 @@ public class GarageController (
     public async Task<ICollection<AppointmentDto>> GetAppointments(Guid id, DateTime? date, ServiceRequestStatus? status)
     {
         return await garageService.GetAppointmentsAsync(id, date, status);
+    }
+
+    [HttpGet("{id:guid}/appointment-analytics")]
+    public async Task<AppointmentAnalyticsDto> GetAppointmentAnalyticsAsync(Guid id)
+    {
+        return await garageService.GetAppointmentAnalyticsAsync(id);
+
+    }
+
+    [HttpGet("{id:guid}/opening-hours")]
+    public async Task<OpeningHoursDto> GetOpeningHourAsync(Guid id)
+    {
+        return await garageService.GetOpeningHourAsync(id);
+    }
+
+    [HttpPut("{id:guid}/opening-hours")]
+    public async Task<OpeningHoursDto> UpdateOpeningHoursAsync(
+        Guid id,
+        OpeningHoursDto input)
+    {
+        return await garageService.UpdateOpeningHoursAsync(id, input);
     }
 }
